@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.10.0
+
+### Minor Changes
+
+- ff9c57f: Legacy site deployment upload was replaced by new SDK client
+
+### Patch Changes
+
+- ff9c57f: change link in `ipfs add` command to w3s.link
+
 ## 3.8.2
 
 ### Patch Changes
