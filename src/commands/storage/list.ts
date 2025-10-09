@@ -12,7 +12,7 @@ export const listStorageAction: SdkGuardedFunction<
   if (!storage?.length) {
     output.warn(t('storageListNotFound'));
     output.log(t('storageAddSuggestion'));
-    output.log('fleek storage add <file_path>');
+    output.log('af storage add <file_path>');
 
     return;
   }

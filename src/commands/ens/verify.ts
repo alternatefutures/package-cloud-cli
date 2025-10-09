@@ -1,4 +1,4 @@
-import type { EnsRecord } from '@fleek-platform/sdk/node';
+import type { EnsRecord } from '@alternatefutures/sdk/node';
 
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
@@ -55,7 +55,7 @@ export const verifyEnsRecordAction: SdkGuardedFunction<
     output.log(
       `${t('commonWaitAndCheckStatusViaCmd', { subject: t('ensConf') })}:`,
     );
-    output.log(output.textColor(`fleek ens detail ${ensRecord.name}`, 'cyan'));
+    output.log(output.textColor(`af ens detail ${ensRecord.name}`, 'cyan'));
 
     return;
   }

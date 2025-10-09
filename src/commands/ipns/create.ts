@@ -1,4 +1,4 @@
-import { getIpnsGatewayUrl } from '@fleek-platform/utils-ipns';
+import { getIpnsGatewayUrl } from '@alternatefutures/utils-ipns';
 
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
@@ -33,7 +33,7 @@ const createAction: SdkGuardedFunction<CreateActionArgs> = async ({
     output.chore(t('ipnsRecordToPublishAuto', { name: site.name }));
   } else {
     output.hint(t('youCanDoXUsingFolCmd', { action: t('publishIPNSRecord') }));
-    output.log(`fleek ipns publish --name ${record.name} --hash <ipfsCid>`);
+    output.log(`af ipns publish --name ${record.name} --hash <ipfsCid>`);
     output.printNewLine();
   }
 

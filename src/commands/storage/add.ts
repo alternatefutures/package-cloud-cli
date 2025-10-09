@@ -4,7 +4,7 @@ import { basename } from 'node:path';
 import {
   getPrivateIpfsGatewayUrl,
   getWeb3IpfsGatewayUrl,
-} from '@fleek-platform/utils-ipfs';
+} from '@alternatefutures/utils-ipfs';
 import cliProgress from 'cli-progress';
 import { filesFromPaths } from 'files-from-path';
 

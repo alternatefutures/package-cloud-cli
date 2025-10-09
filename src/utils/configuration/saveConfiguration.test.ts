@@ -3,7 +3,7 @@ import path from 'node:path';
 import {
   ExpectedOneOfValuesError,
   InvalidJSONFormat,
-} from '@fleek-platform/errors';
+} from '@alternatefutures/errors';
 import ts from 'typescript';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { fileExists } from '../fs';
@@ -67,9 +67,9 @@ describe('The saveConfiguration utils', () => {
       }
     });
 
-    it('should return the expected filename (fleek.config.json)', async () => {
+    it('should return the expected filename (af.config.json)', async () => {
       configFilePath = await saveConfiguration({ config, format });
-      expect(configFilePath).toBe('fleek.config.json');
+      expect(configFilePath).toBe('af.config.json');
     });
 
     it('should be a valid JSON', async () => {
@@ -128,9 +128,9 @@ describe('The saveConfiguration utils', () => {
       }
     });
 
-    it('should return the expected filename (fleek.config.ts)', async () => {
+    it('should return the expected filename (af.config.ts)', async () => {
       configFilePath = await saveConfiguration({ config, format });
-      expect(configFilePath).toBe('fleek.config.ts');
+      expect(configFilePath).toBe('af.config.ts');
     });
 
     it('should be valid Typescript', async () => {
@@ -156,7 +156,7 @@ describe('The saveConfiguration utils', () => {
       const buf = await fs.readFile(configFilePath as string);
       const content = buf.toString();
 
-      expect(content).toContain('@fleek-platform/cli');
+      expect(content).toContain('@alternatefutures/cli');
       expect(content).toContain('export default');
     });
 
@@ -209,9 +209,9 @@ describe('The saveConfiguration utils', () => {
       }
     });
 
-    it('should return the expected filename (fleek.config.js)', async () => {
+    it('should return the expected filename (af.config.js)', async () => {
       configFilePath = await saveConfiguration({ config, format });
-      expect(configFilePath).toBe('fleek.config.js');
+      expect(configFilePath).toBe('af.config.js');
     });
 
     it('should be valid Javascript', async () => {
@@ -237,7 +237,7 @@ describe('The saveConfiguration utils', () => {
       const buf = await fs.readFile(configFilePath as string);
       const content = buf.toString();
 
-      expect(content).toContain("import('@fleek-platform/cli').FleekConfig");
+      expect(content).toContain("import('@alternatefutures/cli').FleekConfig");
       expect(content).toContain('module.exports');
     });
 

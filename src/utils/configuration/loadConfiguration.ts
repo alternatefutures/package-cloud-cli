@@ -1,5 +1,5 @@
-import { FleekConfigInvalidContentError } from '@fleek-platform/errors';
-import { validateConfigurationWithResult } from '@fleek-platform/utils-validation';
+import { FleekConfigInvalidContentError } from '@alternatefutures/errors';
+import { validateConfigurationWithResult } from '@alternatefutures/utils-validation';
 
 import { readConfigurationFile } from './readConfigurationFile';
 import type { FleekRootConfig } from './types';

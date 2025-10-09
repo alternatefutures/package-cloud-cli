@@ -1,6 +1,6 @@
 import { constants, promises as fs } from 'node:fs';
 import { join as joinPath } from 'node:path';
-import { FleekConfigMissingFileError } from '@fleek-platform/errors';
+import { FleekConfigMissingFileError } from '@alternatefutures/errors';
 import {
   type FleekSiteConfigFormatValue,
   FleekSiteConfigFormats,
@@ -28,9 +28,9 @@ export const getConfigurationPath = async ({
 
   // Sorted by priority, we return only the first match
   const supposedFilenames = [
-    'fleek.config.ts',
-    'fleek.config.js',
-    'fleek.config.json',
+    'af.config.ts',
+    'af.config.js',
+    'af.config.json',
   ];
 
   for (const supposedFilename of supposedFilenames) {
@@ -49,7 +49,7 @@ export const getConfigurationPath = async ({
   throw new FleekConfigMissingFileError({});
 };
 
-const FLEEK_CONFIG_BASENAME = 'fleek.config';
+const FLEEK_CONFIG_BASENAME = 'af.config';
 export const FLEEK_CONFIG_TMPL_JSON_PLACEHOLDER = '$jsonContent';
 
 export const getConfigFileByTypeName = (

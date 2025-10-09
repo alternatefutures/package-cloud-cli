@@ -1,4 +1,4 @@
-import type { FleekSdk, Zone } from '@fleek-platform/sdk/node';
+import type { FleekSdk, Zone } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 

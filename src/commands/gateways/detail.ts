@@ -1,4 +1,4 @@
-import { getPrivateIpfsGatewayUrl } from '@fleek-platform/utils-ipfs';
+import { getPrivateIpfsGatewayUrl } from '@alternatefutures/utils-ipfs';
 
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';

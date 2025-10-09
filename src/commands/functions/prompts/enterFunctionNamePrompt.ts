@@ -1,4 +1,4 @@
-import { isFunctionNameValid } from '@fleek-platform/utils-validation';
+import { isFunctionNameValid } from '@alternatefutures/utils-validation';
 
 import { textPrompt } from '../../../prompts/textPrompt';
 import { t } from '../../../utils/translation';

@@ -77,7 +77,7 @@ export const createDomainAction: SdkGuardedFunction<
     output.log(
       `${t('commonWaitAndCheckStatusViaCmd', { subject: t('dnsConfiguration') })}:`,
     );
-    output.log(output.textColor(`fleek domains detail ${hostname}`, 'cyan'));
+    output.log(output.textColor(`af domains detail ${hostname}`, 'cyan'));
 
     return;
   }
@@ -134,7 +134,7 @@ export const createDomainAction: SdkGuardedFunction<
       output.log(
         `${t('commonWaitAndCheckStatusViaCmd', { subject: t('dnsConfiguration') })}:`,
       );
-      output.log(output.textColor(`fleek domains detail ${hostname}`, 'cyan'));
+      output.log(output.textColor(`af domains detail ${hostname}`, 'cyan'));
 
       return;
     }

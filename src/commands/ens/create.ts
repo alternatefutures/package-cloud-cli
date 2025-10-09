@@ -69,7 +69,7 @@ export const createEnsAction: SdkGuardedFunction<CreateEnsActionArgs> = async ({
     output.log(
       `${t('commonWaitAndCheckStatusViaCmd', { subject: t('ensConf') })}`,
     );
-    output.log(output.textColor(`fleek ens detail ${ensName}`, 'cyan'));
+    output.log(output.textColor(`af ens detail ${ensName}`, 'cyan'));
 
     return;
   }
@@ -106,7 +106,7 @@ export const createEnsAction: SdkGuardedFunction<CreateEnsActionArgs> = async ({
       output.log(
         `${t('commonWaitAndCheckStatusViaCmd', { subject: t('ensConf') })}`,
       );
-      output.log(output.textColor(`fleek ens detail ${ensName}`, 'cyan'));
+      output.log(output.textColor(`af ens detail ${ensName}`, 'cyan'));
 
       return;
     }

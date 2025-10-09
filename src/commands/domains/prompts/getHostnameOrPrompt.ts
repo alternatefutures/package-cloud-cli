@@ -1,5 +1,5 @@
-import { DomainHostnameInvalidError } from '@fleek-platform/errors';
-import { isHostnameValid } from '@fleek-platform/utils-validation';
+import { DomainHostnameInvalidError } from '@alternatefutures/errors';
+import { isHostnameValid } from '@alternatefutures/utils-validation';
 
 import { textPrompt } from '../../../prompts/textPrompt';
 import { t } from '../../../utils/translation';

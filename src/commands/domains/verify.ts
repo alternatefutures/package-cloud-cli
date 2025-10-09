@@ -1,4 +1,4 @@
-import type { Domain } from '@fleek-platform/sdk/node';
+import type { Domain } from '@alternatefutures/sdk/node';
 
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
@@ -55,7 +55,7 @@ export const verifyDomainAction: SdkGuardedFunction<
       `${t('commonWaitAndCheckStatusViaCmd', { subject: t('deploymentStatus') })}`,
     );
     output.log(
-      output.textColor(`fleek domains detail ${domain.hostname}`, 'cyan'),
+      output.textColor(`af domains detail ${domain.hostname}`, 'cyan'),
     );
 
     return;

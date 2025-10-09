@@ -1,7 +1,7 @@
 import { uploadOnProgress } from '../../../output/utils/uploadOnProgress';
 import { getFileLikeObject } from './getJsCodeFromPath';
 
-import type { FleekSdk } from '@fleek-platform/sdk/node';
+import type { FleekSdk } from '@alternatefutures/sdk/node';
 import type { Bar as ProgressBar } from 'cli-progress';
 import type { FileLike } from '../../storage/utils/upload';
 

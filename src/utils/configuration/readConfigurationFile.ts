@@ -5,7 +5,7 @@ import { extname as getExtension } from 'node:path';
 import {
   FleekConfigInvalidContentError,
   FleekConfigMissingFileError,
-} from '@fleek-platform/errors';
+} from '@alternatefutures/errors';
 import { register as registerTSNodeCompiler } from 'ts-node';
 
 import { t } from '../../utils/translation';

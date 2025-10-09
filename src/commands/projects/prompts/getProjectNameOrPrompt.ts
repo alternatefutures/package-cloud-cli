@@ -1,5 +1,5 @@
-import { ProjectInvalidNameError } from '@fleek-platform/errors';
-import { isProjectNameValid } from '@fleek-platform/utils-validation';
+import { ProjectInvalidNameError } from '@alternatefutures/errors';
+import { isProjectNameValid } from '@alternatefutures/utils-validation';
 
 import { textPrompt } from '../../../prompts/textPrompt';
 import { t } from '../../../utils/translation';

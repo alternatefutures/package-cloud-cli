@@ -1,5 +1,5 @@
-import type { FleekSdk } from '@fleek-platform/sdk/node';
-import { isValidFolder } from '@fleek-platform/utils-validation';
+import type { FleekSdk } from '@alternatefutures/sdk/node';
+import { isValidFolder } from '@alternatefutures/utils-validation';
 import { output } from '../../../cli';
 import { t } from '../../../utils/translation';
 

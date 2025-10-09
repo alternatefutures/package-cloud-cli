@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { parseEnvVarsAsKeyVal } from './env';
 
 const DEFAULT_PREFIX = 'process.env.';
-const DEFAULT_MOCK_ADDR = 'https://mock.fleek.xyz';
+const DEFAULT_MOCK_ADDR = 'https://mock.alternatefutures.ai';
 const definedMock = {
   UI__APP_URL: DEFAULT_MOCK_ADDR,
   SDK__GRAPHQL_API_URL: `${DEFAULT_MOCK_ADDR}/graphql`,
@@ -17,8 +17,8 @@ describe('Parse environment variables', () => {
       });
 
       expect(parsed).toMatchObject({
-        'process.env.UI__APP_URL': '"https://mock.fleek.xyz"',
-        'process.env.SDK__GRAPHQL_API_URL': '"https://mock.fleek.xyz/graphql"',
+        'process.env.UI__APP_URL': '"https://mock.alternatefutures.ai"',
+        'process.env.SDK__GRAPHQL_API_URL': '"https://mock.alternatefutures.ai/graphql"',
       });
     });
 

@@ -1,5 +1,5 @@
-import { DomainNotFoundError } from '@fleek-platform/errors';
-import { FleekSdk, PersonalAccessTokenService } from '@fleek-platform/sdk/node';
+import { DomainNotFoundError } from '@alternatefutures/errors';
+import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -37,7 +37,7 @@ vi.mock('../../cli', () => {
   return { output };
 });
 
-vi.mock('@fleek-platform/sdk/node', () => {
+vi.mock('@alternatefutures/sdk/node', () => {
   const FleekSdkMock = vi.fn();
 
   const domains = {
@@ -90,7 +90,7 @@ describe('Delete domain', () => {
     });
 
     await expect(
-      deleteDomainAction({ sdk: fakeSdk, args: { hostname: 'fleek.xyz' } }),
+      deleteDomainAction({ sdk: fakeSdk, args: { hostname: 'alternatefutures.ai' } }),
     ).resolves.toBeUndefined();
 
     expect(fakeSdk.domains().get).toHaveBeenCalledWith({

@@ -5,7 +5,7 @@ import {
   FleekFunctionInvalidWasmCodeError,
   FleekFunctionPathNotValidError,
   FleekFunctionWasmEncryptionFailedError,
-} from '@fleek-platform/errors';
+} from '@alternatefutures/errors';
 import cliProgress from 'cli-progress';
 import { encrypt } from 'eciesjs';
 import { output } from '../../../cli';

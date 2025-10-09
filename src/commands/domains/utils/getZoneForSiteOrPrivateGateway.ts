@@ -3,7 +3,7 @@ import type {
   PrivateGateway,
   Site,
   Zone,
-} from '@fleek-platform/sdk/node';
+} from '@alternatefutures/sdk/node';
 
 import { waitForZoneCreationResult } from '../wait/waitForZoneCreationResult';
 

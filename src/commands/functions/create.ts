@@ -1,4 +1,4 @@
-import { SiteNotFoundError } from '@fleek-platform/errors';
+import { SiteNotFoundError } from '@alternatefutures/errors';
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
@@ -34,7 +34,7 @@ const createAction: SdkGuardedFunction<CreateFunctionArgs> = async ({
 
   if (!newFunction.currentDeploymentId) {
     output.log(t('youCanDoXUsingFolCmd', { action: t('deployNewFunction') }));
-    output.log('fleek functions deploy');
+    output.log('af functions deploy');
   }
 };
 

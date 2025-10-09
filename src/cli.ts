@@ -44,7 +44,7 @@ const logo = `
 
 export const init = ({ version, parser }: InitArgs) => {
   const program: Command = new Command()
-    .name('fleek')
+    .name('af')
     .option('--debug', t('enableDebugMode'))
     .action(() => program.outputHelp())
     .version(version);

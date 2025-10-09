@@ -9,7 +9,7 @@ const listAction: SdkGuardedFunction = async ({ sdk }) => {
   if (!functions?.length) {
     output.warn(t('noYYet', { name: 'functions' }));
     output.log(t('youCanDoXUsingFolCmd', { action: t('createNewFunction') }));
-    output.log('fleek functions create');
+    output.log('af functions create');
 
     return;
   }

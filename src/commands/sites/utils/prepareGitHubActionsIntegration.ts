@@ -1,6 +1,6 @@
 import { join as joinPath } from 'node:path';
 
-import { generateDeploymentWorkflowYaml } from '@fleek-platform/utils-github';
+import { generateDeploymentWorkflowYaml } from '@alternatefutures/utils-github';
 import { parse as parseSemver } from 'semver';
 
 import type { Output } from '../../../output/Output';

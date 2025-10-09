@@ -2,7 +2,7 @@ import {
   FleekConfigInvalidContentError,
   FleekConfigMissingFileError,
   type FleekError,
-} from '@fleek-platform/errors';
+} from '@alternatefutures/errors';
 
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';

@@ -1,4 +1,4 @@
-import type { FleekSdk } from '@fleek-platform/sdk/node';
+import type { FleekSdk } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 

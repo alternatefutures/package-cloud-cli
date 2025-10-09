@@ -1,4 +1,4 @@
-import { MissingExpectedDataError } from '@fleek-platform/errors';
+import { MissingExpectedDataError } from '@alternatefutures/errors';
 import type { Command } from 'commander';
 
 import { getDefined } from '../../defined';

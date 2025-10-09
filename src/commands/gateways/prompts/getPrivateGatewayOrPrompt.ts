@@ -1,5 +1,5 @@
-import { PrivateGatewaysNotFoundError } from '@fleek-platform/errors';
-import type { FleekSdk } from '@fleek-platform/sdk/node';
+import { PrivateGatewaysNotFoundError } from '@alternatefutures/errors';
+import type { FleekSdk } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';

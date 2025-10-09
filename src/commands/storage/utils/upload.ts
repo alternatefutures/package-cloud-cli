@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import { uploadOnProgress } from '../../../output/utils/uploadOnProgress';
 
-import type { FleekSdk, UploadPinResponse } from '@fleek-platform/sdk/node';
+import type { FleekSdk, UploadPinResponse } from '@alternatefutures/sdk/node';
 import type { SingleBar as ProgressSingleBar } from 'cli-progress';
 
 import type { ReadableStream } from 'node:stream/web';

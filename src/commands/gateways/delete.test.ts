@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@fleek-platform/sdk/node';
+import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -38,7 +38,7 @@ vi.mock('../../cli', () => {
   return { output };
 });
 
-vi.mock('@fleek-platform/sdk/node', () => {
+vi.mock('@alternatefutures/sdk/node', () => {
   const FleekSdkMock = vi.fn();
 
   const privateGateways = {

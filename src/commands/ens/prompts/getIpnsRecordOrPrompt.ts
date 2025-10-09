@@ -1,4 +1,4 @@
-import type { FleekSdk, IpnsRecord } from '@fleek-platform/sdk/node';
+import type { FleekSdk, IpnsRecord } from '@alternatefutures/sdk/node';
 
 import { output } from '../../../cli';
 import { selectPrompt } from '../../../prompts/selectPrompt';

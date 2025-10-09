@@ -1,4 +1,4 @@
-import { InvalidCidError } from '@fleek-platform/errors';
+import { InvalidCidError } from '@alternatefutures/errors';
 import { CID } from 'multiformats';
 
 import { output } from '../../cli';
@@ -7,7 +7,7 @@ import { withGuards } from '../../guards/withGuards';
 import { t } from '../../utils/translation';
 import { createOutputTable } from './utils/CreateOutputTable';
 
-import type { StoragePin } from '@fleek-platform/sdk/node';
+import type { StoragePin } from '@alternatefutures/sdk/node';
 
 type GetActionArgs = {
   cid?: string;
@@ -48,7 +48,7 @@ export const getStorageAction: SdkGuardedFunction<GetActionArgs> = async ({
       }),
     );
     output.log(t('storageAddSuggestion'));
-    output.log('fleek storage add <file_path>');
+    output.log('af storage add <file_path>');
 
     return;
   }

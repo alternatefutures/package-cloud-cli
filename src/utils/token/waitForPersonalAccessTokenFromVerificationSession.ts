@@ -1,4 +1,4 @@
-import type { Client } from '@fleek-platform/sdk/node';
+import type { Client } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../checkPeriodicallyUntil';
 

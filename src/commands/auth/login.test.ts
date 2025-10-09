@@ -1,4 +1,4 @@
-import { createClient } from '@fleek-platform/sdk/node';
+import { createClient } from '@alternatefutures/sdk/node';
 import { describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -39,7 +39,7 @@ vi.mock('../../config', () => ({
 }));
 
 // Assumes user goes ahead with the flow and logs in
-vi.mock('@fleek-platform/sdk/node', () => {
+vi.mock('@alternatefutures/sdk/node', () => {
   const MockClient = vi.fn();
   MockClient.prototype.mutation = vi.fn().mockResolvedValue({
     createPersonalAccessTokenFromVerificationSession: 'mockPat',

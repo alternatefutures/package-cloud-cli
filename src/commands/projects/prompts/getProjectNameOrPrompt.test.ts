@@ -1,4 +1,4 @@
-import { ProjectInvalidNameError } from '@fleek-platform/errors';
+import { ProjectInvalidNameError } from '@alternatefutures/errors';
 import { describe, expect, it, vi } from 'vitest';
 
 import { getProjectNameOrPrompt } from './getProjectNameOrPrompt';

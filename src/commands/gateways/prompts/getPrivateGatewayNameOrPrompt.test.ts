@@ -1,4 +1,4 @@
-import { PrivateGatewayNameInvalidError } from '@fleek-platform/errors';
+import { PrivateGatewayNameInvalidError } from '@alternatefutures/errors';
 // eslint-disable-next-line no-restricted-imports
 import prompts from 'prompts';
 import { describe, expect, it, vi } from 'vitest';

@@ -7,7 +7,7 @@ import {
   FleekFunctionBundlingFailedError,
   FleekFunctionPathNotValidError,
   UnknownError,
-} from '@fleek-platform/errors';
+} from '@alternatefutures/errors';
 import cliProgress from 'cli-progress';
 import { type Plugin, type PluginBuild, build } from 'esbuild';
 import { filesFromPaths } from 'files-from-path';
@@ -37,7 +37,7 @@ const showUnsupportedModules = (args: ShowUnsupportedModulesArgs) => {
     }
 
     output.log(t('showUnsupportedModulesDocLink'));
-    output.link('https://fleek.xyz/docs');
+    output.link('https://alternatefutures.ai/docs');
     output.printNewLine();
   }
 };
@@ -61,7 +61,7 @@ const transpileCode = async (args: TranspileCodeArgs) => {
     nodeProtocolImportSpecifier,
     moduleChecker,
     unsupportedRuntimeModules,
-  } = await import('@fleek-platform/functions-esbuild-config');
+  } = await import('@alternatefutures/functions-esbuild-config');
 
   const { filePath, bundle, env, assetsCid } = args;
   const progressBar = new cliProgress.SingleBar(

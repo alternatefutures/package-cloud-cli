@@ -1,4 +1,4 @@
-import { getIpnsGatewayUrl } from '@fleek-platform/utils-ipns';
+import { getIpnsGatewayUrl } from '@alternatefutures/utils-ipns';
 
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';

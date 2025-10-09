@@ -1,4 +1,4 @@
-import { isHostnameValid } from '@fleek-platform/utils-validation';
+import { isHostnameValid } from '@alternatefutures/utils-validation';
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';

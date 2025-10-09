@@ -1,6 +1,6 @@
 import { constants, promises as fs } from 'node:fs';
 import { join as joinPath } from 'node:path';
-import { FleekConfigMissingFileError } from '@fleek-platform/errors';
+import { FleekConfigMissingFileError } from '@alternatefutures/errors';
 
 type GetConfigurationPathArgs = {
   predefinedConfigPath?: string;
@@ -24,9 +24,9 @@ export const getConfigurationPath = async ({
 
   // Sorted by priority, we return only the first match
   const supposedFilenames = [
-    'fleek.config.ts',
-    'fleek.config.js',
-    'fleek.config.json',
+    'af.config.ts',
+    'af.config.js',
+    'af.config.json',
   ];
 
   for (const supposedFilename of supposedFilenames) {

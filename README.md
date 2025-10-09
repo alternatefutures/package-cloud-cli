@@ -1,12 +1,12 @@
 ![](.repo/images/repo/banner.png?202409201714)
 
-# ⚡️Fleek-Platform CLI ⚡️
+# ⚡️AlternateFutures CLI ⚡️
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-blue.svg)](https://conventionalcommits.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Tests](https://github.com/fleek-platform/cli/actions/workflows/test-runner.yml/badge.svg)
+![Tests](https://github.com/alternatefutures/cloud-cli/actions/workflows/test-runner.yml/badge.svg)
 
-Fleek CLI provides a unified command line interface to Fleek Services.
+AlternateFutures CLI provides a unified command line interface to AlternateFutures Cloud.
 
 ## Overview
 
@@ -14,7 +14,7 @@ Fleek CLI provides a unified command line interface to Fleek Services.
 * [👷‍♀️Development](#development)
   - [Code format](#code-format)
   - [Changeset](#changeset)
-* [📖 Docs](https://fleek.xyz/docs)
+* [📖 Docs](https://alternatefutures.ai/docs)
 * [🙏 Contributing](#contributing)
   - [Branching strategy](#branching-strategy)
   - [Contributing](#conventional-commits)
@@ -32,16 +32,16 @@ To install and use the CLI as a client or end-user, open your terminal and follo
 
 ```sh
 # Install globally (recommended)
-npm i -g @fleek-platform/cli
+npm i -g @alternatefutures/cli
 ```
 
 ⚠️ If you're planning to contribute as a developer, you must install [pnpm](https://pnpm.io), otherwise most commands will fail.
 
-For a quick start, learn the [basic commands](#basic-commands), or alternatively visit our [documentation](https://fleek.xyz/docs)
+For a quick start, learn the [basic commands](#basic-commands), or alternatively visit our [documentation](https://alternatefutures.ai/docs)
 
 ## Development
 
-For developers looking to contribute to the CLI tool itself, [clone](https://github.com/fleekxyz/cli) the repository and follow the [contribution guide](#contributing).
+For developers looking to contribute to the CLI tool itself, [clone](https://github.com/alternatefutures/cloud-cli) the repository and follow the [contribution guide](#contributing).
 
 Once cloned, you'll have to set up the local development environment, e.g. to have access to the source-code, iterate, run tests and much more.
 
@@ -56,13 +56,13 @@ touch .env.production
 Open the .env.production file in a text editor and add the following:
 
 ```sh
-IPFS_GATEWAY_HOSTNAME="gateway-ipfs.fleek.xyz"
-SDK__AUTH_APPS_URL="https://auth-apps.service.fleek.xyz"
-SDK__GRAPHQL_API_URL="https://graphql.service.fleek.xyz/graphql"
-SDK__IPFS__STORAGE_API_URL="https://storage-ipfs.service.fleek.xyz"
-SDK__UPLOAD_PROXY_API_URL="https://uploads.service.fleek.xyz"
-SITE_SLUG_DOMAIN="on-fleek.app"
-UI__APP_URL="https://app.fleek.xyz"
+IPFS_GATEWAY_HOSTNAME="gateway-ipfs.alternatefutures.ai"
+SDK__AUTH_APPS_URL="https://auth-apps.service.alternatefutures.ai"
+SDK__GRAPHQL_API_URL="https://graphql.service.alternatefutures.ai/graphql"
+SDK__IPFS__STORAGE_API_URL="https://storage-ipfs.service.alternatefutures.ai"
+SDK__UPLOAD_PROXY_API_URL="https://uploads.service.alternatefutures.ai"
+SITE_SLUG_DOMAIN="af-cloud.app"
+UI__APP_URL="https://app.alternatefutures.ai"
 ```
 
 💡 The variables above point to our production environment, the same you interact with as an end-user.
@@ -87,13 +87,13 @@ Everytime you prepare and save a change, you have to rebuild the binary:
 pnpm build
 ```
 
-You can call the global binary named `fleek`.
+You can call the global binary named `af`.
 
 ```sh
-fleek
+af
 ```
 
-Learn the Fleek-platform CLI basic commands [here](#basic-commands). For extended documentation visit our [documentation site](https://fleek.xyz/docs).
+Learn the AlternateFutures CLI basic commands [here](#basic-commands). For extended documentation visit our [documentation site](https://alternatefutures.ai/docs).
 
 ### Code Format
 
@@ -145,36 +145,36 @@ pnpm changeset:add
 
 ## Basic commands
 
-The Fleek CLI command has the following structure:
+The AlternateFutures CLI command has the following structure:
 
 ```bash
-fleek <service> <command> [options and parameters]
+af <service> <command> [options and parameters]
 ```
 
 To view all available services and commands use:
 
 ```bash
-fleek help
+af help
 ```
 
 To see all available commands for a service, use the help documentation as any one of the followings:
 
 ```bash
-fleek <service> help
-fleek <service> <command> help
+af <service> help
+af <service> <command> help
 ```
 
-To get the version of the Fleek CLI:
+To get the version of the AlternateFutures CLI:
 
 ```bash
-fleek --version
+af --version
 ```
 
 ## Contributing
 
 This section guides you through the process of contributing to our open-source project. From creating a feature branch to submitting a pull request, get started by:
 
-1. Fork the project [here](https://github.com/fleekxyz/cli)
+1. Fork the project [here](https://github.com/alternatefutures/cloud-cli)
 2. Create your feature branch using our [branching strategy](#branching-strategy), e.g. `git checkout -b feat/my-new-feature`
 3. Run the tests: `pnpm test`
 4. Commit your changes by following our [commit conventions](#conventional-commits), e.g. `git commit -m 'chore: 🤖 my contribution description'`

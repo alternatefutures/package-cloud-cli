@@ -1,4 +1,4 @@
-import { InvalidCidError } from '@fleek-platform/errors';
+import { InvalidCidError } from '@alternatefutures/errors';
 import { CID } from 'multiformats';
 
 import { output } from '../../cli';

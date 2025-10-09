@@ -1,5 +1,5 @@
-import { ApplicationNameInvalidError } from '@fleek-platform/errors';
-import type { Application } from '@fleek-platform/sdk/node';
+import { ApplicationNameInvalidError } from '@alternatefutures/errors';
+import type { Application } from '@alternatefutures/sdk/node';
 
 import { textPrompt } from '../../../prompts/textPrompt';
 import { t } from '../../../utils/translation';

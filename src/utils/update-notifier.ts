@@ -23,7 +23,7 @@ export const checkForPackageUpdates = async (
   const { current, latest, name } = notifier.update;
 
   const installCmd = chalk.yellow(`npm i -g ${name}`);
-  const verifyCmd = chalk.yellow('fleek version');
+  const verifyCmd = chalk.yellow('af version');
 
   const message = t('updateAvailable', {
     updateRequired: t('updateRequired'),

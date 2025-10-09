@@ -1,8 +1,8 @@
 {
-  "name": "@fleek-platform/cli",
+  "name": "@alternatefutures/cli",
   "version": "3.10.0",
   "bin": {
-    "fleek": "bin/index.js"
+    "af": "bin/index.js"
   },
   "main": "dist/cli.js",
   "types": "./dist/cli.d.ts",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-lambda": "^3.449.0",
-    "@fleek-platform/functions-esbuild-config": "^0.0.19",
+    "@alternatefutures/functions-esbuild-config": "^0.0.19",
     "@web-std/file": "^3.0.2",
     "ansi-escapes": "^3.0.1",
     "as-table": "^1.0.55",
@@ -68,14 +68,14 @@
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@changesets/cli": "^2.27.6",
-    "@fleek-platform/errors": "^2.7.0",
-    "@fleek-platform/sdk": "^3.7.2",
-    "@fleek-platform/tester": "^2.12.1",
-    "@fleek-platform/utils-gateways": "^0.1.12",
-    "@fleek-platform/utils-github": "^0.1.0",
-    "@fleek-platform/utils-ipfs": "^0.4.5",
-    "@fleek-platform/utils-ipns": "^0.1.13",
-    "@fleek-platform/utils-validation": "^2.4.0",
+    "@alternatefutures/errors": "^2.7.0",
+    "@alternatefutures/sdk": "^3.7.2",
+    "@alternatefutures/tester": "^2.12.1",
+    "@alternatefutures/utils-gateways": "^0.1.12",
+    "@alternatefutures/utils-github": "^0.1.0",
+    "@alternatefutures/utils-ipfs": "^0.4.5",
+    "@alternatefutures/utils-ipns": "^0.1.13",
+    "@alternatefutures/utils-validation": "^2.4.0",
     "@tsconfig/node16": "^16.1.3",
     "@types/ansi-escapes": "3.0.1",
     "@types/cli-progress": "^3.11.5",

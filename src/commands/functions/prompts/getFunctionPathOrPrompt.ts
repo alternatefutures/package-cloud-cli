@@ -1,8 +1,8 @@
-import { FleekFunctionPathNotValidError } from '@fleek-platform/errors';
+import { FleekFunctionPathNotValidError } from '@alternatefutures/errors';
 import {
   isFunctionPathValid,
   isValidFolder,
-} from '@fleek-platform/utils-validation';
+} from '@alternatefutures/utils-validation';
 
 import { textPrompt } from '../../../prompts/textPrompt';
 import { t } from '../../../utils/translation';

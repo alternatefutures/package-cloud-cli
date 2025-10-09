@@ -1,4 +1,4 @@
-import { name as nameValidation } from '@fleek-platform/utils-validation';
+import { name as nameValidation } from '@alternatefutures/utils-validation';
 
 type IsNameValidArgs = {
   name: string;

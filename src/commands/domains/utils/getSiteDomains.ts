@@ -1,4 +1,4 @@
-import type { Domain, FleekSdk } from '@fleek-platform/sdk/node';
+import type { Domain, FleekSdk } from '@alternatefutures/sdk/node';
 
 type GetSiteDomainsArgs = {
   sdk: FleekSdk;

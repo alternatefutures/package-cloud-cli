@@ -1,8 +1,8 @@
-import type { FleekSdk, StoragePin } from '@fleek-platform/sdk/node';
+import type { FleekSdk, StoragePin } from '@alternatefutures/sdk/node';
 import {
   getFleekXyzIpfsGatewayUrl,
   getPrivateIpfsGatewayUrl,
-} from '@fleek-platform/utils-ipfs';
+} from '@alternatefutures/utils-ipfs';
 
 import { getAllActivePrivateGatewayDomains } from '../../gateways/utils/getAllPrivateGatewayDomains';
 

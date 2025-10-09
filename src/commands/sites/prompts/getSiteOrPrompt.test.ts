@@ -1,5 +1,5 @@
-import { SitesNotFoundError } from '@fleek-platform/errors';
-import { FleekSdk, PersonalAccessTokenService } from '@fleek-platform/sdk/node';
+import { SitesNotFoundError } from '@alternatefutures/errors';
+import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
@@ -9,7 +9,7 @@ vi.mock('../../../prompts/selectPrompt', () => ({
   selectPrompt: vi.fn().mockResolvedValue('secondSiteId'),
 }));
 
-vi.mock('@fleek-platform/sdk/node', () => {
+vi.mock('@alternatefutures/sdk/node', () => {
   const FleekSdkMock = vi.fn();
 
   const sites = {

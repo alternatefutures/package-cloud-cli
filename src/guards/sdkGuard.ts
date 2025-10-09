@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@fleek-platform/sdk/node';
+import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { getDefined } from '../defined';
 
 import { output } from '../cli';

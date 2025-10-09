@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@fleek-platform/sdk/node';
+import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -15,7 +15,7 @@ vi.mock('../../cli', () => {
   return { output };
 });
 
-vi.mock('@fleek-platform/sdk/node', () => {
+vi.mock('@alternatefutures/sdk/node', () => {
   const FleekSdkMock = vi.fn();
 
   const storage = {
@@ -79,21 +79,21 @@ vi.mock('@fleek-platform/sdk/node', () => {
     listByZoneId: vi.fn((options: { zoneId: string }) => {
       const data = [
         {
-          hostname: 'cli-test.fleek.xyz',
+          hostname: 'cli-test.alternatefutures.ai',
           zoneId: 'clsba7n4z000008lb0loefpnn',
           status: 'ACTIVE',
         },
         {
-          hostname: 'cli-test-no-status.fleek.xyz',
+          hostname: 'cli-test-no-status.alternatefutures.ai',
           zoneId: 'clsba7n4z000008lb0loefpnn',
         },
         {
-          hostname: 'cli-test-storage.fleek.xyz',
+          hostname: 'cli-test-storage.alternatefutures.ai',
           zoneId: 'clsba858j000108lb2euyfk6u',
           status: 'ACTIVE',
         },
         {
-          hostname: 'cli-test-inactive.fleek.xyz',
+          hostname: 'cli-test-inactive.alternatefutures.ai',
           zoneId: 'clsba858j000108lb2euyfk6u',
           status: 'INACTIVE',
         },
@@ -206,14 +206,14 @@ describe('Get storage files/folder for the given cid or name', () => {
         cid: 'bafybeifylyzjlrpec75l66kggycx65yuouyavweaaqxmf22jvbtnmmaqru',
         'filecoin id': '58027558',
         'arweave id': '',
-        link: 'https://cli-test.fleek.xyz/ipfs/bafybeifylyzjlrpec75l66kggycx65yuouyavweaaqxmf22jvbtnmmaqru',
+        link: 'https://cli-test.alternatefutures.ai/ipfs/bafybeifylyzjlrpec75l66kggycx65yuouyavweaaqxmf22jvbtnmmaqru',
       },
       {
         filename: 'index.html',
         cid: 'bafybeifylyzjlrpec75l66kggycx65yuouyavweaaqxmf22jvbtnmmaqru',
         'filecoin id': '58027558',
         'arweave id': '',
-        link: 'https://cli-test-storage.fleek.xyz/ipfs/bafybeifylyzjlrpec75l66kggycx65yuouyavweaaqxmf22jvbtnmmaqru',
+        link: 'https://cli-test-storage.alternatefutures.ai/ipfs/bafybeifylyzjlrpec75l66kggycx65yuouyavweaaqxmf22jvbtnmmaqru',
       },
     ]);
   });
@@ -244,28 +244,28 @@ describe('Get storage files/folder for the given cid or name', () => {
         cid: 'bafkreieasoapp3osmpdt2lwdqy6oqx75nhdsxgkoswyjuwy2675eyhvcg4',
         'filecoin id': '61342544',
         'arweave id': '',
-        link: 'https://cli-test.fleek.xyz/ipfs/bafkreieasoapp3osmpdt2lwdqy6oqx75nhdsxgkoswyjuwy2675eyhvcg4',
+        link: 'https://cli-test.alternatefutures.ai/ipfs/bafkreieasoapp3osmpdt2lwdqy6oqx75nhdsxgkoswyjuwy2675eyhvcg4',
       },
       {
         filename: 'basic.car',
         cid: 'bafkreieasoapp3osmpdt2lwdqy6oqx75nhdsxgkoswyjuwy2675eyhvcg4',
         'filecoin id': '61342544',
         'arweave id': '',
-        link: 'https://cli-test-storage.fleek.xyz/ipfs/bafkreieasoapp3osmpdt2lwdqy6oqx75nhdsxgkoswyjuwy2675eyhvcg4',
+        link: 'https://cli-test-storage.alternatefutures.ai/ipfs/bafkreieasoapp3osmpdt2lwdqy6oqx75nhdsxgkoswyjuwy2675eyhvcg4',
       },
       {
         filename: 'basic.car',
         cid: 'bafkreiebwzjtd62ctklmmidldy2z2exinzr2mc72tzhkbe7ftjxm7cwnle',
         'filecoin id': '61342549',
         'arweave id': '',
-        link: 'https://cli-test.fleek.xyz/ipfs/bafkreiebwzjtd62ctklmmidldy2z2exinzr2mc72tzhkbe7ftjxm7cwnle',
+        link: 'https://cli-test.alternatefutures.ai/ipfs/bafkreiebwzjtd62ctklmmidldy2z2exinzr2mc72tzhkbe7ftjxm7cwnle',
       },
       {
         filename: 'basic.car',
         cid: 'bafkreiebwzjtd62ctklmmidldy2z2exinzr2mc72tzhkbe7ftjxm7cwnle',
         'filecoin id': '61342549',
         'arweave id': '',
-        link: 'https://cli-test-storage.fleek.xyz/ipfs/bafkreiebwzjtd62ctklmmidldy2z2exinzr2mc72tzhkbe7ftjxm7cwnle',
+        link: 'https://cli-test-storage.alternatefutures.ai/ipfs/bafkreiebwzjtd62ctklmmidldy2z2exinzr2mc72tzhkbe7ftjxm7cwnle',
       },
     ]);
   });
@@ -296,7 +296,7 @@ describe('Get storage files/folder for the given cid or name', () => {
       }),
     );
     expect(output.log).toHaveBeenCalledWith(t('storageAddSuggestion'));
-    expect(output.log).toHaveBeenCalledWith('fleek storage add <file_path>');
+    expect(output.log).toHaveBeenCalledWith('af storage add <file_path>');
     expect(output.table).not.toHaveBeenCalled();
   });
 
@@ -319,7 +319,7 @@ describe('Get storage files/folder for the given cid or name', () => {
       t('storageGetNotFound', { type: 'name', value: 'app.html' }),
     );
     expect(output.log).toHaveBeenCalledWith(t('storageAddSuggestion'));
-    expect(output.log).toHaveBeenCalledWith('fleek storage add <file_path>');
+    expect(output.log).toHaveBeenCalledWith('af storage add <file_path>');
     expect(output.table).not.toHaveBeenCalled();
   });
 });

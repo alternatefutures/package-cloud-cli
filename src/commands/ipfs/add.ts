@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import {
   getPrivateIpfsGatewayUrl,
   getWeb3IpfsGatewayUrl,
-} from '@fleek-platform/utils-ipfs';
+} from '@alternatefutures/utils-ipfs';
 
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';

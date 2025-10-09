@@ -1,4 +1,4 @@
-import type { DomainStatus } from '@fleek-platform/sdk/node';
+import type { DomainStatus } from '@alternatefutures/sdk/node';
 
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';

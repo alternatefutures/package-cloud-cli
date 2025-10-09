@@ -12,7 +12,7 @@ import { type FleekRootConfig, FleekSiteConfigFormats } from './types';
 import {
   ExpectedOneOfValuesError,
   InvalidJSONFormat,
-} from '@fleek-platform/errors';
+} from '@alternatefutures/errors';
 import { isValidFleekConfigFormat } from '../formats';
 
 export type SaveConfigurationArgs = {

@@ -26,7 +26,7 @@ const listDeploymentsAction: SdkGuardedFunction<
   if (!deployments?.length) {
     output.warn(t('noYYet', { name: 'deployments' }));
     output.log(t('youCanDoXUsingFolCmd', { action: t('deployNewFunction') }));
-    output.log('fleek functions deploy');
+    output.log('af functions deploy');
 
     return;
   }

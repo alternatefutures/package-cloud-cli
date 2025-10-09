@@ -1,5 +1,5 @@
-import type { FleekSdk } from '@fleek-platform/sdk/node';
-import { getFleekDefaultGatewayBySlug } from '@fleek-platform/utils-gateways';
+import type { FleekSdk } from '@alternatefutures/sdk/node';
+import { getFleekDefaultGatewayBySlug } from '@alternatefutures/utils-gateways';
 
 import type { Output } from '../../../output/Output';
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
@@ -41,7 +41,7 @@ export const waitUntilDeploymentFinishedAndInformUser = async ({
       `${t('commonWaitAndCheckStatusViaCmd', { subject: t('deploymentStatus') })}`,
     );
     output.log(
-      output.textColor(`fleek sites deployments --id ${siteId}`, 'cyan'),
+      output.textColor(`af sites deployments --id ${siteId}`, 'cyan'),
     );
 
     return;
