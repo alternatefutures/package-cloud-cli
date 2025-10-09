@@ -78,7 +78,7 @@ describe('Login', async () => {
     });
 
     expect(output.chore).toHaveBeenCalledWith(
-      'Please follow the link to log in to Fleek Platform.',
+      'Please follow the link to log in to Alternate Futures Platform.',
     );
 
     expect(output.spinner).toHaveBeenCalledWith(

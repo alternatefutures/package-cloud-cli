@@ -1,4 +1,4 @@
-import type { FleekSdk, Site } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, Site } from '@alternatefutures/sdk/node';
 
 import { output } from '../../../cli';
 import { t } from '../../../utils/translation';
@@ -6,7 +6,7 @@ import { confirmUseExistingSitePrompt } from '../prompts/confirmUseExistingSiteP
 import { getSiteOrPrompt } from '../prompts/getSiteOrPrompt';
 import { createSite } from './createSite';
 
-type ChooseOrCreateSiteArgs = { sdk: FleekSdk };
+type ChooseOrCreateSiteArgs = { sdk: AlternateFuturesSdk };
 
 export const chooseOrCreateSite = async ({
   sdk,

@@ -1,10 +1,10 @@
-import type { Domain, FleekSdk } from '@alternatefutures/sdk/node';
+import type { Domain, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 
 type WaitUntilDomainDeletedArgs = {
   domain: Domain;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 };
 
 export const waitUntilDomainDeleted = async ({

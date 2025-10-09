@@ -3,7 +3,7 @@ import { basename } from 'node:path';
 
 import {
   getPrivateIpfsGatewayUrl,
-  getWeb3IpfsGatewayUrl,
+  getIpfsGatewayUrl,
 } from '@alternatefutures/utils-ipfs';
 import cliProgress from 'cli-progress';
 import { filesFromPaths } from 'files-from-path';
@@ -73,7 +73,7 @@ export const addStorageAction: SdkGuardedFunction<
 
   if (privateGatewayDomains.length === 0) {
     output.log(t('visitViaGateway'));
-    output.link(getWeb3IpfsGatewayUrl(hash));
+    output.link(getIpfsGatewayUrl(hash));
 
     return;
   }

@@ -1,10 +1,10 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 
 type WaitForEnsRecordVerificationResultArgs = {
   id: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 };
 
 export const waitForEnsRecordVerificationResult = async ({

@@ -1,7 +1,7 @@
 import { DomainsNotFoundError } from '@alternatefutures/errors';
 import {
   type Domain,
-  FleekSdk,
+  AlternateFuturesSdk,
   PersonalAccessTokenService,
 } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
@@ -14,7 +14,7 @@ vi.mock('../../../prompts/selectPrompt', () => ({
 }));
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const domains = {
     get: vi
@@ -32,9 +32,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ] as Domain[]),
   };
 
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Get domain by id, hostname or let the user choose from list', () => {
@@ -42,7 +42,7 @@ describe('Get domain by id, hostname or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getDomainOrPrompt({ sdk: fakeSdk, id: 'firstDomainId' }),
@@ -57,7 +57,7 @@ describe('Get domain by id, hostname or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getDomainOrPrompt({ sdk: fakeSdk, hostname: 'second.xyz' }),
@@ -76,7 +76,7 @@ describe('Get domain by id, hostname or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getDomainOrPrompt({
@@ -103,7 +103,7 @@ describe('Get domain by id, hostname or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.domains().list as Mock).mockResolvedValue([]);
     await expect(getDomainOrPrompt({ sdk: fakeSdk })).rejects.toThrowError(
       new DomainsNotFoundError(),

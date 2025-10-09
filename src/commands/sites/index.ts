@@ -18,7 +18,7 @@ export default (program: Command): Command => {
   cmd
     .command('ci')
     .description(t('genConfForCIProviders'))
-    .option('-c, --config <fleekConfigPath>', t('specifyFleekJsonPath'))
+    .option('-c, --config <fleekConfigPath>', t('specifyAfJsonPath'))
     .option('-p, --provider <provider>', t('specifyCIProvider'))
     .action((options: { config?: string; provider?: string }) =>
       ciActionHandler({

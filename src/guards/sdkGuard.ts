@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { getDefined } from '../defined';
 
 import { output } from '../cli';
@@ -23,7 +23,7 @@ export const getSdkClient = () => {
     projectId,
     personalAccessToken,
   });
-  const sdk = new FleekSdk({
+  const sdk = new AlternateFuturesSdk({
     accessTokenService,
     graphqlServiceApiUrl: getDefined('SDK__GRAPHQL_API_URL'),
     ipfsStorageApiUrl: getDefined('SDK__IPFS__STORAGE_API_URL'),

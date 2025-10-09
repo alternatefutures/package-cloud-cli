@@ -1,12 +1,12 @@
 import { ApplicationsNotFoundError } from '@alternatefutures/errors';
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
 
 type GetApplicationOrPromptArgs = {
   id?: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 };
 
 export const getApplicationOrPrompt = async ({

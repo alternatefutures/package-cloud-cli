@@ -1,4 +1,4 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 import { describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -30,7 +30,7 @@ describe('Show ENS record detailed information', () => {
   it('Find by name', async () => {
     await expect(
       detailEnsRecordsAction({
-        sdk: {} as FleekSdk,
+        sdk: {} as AlternateFuturesSdk,
         args: { name: 'first.eth' },
       }),
     ).resolves.toBeUndefined();

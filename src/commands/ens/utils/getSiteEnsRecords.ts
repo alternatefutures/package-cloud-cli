@@ -1,7 +1,7 @@
-import type { EnsRecord, FleekSdk, Site } from '@alternatefutures/sdk/node';
+import type { EnsRecord, AlternateFuturesSdk, Site } from '@alternatefutures/sdk/node';
 
 type GetSiteEnsRecordsArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   site: Pick<Site, 'id'>;
 };
 

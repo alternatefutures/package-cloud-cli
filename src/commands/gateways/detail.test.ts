@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -27,7 +27,7 @@ vi.mock('./prompts/getPrivateGatewayOrPrompt', () => ({
 }));
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const domains = {
     listByZoneId: vi.fn().mockResolvedValue([
@@ -36,9 +36,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Show private gateway detailed information', () => {
@@ -46,7 +46,7 @@ describe('Show private gateway detailed information', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       detailPrivateGatewayAction({
@@ -80,7 +80,7 @@ describe('Show private gateway detailed information', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.domains().listByZoneId as Mock).mockResolvedValueOnce([]);
 
     await expect(

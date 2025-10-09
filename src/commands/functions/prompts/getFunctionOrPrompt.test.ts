@@ -1,5 +1,5 @@
 import { FleekFunctionsNotFoundError } from '@alternatefutures/errors';
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
@@ -10,7 +10,7 @@ vi.mock('../../../prompts/selectPrompt', () => ({
 }));
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const functions = {
     get: vi.fn().mockResolvedValue({
@@ -37,9 +37,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.functions = () => functions;
+  AlternateFuturesSdkMock.prototype.functions = () => functions;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Get function by name, or let the user choose from list', () => {
@@ -47,7 +47,7 @@ describe('Get function by name, or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getFunctionOrPrompt({ sdk: fakeSdk, name: 'firstFunctionName' }),
@@ -66,7 +66,7 @@ describe('Get function by name, or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(getFunctionOrPrompt({ sdk: fakeSdk })).resolves.toEqual({
       name: 'secondFunctionName',
@@ -82,7 +82,7 @@ describe('Get function by name, or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.functions().list as Mock).mockResolvedValue([]);
     await expect(getFunctionOrPrompt({ sdk: fakeSdk })).rejects.toThrowError(
       new FleekFunctionsNotFoundError({}),

@@ -1,10 +1,10 @@
-import type { EnsRecord, FleekSdk } from '@alternatefutures/sdk/node';
+import type { EnsRecord, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 
 type WaitUntilEnsRecordDeletedArgs = {
   ensRecord: EnsRecord;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 };
 
 export const waitUntilEnsRecordDeleted = async ({

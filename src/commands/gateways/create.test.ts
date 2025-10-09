@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -35,7 +35,7 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const domains = {
     getZone: vi
@@ -46,15 +46,15 @@ vi.mock('@alternatefutures/sdk/node', () => {
       .mockResolvedValue({ id: 'firstZoneId' }),
   };
 
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
   const privateGateways = {
     create: vi.fn().mockResolvedValue({ id: 'firstPrivateGatewayId' }),
   };
 
-  FleekSdkMock.prototype.privateGateways = () => privateGateways;
+  AlternateFuturesSdkMock.prototype.privateGateways = () => privateGateways;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Create private gateway', () => {
@@ -62,7 +62,7 @@ describe('Create private gateway', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       createPrivateGatewayAction({ sdk: fakeSdk, args: { name: 'first' } }),
@@ -94,7 +94,7 @@ describe('Create private gateway', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.domains().getZone as Mock).mockResolvedValueOnce({
       id: 'firstZoneId',
       status: 'CREATING_FAILED',

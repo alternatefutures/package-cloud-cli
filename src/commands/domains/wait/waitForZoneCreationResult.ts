@@ -1,9 +1,9 @@
-import type { FleekSdk, Zone } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, Zone } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 
 type WaitForZoneCreationResultArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   zone: Pick<Zone, 'id'>;
 };
 

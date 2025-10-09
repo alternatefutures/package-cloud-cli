@@ -1,9 +1,9 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 
 type WaitForDomainCreationResultArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   hostname: string;
 };
 

@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -61,7 +61,7 @@ vi.mock('../../utils/pressAnyKey', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const ipns = {
     createRecordForSite: vi
@@ -84,10 +84,10 @@ vi.mock('@alternatefutures/sdk/node', () => {
     get: vi.fn().mockResolvedValue({ id: 'ensRecordId', status: 'ACTIVE' }),
   };
 
-  FleekSdkMock.prototype.ipns = () => ipns;
-  FleekSdkMock.prototype.ens = () => ens;
+  AlternateFuturesSdkMock.prototype.ipns = () => ipns;
+  AlternateFuturesSdkMock.prototype.ens = () => ens;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Create ENS record for site', () => {
@@ -95,7 +95,7 @@ describe('Create ENS record for site', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.ens().get as Mock).mockResolvedValueOnce({
       id: 'ensRecordId',
       status: 'CREATED',
@@ -141,7 +141,7 @@ describe('Create ENS record for site', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.ens().get as Mock).mockResolvedValueOnce({
       id: 'ensRecordId',
       status: 'CREATED',
@@ -185,7 +185,7 @@ describe('Create ENS record for site', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.ens().get as Mock).mockResolvedValueOnce({
       id: 'ensRecordId',
       status: 'CREATING',
@@ -205,7 +205,7 @@ describe('Create ENS record for site', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.ens().get as Mock)
       .mockResolvedValueOnce({ id: 'ensRecordId', status: 'CREATED' })
       .mockResolvedValueOnce({ id: 'ensRecordId', status: 'VERIFYING' });
@@ -224,7 +224,7 @@ describe('Create ENS record for site', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.ens().get as Mock)
       .mockResolvedValueOnce({ id: 'ensRecordId', status: 'CREATED' })
       .mockResolvedValueOnce({ id: 'firstEnsId', status: 'VERIFYING_FAILED' });

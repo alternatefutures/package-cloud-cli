@@ -1,26 +1,26 @@
 import { describe, expect, it } from 'vitest';
 
-import { FleekSiteConfigFormats } from './configuration';
-import { isValidFleekConfigFormat } from './formats';
+import { AlternateFuturesSiteConfigFormats } from './configuration';
+import { isValidAlternateFuturesConfigFormat } from './formats';
 
 describe('In the Formats utils', () => {
-  describe('isValidFleekConfigFormat', () => {
+  describe('isValidAlternateFuturesConfigFormat', () => {
     it('should be true for JSON', () => {
-      expect(isValidFleekConfigFormat(FleekSiteConfigFormats.JSON)).toBe(true);
+      expect(isValidAlternateFuturesConfigFormat(AlternateFuturesSiteConfigFormats.JSON)).toBe(true);
     });
     it('should be true for Typescript', () => {
-      expect(isValidFleekConfigFormat(FleekSiteConfigFormats.Typescript)).toBe(
+      expect(isValidAlternateFuturesConfigFormat(AlternateFuturesSiteConfigFormats.Typescript)).toBe(
         true,
       );
     });
     it('should be true for Javascript', () => {
-      expect(isValidFleekConfigFormat(FleekSiteConfigFormats.Javascript)).toBe(
+      expect(isValidAlternateFuturesConfigFormat(AlternateFuturesSiteConfigFormats.Javascript)).toBe(
         true,
       );
     });
     it('should be false for unknown formats', () => {
       expect(
-        isValidFleekConfigFormat('foobar' as unknown as FleekSiteConfigFormats),
+        isValidAlternateFuturesConfigFormat('foobar' as unknown as AlternateFuturesSiteConfigFormats),
       ).toBe(false);
     });
   });

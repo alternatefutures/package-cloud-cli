@@ -8,7 +8,7 @@ import ts from 'typescript';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { fileExists } from '../fs';
 import { saveConfiguration } from './saveConfiguration';
-import { type FleekRootConfig, FleekSiteConfigFormats } from './types';
+import { type AlternateFuturesRootConfig, AlternateFuturesSiteConfigFormats } from './types';
 
 const clearConfigFile = async ({
   configFilePath,
@@ -37,8 +37,8 @@ const clearConfigFile = async ({
 
 describe('The saveConfiguration utils', () => {
   describe('on valid arguments (json)', () => {
-    let config: FleekRootConfig;
-    let format: FleekSiteConfigFormats;
+    let config: AlternateFuturesRootConfig;
+    let format: AlternateFuturesSiteConfigFormats;
     let configFilePath: string | undefined = '';
 
     beforeEach(() => {
@@ -51,7 +51,7 @@ describe('The saveConfiguration utils', () => {
           },
         ],
       };
-      format = FleekSiteConfigFormats.JSON;
+      format = AlternateFuturesSiteConfigFormats.JSON;
     });
 
     afterEach(async () => {
@@ -98,8 +98,8 @@ describe('The saveConfiguration utils', () => {
   });
 
   describe('on valid arguments (typescript)', () => {
-    let config: FleekRootConfig;
-    let format: FleekSiteConfigFormats;
+    let config: AlternateFuturesRootConfig;
+    let format: AlternateFuturesSiteConfigFormats;
     let configFilePath: string | undefined = '';
 
     beforeEach(() => {
@@ -112,7 +112,7 @@ describe('The saveConfiguration utils', () => {
           },
         ],
       };
-      format = FleekSiteConfigFormats.Typescript;
+      format = AlternateFuturesSiteConfigFormats.Typescript;
     });
 
     afterEach(async () => {
@@ -179,8 +179,8 @@ describe('The saveConfiguration utils', () => {
   });
 
   describe('on valid arguments (javascript)', () => {
-    let config: FleekRootConfig;
-    let format: FleekSiteConfigFormats;
+    let config: AlternateFuturesRootConfig;
+    let format: AlternateFuturesSiteConfigFormats;
     let configFilePath: string | undefined = '';
 
     beforeEach(() => {
@@ -193,7 +193,7 @@ describe('The saveConfiguration utils', () => {
           },
         ],
       };
-      format = FleekSiteConfigFormats.Javascript;
+      format = AlternateFuturesSiteConfigFormats.Javascript;
     });
 
     afterEach(async () => {
@@ -237,7 +237,7 @@ describe('The saveConfiguration utils', () => {
       const buf = await fs.readFile(configFilePath as string);
       const content = buf.toString();
 
-      expect(content).toContain("import('@alternatefutures/cli').FleekConfig");
+      expect(content).toContain("import('@alternatefutures/cli').AlternateFuturesConfig");
       expect(content).toContain('module.exports');
     });
 
@@ -260,8 +260,8 @@ describe('The saveConfiguration utils', () => {
   });
 
   describe('On unsupported format', () => {
-    let config: FleekRootConfig;
-    let format: FleekSiteConfigFormats;
+    let config: AlternateFuturesRootConfig;
+    let format: AlternateFuturesSiteConfigFormats;
 
     beforeEach(() => {
       config = {
@@ -273,7 +273,7 @@ describe('The saveConfiguration utils', () => {
           },
         ],
       };
-      format = 'dodgy' as FleekSiteConfigFormats;
+      format = 'dodgy' as AlternateFuturesSiteConfigFormats;
     });
 
     it('should throw an error', async () => {
@@ -290,12 +290,12 @@ describe('The saveConfiguration utils', () => {
   });
 
   describe('On invalid JSON', () => {
-    let config: FleekRootConfig;
-    let format: FleekSiteConfigFormats;
+    let config: AlternateFuturesRootConfig;
+    let format: AlternateFuturesSiteConfigFormats;
 
     beforeEach(() => {
-      config = ': 12345, foo, { bar: 1}' as unknown as FleekRootConfig;
-      format = FleekSiteConfigFormats.JSON;
+      config = ': 12345, foo, { bar: 1}' as unknown as AlternateFuturesRootConfig;
+      format = AlternateFuturesSiteConfigFormats.JSON;
     });
 
     it('should throw an error', async () => {

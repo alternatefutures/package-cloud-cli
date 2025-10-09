@@ -1,5 +1,5 @@
 import { IpnsRecordsNotFoundError } from '@alternatefutures/errors';
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
@@ -10,7 +10,7 @@ vi.mock('../../../prompts/selectPrompt', () => ({
 }));
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const ipns = {
     getRecord: vi
@@ -22,9 +22,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.ipns = () => ipns;
+  AlternateFuturesSdkMock.prototype.ipns = () => ipns;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Get record by name or let the user choose from list', () => {
@@ -32,7 +32,7 @@ describe('Get record by name or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getRecordOrPrompt({ sdk: fakeSdk, name: 'first' }),
@@ -49,7 +49,7 @@ describe('Get record by name or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(getRecordOrPrompt({ sdk: fakeSdk })).resolves.toEqual({
       id: 'secondRecordId',
@@ -65,7 +65,7 @@ describe('Get record by name or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.ipns().listRecords as Mock).mockResolvedValue([]);
     await expect(getRecordOrPrompt({ sdk: fakeSdk })).rejects.toThrowError(
       new IpnsRecordsNotFoundError(),

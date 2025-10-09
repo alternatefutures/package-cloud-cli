@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -39,19 +39,19 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const privateGateways = {
     delete: vi.fn(),
   };
 
-  FleekSdkMock.prototype.privateGateways = () => privateGateways;
+  AlternateFuturesSdkMock.prototype.privateGateways = () => privateGateways;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 type TestContext = {
-  fakeSdk: FleekSdk;
+  fakeSdk: AlternateFuturesSdk;
 };
 
 describe('Delete private gateway', () => {
@@ -60,7 +60,7 @@ describe('Delete private gateway', () => {
       personalAccessToken: '',
     });
 
-    context.fakeSdk = new FleekSdk({ accessTokenService });
+    context.fakeSdk = new AlternateFuturesSdk({ accessTokenService });
   });
 
   it<TestContext>('should delete private gateway by its id', async (context) => {

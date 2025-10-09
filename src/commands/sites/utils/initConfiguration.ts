@@ -1,8 +1,8 @@
 import type { Site } from '@alternatefutures/sdk/node';
 
 import { saveConfiguration } from '../../../utils/configuration/saveConfiguration';
-import type { FleekRootConfig } from '../../../utils/configuration/types';
-import { isValidFleekConfigFormat } from '../../../utils/formats';
+import type { AlternateFuturesRootConfig } from '../../../utils/configuration/types';
+import { isValidAlternateFuturesConfigFormat } from '../../../utils/formats';
 import { fileExists } from '../../../utils/fs';
 import { t } from '../../../utils/translation';
 import { enterDirectoryPathPrompt } from '../prompts/enterDirectoryPathPrompt';
@@ -26,13 +26,13 @@ export const initConfiguration = async ({
 
   const buildCommand = await selectBuildCommandOrSkip();
 
-  const config: FleekRootConfig = {
+  const config: AlternateFuturesRootConfig = {
     sites: [{ slug: site.slug, distDir, buildCommand }],
   };
 
   const format = await selectConfigurationFormatPrompt();
 
-  if (!isValidFleekConfigFormat(format)) {
+  if (!isValidAlternateFuturesConfigFormat(format)) {
     onUnexpectedFormatError(format);
   }
 

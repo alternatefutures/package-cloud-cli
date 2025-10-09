@@ -1,5 +1,5 @@
 import { ProjectsNotFoundError } from '@alternatefutures/errors';
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
@@ -10,7 +10,7 @@ vi.mock('../../../prompts/selectPrompt', () => ({
 }));
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const projects = {
     get: vi
@@ -22,9 +22,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.projects = () => projects;
+  AlternateFuturesSdkMock.prototype.projects = () => projects;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Get project by its id or let the user choose from list', () => {
@@ -32,7 +32,7 @@ describe('Get project by its id or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getProjectOrPrompt({ sdk: fakeSdk, id: 'firstProjectId' }),
@@ -52,7 +52,7 @@ describe('Get project by its id or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.projects().list as Mock).mockResolvedValueOnce([]);
 
     await expect(getProjectOrPrompt({ sdk: fakeSdk })).rejects.toThrowError(
@@ -68,7 +68,7 @@ describe('Get project by its id or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(getProjectOrPrompt({ sdk: fakeSdk })).resolves.toEqual({
       id: 'secondProjectId',

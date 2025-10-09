@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -29,7 +29,7 @@ vi.mock('../../config', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const projects = {
     create: vi
@@ -37,9 +37,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
       .mockResolvedValue({ id: 'firstProjectId', name: 'first project' }),
   };
 
-  FleekSdkMock.prototype.projects = () => projects;
+  AlternateFuturesSdkMock.prototype.projects = () => projects;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Create new project', () => {
@@ -47,7 +47,7 @@ describe('Create new project', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       createProjectAction({ sdk: fakeSdk, args: { name: 'first project' } }),
@@ -71,7 +71,7 @@ describe('Create new project', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (getProjectNameOrPrompt as Mock).mockResolvedValueOnce('second project');
     (fakeSdk.projects().create as Mock).mockResolvedValueOnce({
       id: 'secondProjectId',

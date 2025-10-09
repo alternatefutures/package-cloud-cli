@@ -1,4 +1,4 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 import { getFleekDefaultGatewayBySlug } from '@alternatefutures/utils-gateways';
 
 import type { Output } from '../../../output/Output';
@@ -7,7 +7,7 @@ import { t } from '../../../utils/translation';
 import { returnDeploymentWhenFinished } from './returnDeploymentWhenFinished';
 
 type WaitUntilDeploymentFinishedAndInformUserArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   deploymentId: string;
   siteId: string;
   slug: string;

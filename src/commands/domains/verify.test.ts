@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -43,16 +43,16 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const domains = {
     verifyDomain: vi.fn().mockResolvedValue(undefined),
     get: vi.fn().mockResolvedValue({ id: 'firstDomainId', status: 'ACTIVE' }),
   };
 
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Verify domain', () => {
@@ -60,7 +60,7 @@ describe('Verify domain', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       verifyDomainAction({ sdk: fakeSdk, args: { id: 'firstDomainId' } }),
@@ -89,7 +89,7 @@ describe('Verify domain', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (getDomainOrPrompt as Mock).mockResolvedValueOnce({
       id: 'firstDomainId',
       hostname: 'first.xyz',
@@ -113,7 +113,7 @@ describe('Verify domain', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.domains().get as Mock).mockResolvedValue({
       id: 'firstDomainId',
       status: 'VERIFYING_FAILED',
@@ -138,7 +138,7 @@ describe('Verify domain', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.domains().get as Mock).mockResolvedValue({
       id: 'firstDomainId',
       status: 'VERIFYING',

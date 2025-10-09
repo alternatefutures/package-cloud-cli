@@ -1,5 +1,5 @@
 import type {
-  FleekSdk,
+  AlternateFuturesSdk,
   PrivateGateway,
   Site,
   Zone,
@@ -8,7 +8,7 @@ import type {
 import { waitForZoneCreationResult } from '../wait/waitForZoneCreationResult';
 
 export type GetZoneForSiteOrPrivateGatewayArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 } & (
   | { site: Pick<Site, 'id' | 'zones'> }
   | {

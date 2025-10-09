@@ -1,7 +1,7 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 type ReturnDeploymentWhenFinishedArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   deploymentId: string;
 };
 

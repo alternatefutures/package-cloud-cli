@@ -1,5 +1,5 @@
 import { PrivateGatewaysNotFoundError } from '@alternatefutures/errors';
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 // eslint-disable-next-line no-restricted-imports
 import prompts from 'prompts';
 import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -11,7 +11,7 @@ vi.mock('prompts', () => ({
 }));
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const privateGateways = {
     get: vi.fn().mockResolvedValue({
@@ -43,13 +43,13 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.privateGateways = () => privateGateways;
+  AlternateFuturesSdkMock.prototype.privateGateways = () => privateGateways;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 type TestContext = {
-  fakeSdk: FleekSdk;
+  fakeSdk: AlternateFuturesSdk;
 };
 
 describe('Get private gateway by id or slug. When nothing passed let the user choose from list', () => {
@@ -58,7 +58,7 @@ describe('Get private gateway by id or slug. When nothing passed let the user ch
       personalAccessToken: '',
     });
 
-    context.fakeSdk = new FleekSdk({ accessTokenService });
+    context.fakeSdk = new AlternateFuturesSdk({ accessTokenService });
   });
 
   it<TestContext>('Return private gateway by its id', async (context) => {

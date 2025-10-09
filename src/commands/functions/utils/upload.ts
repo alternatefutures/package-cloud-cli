@@ -1,7 +1,7 @@
 import { uploadOnProgress } from '../../../output/utils/uploadOnProgress';
 import { getFileLikeObject } from './getJsCodeFromPath';
 
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 import type { Bar as ProgressBar } from 'cli-progress';
 import type { FileLike } from '../../storage/utils/upload';
 
@@ -17,7 +17,7 @@ export const getUploadResult = async ({
   functionName: string;
   isPrivate: boolean;
   progressBar: ProgressBar;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   onFailure?: () => void;
 }) => {
   try {

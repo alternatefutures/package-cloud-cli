@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
@@ -51,12 +51,12 @@ vi.mock('../../sites/prompts/getSiteOrPrompt', () => ({
 }));
 
 vi.mock('@alternatefutures/sdk/node', () => ({
-  FleekSdk: vi.fn(),
+  AlternateFuturesSdk: vi.fn(),
   PersonalAccessTokenService: vi.fn(),
 }));
 
 type TestContext = {
-  fakeSdk: FleekSdk;
+  fakeSdk: AlternateFuturesSdk;
 };
 
 describe('Get private gateway or site by id or slug. When nothing passed let the user decide between private gateway or site and show him list accordingly', () => {
@@ -65,7 +65,7 @@ describe('Get private gateway or site by id or slug. When nothing passed let the
       personalAccessToken: '',
     });
 
-    context.fakeSdk = new FleekSdk({ accessTokenService });
+    context.fakeSdk = new AlternateFuturesSdk({ accessTokenService });
   });
 
   it<TestContext>('Return private gateway by its id', async (context) => {

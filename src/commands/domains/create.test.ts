@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -59,7 +59,7 @@ vi.mock('../../utils/pressAnyKey', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const domains = {
     createZoneForSite: vi
@@ -78,13 +78,13 @@ vi.mock('@alternatefutures/sdk/node', () => {
     }),
   };
 
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 type TestContext = {
-  fakeSdk: FleekSdk;
+  fakeSdk: AlternateFuturesSdk;
 };
 
 describe('Create domain for site', () => {
@@ -93,7 +93,7 @@ describe('Create domain for site', () => {
       personalAccessToken: '',
     });
 
-    context.fakeSdk = new FleekSdk({ accessTokenService });
+    context.fakeSdk = new AlternateFuturesSdk({ accessTokenService });
   });
 
   it<TestContext>('Domain was created for private gateway and successfully verified', async (context) => {

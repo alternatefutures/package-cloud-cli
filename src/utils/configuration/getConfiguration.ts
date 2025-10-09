@@ -2,8 +2,8 @@ import { constants, promises as fs } from 'node:fs';
 import { join as joinPath } from 'node:path';
 import { FleekConfigMissingFileError } from '@alternatefutures/errors';
 import {
-  type FleekSiteConfigFormatValue,
-  FleekSiteConfigFormats,
+  type AlternateFuturesSiteConfigFormatValue,
+  AlternateFuturesSiteConfigFormats,
 } from './types';
 
 type GetConfigurationPathArgs = {
@@ -53,12 +53,12 @@ const FLEEK_CONFIG_BASENAME = 'af.config';
 export const FLEEK_CONFIG_TMPL_JSON_PLACEHOLDER = '$jsonContent';
 
 export const getConfigFileByTypeName = (
-  name: keyof typeof FleekSiteConfigFormats,
-) => `${FLEEK_CONFIG_BASENAME}.${FleekSiteConfigFormats[name]}`;
+  name: keyof typeof AlternateFuturesSiteConfigFormats,
+) => `${FLEEK_CONFIG_BASENAME}.${AlternateFuturesSiteConfigFormats[name]}`;
 
-export const getConfigFileByTypeValue = (val: FleekSiteConfigFormatValue) =>
+export const getConfigFileByTypeValue = (val: AlternateFuturesSiteConfigFormatValue) =>
   `${FLEEK_CONFIG_BASENAME}.${val}`;
 
 export const getConfigTemplateByTypeName = (
-  name: keyof typeof FleekSiteConfigFormats,
+  name: keyof typeof AlternateFuturesSiteConfigFormats,
 ) => `${getConfigFileByTypeName(name)}.tmpl`;

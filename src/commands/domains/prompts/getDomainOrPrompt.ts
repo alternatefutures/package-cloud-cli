@@ -1,5 +1,5 @@
 import { DomainsNotFoundError } from '@alternatefutures/errors';
-import type { Domain, FleekSdk } from '@alternatefutures/sdk/node';
+import type { Domain, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
@@ -7,7 +7,7 @@ import { t } from '../../../utils/translation';
 type GetDomainOrPromptArgs = {
   id?: string;
   hostname?: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   choicesFilter?: (domain: Domain) => boolean;
 };
 

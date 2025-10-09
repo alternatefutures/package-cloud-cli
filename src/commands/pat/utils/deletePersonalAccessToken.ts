@@ -1,11 +1,11 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import type { Output } from '../../../output/Output';
 import { t } from '../../../utils/translation';
 
 type DeletePersonalAccessTokenArgs = {
   output: Output;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   id: string;
 };
 

@@ -1,12 +1,12 @@
 import { FleekFunctionsNotFoundError } from '@alternatefutures/errors';
-import type { FleekFunction, FleekSdk } from '@alternatefutures/sdk/node';
+import type { FleekFunction, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
 
 type GetFunctionOrPromptArgs = {
   name?: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 };
 
 export const getFunctionOrPrompt = async ({

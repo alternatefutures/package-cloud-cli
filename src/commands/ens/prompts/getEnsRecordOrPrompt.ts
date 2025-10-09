@@ -1,5 +1,5 @@
 import { EnsRecordNotFoundError } from '@alternatefutures/errors';
-import type { EnsRecord, FleekSdk } from '@alternatefutures/sdk/node';
+import type { EnsRecord, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
@@ -7,7 +7,7 @@ import { t } from '../../../utils/translation';
 type GetEnsRecordOrPromptArgs = {
   id?: string;
   name?: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   choicesFilter?: (ens: EnsRecord) => boolean;
 };
 

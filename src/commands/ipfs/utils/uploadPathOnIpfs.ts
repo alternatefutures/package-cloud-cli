@@ -1,9 +1,9 @@
 import { promises as fs } from 'node:fs';
 import { basename } from 'node:path';
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 type UploadPathOnIpfsArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   path: string;
 };
 

@@ -1,10 +1,10 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { output } from '../../../cli';
 import { t } from '../../../utils/translation';
 import { enterSiteNamePrompt } from '../prompts/enterSiteNamePrompt';
 
-type CreateSiteArgs = { sdk: FleekSdk };
+type CreateSiteArgs = { sdk: AlternateFuturesSdk };
 
 export const createSite = async ({ sdk }: CreateSiteArgs) => {
   const name = await enterSiteNamePrompt();

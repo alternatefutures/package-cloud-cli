@@ -76,7 +76,7 @@ const initAction: SdkGuardedFunction = async ({ sdk }) => {
   });
 
   output.printNewLine();
-  output.success(t('fleekConfigSaved'));
+  output.success(t('afConfigSaved'));
   output.printNewLine();
 };
 

@@ -7,17 +7,17 @@ import {
   getConfigTemplateByTypeName,
 } from '../configuration';
 
-import { type FleekRootConfig, FleekSiteConfigFormats } from './types';
+import { type AlternateFuturesRootConfig, AlternateFuturesSiteConfigFormats } from './types';
 
 import {
   ExpectedOneOfValuesError,
   InvalidJSONFormat,
 } from '@alternatefutures/errors';
-import { isValidFleekConfigFormat } from '../formats';
+import { isValidAlternateFuturesConfigFormat } from '../formats';
 
 export type SaveConfigurationArgs = {
-  config: FleekRootConfig;
-  format: FleekSiteConfigFormats;
+  config: AlternateFuturesRootConfig;
+  format: AlternateFuturesSiteConfigFormats;
 };
 
 type ConfigFilePath = string;
@@ -54,9 +54,9 @@ export const saveConfiguration = async ({
     }
   })();
 
-  if (!isValidFleekConfigFormat(format)) {
+  if (!isValidAlternateFuturesConfigFormat(format)) {
     throw new ExpectedOneOfValuesError({
-      expectedValues: Object.values(FleekSiteConfigFormats),
+      expectedValues: Object.values(AlternateFuturesSiteConfigFormats),
       receivedValue: format,
     });
   }
@@ -65,7 +65,7 @@ export const saveConfiguration = async ({
   let configFile: ConfigFilePath;
 
   switch (format) {
-    case FleekSiteConfigFormats.Typescript: {
+    case AlternateFuturesSiteConfigFormats.Typescript: {
       const contentForTypescriptConfig = (
         await fs.readFile(filePathForTypescriptConfig)
       ).toString();
@@ -76,7 +76,7 @@ export const saveConfiguration = async ({
       configFile = getConfigFileByTypeName('Typescript');
       break;
     }
-    case FleekSiteConfigFormats.Javascript: {
+    case AlternateFuturesSiteConfigFormats.Javascript: {
       const contentForJavascriptConfig = (
         await fs.readFile(filePathForJavascriptConfig)
       ).toString();
@@ -87,7 +87,7 @@ export const saveConfiguration = async ({
       configFile = getConfigFileByTypeName('Javascript');
       break;
     }
-    case FleekSiteConfigFormats.JSON: {
+    case AlternateFuturesSiteConfigFormats.JSON: {
       content = formattedOutput;
       configFile = getConfigFileByTypeName('JSON');
       break;

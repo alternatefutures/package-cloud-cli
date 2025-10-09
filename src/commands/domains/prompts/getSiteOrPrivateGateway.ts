@@ -1,4 +1,4 @@
-import type { FleekSdk, PrivateGateway, Site } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, PrivateGateway, Site } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
@@ -6,7 +6,7 @@ import { getPrivateGatewayOrPrompt } from '../../gateways/prompts/getPrivateGate
 import { getSiteOrPrompt } from '../../sites/prompts/getSiteOrPrompt';
 
 type GetSiteOrPrivateGatewayArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   privateGatewayId?: string;
   privateGatewaySlug?: string;
   siteId?: string;

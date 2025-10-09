@@ -1,10 +1,10 @@
-import type { FleekSdk, Site } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, Site } from '@alternatefutures/sdk/node';
 
 import { confirmPrompt } from '../../../prompts/confirmPrompt';
 import { getSiteOrPrompt } from '../../sites/prompts/getSiteOrPrompt';
 
 type GetSiteToAssignRecordOrPromptArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   siteId?: string;
   siteSlug?: string;
 };

@@ -1,11 +1,18 @@
 {
   "name": "@alternatefutures/cli",
-  "version": "3.10.0",
+  "version": "0.1.0",
   "bin": {
     "af": "bin/index.js"
   },
   "main": "dist/cli.js",
   "types": "./dist/cli.d.ts",
+  "files": [
+    "bin",
+    "dist",
+    "locales",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "pnpm clean:dist && pnpm transpile && pnpm bundle && npx cpy-cli ./src/templates ./dist",
     "build:ci": "pnpm run build",
@@ -34,7 +41,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-lambda": "^3.449.0",
-    "@alternatefutures/functions-esbuild-config": "^0.0.19",
+    "@alternatefutures/functions-esbuild-config": "^0.1.0",
     "@web-std/file": "^3.0.2",
     "ansi-escapes": "^3.0.1",
     "as-table": "^1.0.55",
@@ -68,14 +75,14 @@
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@changesets/cli": "^2.27.6",
-    "@alternatefutures/errors": "^2.7.0",
-    "@alternatefutures/sdk": "^3.7.2",
-    "@alternatefutures/tester": "^2.12.1",
-    "@alternatefutures/utils-gateways": "^0.1.12",
+    "@alternatefutures/errors": "^0.1.0",
+    "@alternatefutures/sdk": "^0.1.1",
+    "@alternatefutures/tester": "^0.1.0",
+    "@alternatefutures/utils-gateways": "^0.1.1",
     "@alternatefutures/utils-github": "^0.1.0",
-    "@alternatefutures/utils-ipfs": "^0.4.5",
-    "@alternatefutures/utils-ipns": "^0.1.13",
-    "@alternatefutures/utils-validation": "^2.4.0",
+    "@alternatefutures/utils-ipfs": "^0.1.0",
+    "@alternatefutures/utils-ipns": "^0.1.0",
+    "@alternatefutures/utils-validation": "^0.1.2",
     "@tsconfig/node16": "^16.1.3",
     "@types/ansi-escapes": "3.0.1",
     "@types/cli-progress": "^3.11.5",

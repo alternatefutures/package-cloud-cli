@@ -1,5 +1,5 @@
 import { ProjectsNotFoundError } from '@alternatefutures/errors';
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -40,13 +40,13 @@ describe('Switch between projects', () => {
   it('should switch to project by given id', async () => {
     await expect(
       switchProjectAction({
-        sdk: {} as FleekSdk,
+        sdk: {} as AlternateFuturesSdk,
         args: { id: 'firstProjectId' },
       }),
     ).resolves.toBeUndefined();
 
     expect(getProjectOrPrompt).toHaveBeenCalledWith({
-      sdk: {} as FleekSdk,
+      sdk: {} as AlternateFuturesSdk,
       id: 'firstProjectId',
     });
     expect(config.projectId.set).toHaveBeenCalledWith('firstProjectId');
@@ -62,10 +62,10 @@ describe('Switch between projects', () => {
     });
 
     await expect(
-      switchProjectAction({ sdk: {} as FleekSdk, args: {} }),
+      switchProjectAction({ sdk: {} as AlternateFuturesSdk, args: {} }),
     ).resolves.toBeUndefined();
 
-    expect(getProjectOrPrompt).toHaveBeenCalledWith({ sdk: {} as FleekSdk });
+    expect(getProjectOrPrompt).toHaveBeenCalledWith({ sdk: {} as AlternateFuturesSdk });
     expect(config.projectId.set).toHaveBeenCalledWith('secondProjetId');
     expect(output.success).toHaveBeenCalledWith(
       'You have switched to project "second project".',
@@ -78,7 +78,7 @@ describe('Switch between projects', () => {
     );
 
     await expect(
-      switchProjectAction({ sdk: {} as FleekSdk, args: {} }),
+      switchProjectAction({ sdk: {} as AlternateFuturesSdk, args: {} }),
     ).resolves.toBeUndefined();
 
     expect(output.log).toHaveBeenCalledWith(`Let's start by creating one.`);

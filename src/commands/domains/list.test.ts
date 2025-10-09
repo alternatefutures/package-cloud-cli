@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -17,7 +17,7 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const domains = {
     list: vi.fn().mockResolvedValue([
@@ -50,7 +50,7 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
   const sites = {
     get: vi
@@ -58,9 +58,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
       .mockResolvedValue({ id: 'testSiteId', zones: [{ id: 'testZoneId' }] }),
   };
 
-  FleekSdkMock.prototype.sites = () => sites;
+  AlternateFuturesSdkMock.prototype.sites = () => sites;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('List all domains', () => {
@@ -68,7 +68,7 @@ describe('List all domains', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       listDomainsAction({ sdk: fakeSdk, args: {} }),
@@ -92,7 +92,7 @@ describe('List all domains', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.domains().listByZoneId as Mock).mockResolvedValueOnce([
       {
         id: 'firstDomainId',

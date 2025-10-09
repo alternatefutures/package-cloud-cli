@@ -1,11 +1,11 @@
 import { IpnsRecordsNotFoundError } from '@alternatefutures/errors';
-import type { FleekSdk, IpnsRecord } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, IpnsRecord } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
 
 type GetRecordOrPromptArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   name?: string;
 };
 

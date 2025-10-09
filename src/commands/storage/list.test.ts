@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -16,7 +16,7 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const storage = {
     list: vi.fn().mockResolvedValue([
@@ -69,11 +69,11 @@ vi.mock('@alternatefutures/sdk/node', () => {
     }),
   };
 
-  FleekSdkMock.prototype.storage = () => storage;
-  FleekSdkMock.prototype.privateGateways = () => privateGateways;
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.storage = () => storage;
+  AlternateFuturesSdkMock.prototype.privateGateways = () => privateGateways;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('List storage files/folder for the selected project', () => {
@@ -81,7 +81,7 @@ describe('List storage files/folder for the selected project', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       listStorageAction({ sdk: fakeSdk, args: {} }),
@@ -111,7 +111,7 @@ describe('List storage files/folder for the selected project', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.privateGateways().list as Mock).mockResolvedValueOnce([
       { zone: { id: 'clsba7n4z000008lb0loefpnn' } },
       { zone: { id: 'clsba858j000108lb2euyfk6u' } },
@@ -159,7 +159,7 @@ describe('List storage files/folder for the selected project', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.storage().list as Mock).mockResolvedValueOnce([]);
 
     await expect(

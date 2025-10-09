@@ -1,11 +1,11 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 export const isSiteIdValid = async ({
   siteId,
   sdk,
 }: {
   siteId: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 }) => {
   try {
     await sdk.sites().get({ id: siteId });

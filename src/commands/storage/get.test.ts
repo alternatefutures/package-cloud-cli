@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -16,7 +16,7 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const storage = {
     get: vi.fn((options: { cid: string }) => {
@@ -105,11 +105,11 @@ vi.mock('@alternatefutures/sdk/node', () => {
     }),
   };
 
-  FleekSdkMock.prototype.storage = () => storage;
-  FleekSdkMock.prototype.privateGateways = () => privateGateways;
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.storage = () => storage;
+  AlternateFuturesSdkMock.prototype.privateGateways = () => privateGateways;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Get storage files/folder for the given cid or name', () => {
@@ -117,7 +117,7 @@ describe('Get storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getStorageAction({
@@ -147,7 +147,7 @@ describe('Get storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getStorageAction({ sdk: fakeSdk, args: { name: 'basic.car' } }),
@@ -180,7 +180,7 @@ describe('Get storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.privateGateways().list as Mock).mockResolvedValueOnce([
       { zone: { id: 'clsba7n4z000008lb0loefpnn' } },
       { zone: { id: 'clsba858j000108lb2euyfk6u' } },
@@ -223,7 +223,7 @@ describe('Get storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.privateGateways().list as Mock).mockResolvedValueOnce([
       { zone: { id: 'clsba7n4z000008lb0loefpnn' } },
       { zone: { id: 'clsba858j000108lb2euyfk6u' } },
@@ -274,7 +274,7 @@ describe('Get storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getStorageAction({
@@ -304,7 +304,7 @@ describe('Get storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getStorageAction({ sdk: fakeSdk, args: { name: 'app.html' } }),

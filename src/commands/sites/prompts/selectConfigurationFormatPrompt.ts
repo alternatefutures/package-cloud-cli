@@ -2,11 +2,11 @@ import { selectPrompt } from '../../../prompts/selectPrompt';
 import { getConfigFileByTypeValue } from '../../../utils/configuration';
 import { t } from '../../../utils/translation';
 
-import { FleekSiteConfigFormats } from '../../../utils/configuration/types';
+import { AlternateFuturesSiteConfigFormats } from '../../../utils/configuration/types';
 
-const choices = Object.keys(FleekSiteConfigFormats).map((name) => {
+const choices = Object.keys(AlternateFuturesSiteConfigFormats).map((name) => {
   const value =
-    FleekSiteConfigFormats[name as keyof typeof FleekSiteConfigFormats];
+    AlternateFuturesSiteConfigFormats[name as keyof typeof AlternateFuturesSiteConfigFormats];
 
   const configFile = getConfigFileByTypeValue(value);
 

@@ -1,11 +1,11 @@
 import { ProjectsNotFoundError } from '@alternatefutures/errors';
-import type { FleekSdk, Project } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, Project } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
 
 type GetProjectOrPromptArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   id?: string;
 };
 

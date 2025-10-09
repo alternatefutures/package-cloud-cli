@@ -1,5 +1,5 @@
 import { SitesNotFoundError } from '@alternatefutures/errors';
-import type { FleekSdk, Site } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, Site } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
@@ -7,7 +7,7 @@ import { t } from '../../../utils/translation';
 type GetSiteOrPromptArgs = {
   id?: string;
   slug?: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 };
 
 export const getSiteOrPrompt = async ({

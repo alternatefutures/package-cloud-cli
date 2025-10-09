@@ -1,4 +1,4 @@
-import { FleekSiteConfigFormats } from './configuration';
+import { AlternateFuturesSiteConfigFormats } from './configuration';
 
-export const isValidFleekConfigFormat = (format: FleekSiteConfigFormats) =>
-  Object.values(FleekSiteConfigFormats).includes(format);
+export const isValidAlternateFuturesConfigFormat = (format: AlternateFuturesSiteConfigFormats) =>
+  Object.values(AlternateFuturesSiteConfigFormats).includes(format);

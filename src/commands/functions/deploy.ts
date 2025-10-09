@@ -168,7 +168,7 @@ const deployAction: SdkGuardedFunction<DeployActionArgs> = async ({
       assetsCid,
     });
   } catch {
-    output.error(t('failedDeployFleekFunction'));
+    output.error(t('failedDeployAfFunction'));
     process.exit(1);
   }
 
@@ -192,11 +192,11 @@ const deployAction: SdkGuardedFunction<DeployActionArgs> = async ({
 
   output.success(t('commonNameCreateSuccess', { name: 'deployment' }));
   output.printNewLine();
-  output.log(t('callFleekFunctionByUrlReq'));
+  output.log(t('callAfFunctionByUrlReq'));
   output.link(functionToDeploy.invokeUrl);
 
   if (isSGX) {
-    output.log(t('callFleekFunctionByNetworkUrlReq'));
+    output.log(t('callAfFunctionByNetworkUrlReq'));
     output.link('https://fleek-test.network/services/3');
     output.printNewLine();
     output.log(`Blake3 Hash: ${blake3Hash} `);
@@ -211,7 +211,7 @@ const deployAction: SdkGuardedFunction<DeployActionArgs> = async ({
   }
 
   if (isUntrustedPublicEnvironment) {
-    output.log(t('callFleekFunctionByNetworkUrlReq'));
+    output.log(t('callAfFunctionByNetworkUrlReq'));
     output.link(
       `https://fleek-test.network/services/1/ipfs/${uploadResult.pin.cid}`,
     );

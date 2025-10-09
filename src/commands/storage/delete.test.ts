@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -15,7 +15,7 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const storage = {
     delete: vi.fn((options: { cid: string }) => {
@@ -77,9 +77,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     }),
   };
 
-  FleekSdkMock.prototype.storage = () => storage;
+  AlternateFuturesSdkMock.prototype.storage = () => storage;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Delete storage files/folder for the given cid or name', () => {
@@ -87,7 +87,7 @@ describe('Delete storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       deleteStorageAction({
@@ -111,7 +111,7 @@ describe('Delete storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       deleteStorageAction({
@@ -141,7 +141,7 @@ describe('Delete storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       deleteStorageAction({
@@ -172,7 +172,7 @@ describe('Delete storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       deleteStorageAction({
@@ -192,7 +192,7 @@ describe('Delete storage files/folder for the given cid or name', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       deleteStorageAction({

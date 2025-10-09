@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 import {
   getPrivateIpfsGatewayUrl,
-  getWeb3IpfsGatewayUrl,
+  getIpfsGatewayUrl,
 } from '@alternatefutures/utils-ipfs';
 
 import { output } from '../../cli';
@@ -47,7 +47,7 @@ const addAction: SdkGuardedFunction<AddActionArgs> = async ({ sdk, args }) => {
 
   if (privateGatewayDomains.length === 0) {
     output.hint(`${t('getFileFromPubAddr')}:`);
-    output.link(getWeb3IpfsGatewayUrl(hash));
+    output.link(getIpfsGatewayUrl(hash));
 
     return;
   }

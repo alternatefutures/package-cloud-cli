@@ -1,4 +1,4 @@
-import type { FleekSdk, IpnsRecord } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, IpnsRecord } from '@alternatefutures/sdk/node';
 
 import { output } from '../../../cli';
 import { selectPrompt } from '../../../prompts/selectPrompt';
@@ -7,7 +7,7 @@ import { t } from '../../../utils/translation';
 type GetIpnsRecordOrPromptArgs = {
   name?: string;
   siteId: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 };
 
 export const getIpnsRecordOrPrompt = async ({

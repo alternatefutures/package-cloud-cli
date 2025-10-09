@@ -1,9 +1,9 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 type NoArgumentsType = never;
 
 export type SdkGuardedFunctionArgs<T = NoArgumentsType> = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   args: T;
 };
 

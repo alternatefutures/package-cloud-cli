@@ -15,7 +15,7 @@ import cmdStorage from './commands/storage/index';
 import { Output } from './output/Output';
 import { t } from './utils/translation';
 
-export type { FleekConfig } from './utils/configuration/types';
+export type { AlternateFuturesConfig } from './utils/configuration/types';
 
 const isDebugging = process.argv.includes('--debug');
 export const output = new Output({
@@ -29,17 +29,17 @@ type InitArgs = {
 };
 
 const logo = `
-                                                
-       ad88  88                          88         
-      d8"    88                          88         
-      88     88                          88         
-    MM88MMM  88   ,adPPYba,   ,adPPYba,  88   ,d8   
-      88     88  a8P_____88  a8P_____88  88 ,a8"    
-      88     88  8PP"""""""  8PP"""""""  8888[      
-      88     88  "8b,   ,aa  "8b,   ,aa  88'"Yba,   
-      88     88   '"Ybbd8"    '"Ybbd8"   88   'Y8a  
 
-    ⚡ ${t('aboutFleek')} ⚡
+     $$$$$$\  $$$$$$$$\
+    $$  __$$\ $$  _____|
+    $$ /  $$ |$$ |
+    $$$$$$$$ |$$$$$\
+    $$  __$$ |$$  __|
+    $$ |  $$ |$$ |
+    $$ |  $$ |$$ |
+    \__|  \__|\__|
+
+    ${t('aboutAlternateFutures')}
 `;
 
 export const init = ({ version, parser }: InitArgs) => {
@@ -98,7 +98,7 @@ export const init = ({ version, parser }: InitArgs) => {
   return program;
 };
 
-// eslint-disable-next-line fleek-custom/valid-argument-types
+// eslint-disable-next-line af-custom/valid-argument-types
 export const asyncParser = async (program: Command) => {
   try {
     await program.parseAsync(process.argv);

@@ -1,4 +1,4 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 import { describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -36,7 +36,7 @@ describe('Show domain detailed information', () => {
   it('Find by hostname', async () => {
     await expect(
       detailDomainAction({
-        sdk: {} as FleekSdk,
+        sdk: {} as AlternateFuturesSdk,
         args: { hostname: 'first.xyz' },
       }),
     ).resolves.toBeUndefined();

@@ -1,4 +1,4 @@
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 import { isValidFolder } from '@alternatefutures/utils-validation';
 import { output } from '../../../cli';
 import { t } from '../../../utils/translation';
@@ -8,7 +8,7 @@ export const uploadFunctionAssets = async ({
   assetsPath,
   functionName,
 }: {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   functionName: string;
   assetsPath?: string;
 }): Promise<string | undefined> => {

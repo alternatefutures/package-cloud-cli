@@ -1,5 +1,5 @@
 import { EnsRecordNotFoundError } from '@alternatefutures/errors';
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -39,7 +39,7 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const ens = {
     get: vi
@@ -50,9 +50,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     delete: vi.fn().mockResolvedValue(undefined),
   };
 
-  FleekSdkMock.prototype.ens = () => ens;
+  AlternateFuturesSdkMock.prototype.ens = () => ens;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Delete ENS record', () => {
@@ -60,7 +60,7 @@ describe('Delete ENS record', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       deleteEnsAction({ sdk: fakeSdk, args: { name: 'first.eth' } }),
@@ -80,7 +80,7 @@ describe('Delete ENS record', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.ens().get as Mock).mockResolvedValueOnce({
       id: 'firstEnsId',
       hostname: 'first.eth',

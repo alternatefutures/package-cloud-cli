@@ -1,5 +1,5 @@
 import { SitesNotFoundError } from '@alternatefutures/errors';
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
@@ -10,7 +10,7 @@ vi.mock('../../../prompts/selectPrompt', () => ({
 }));
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const sites = {
     get: vi
@@ -25,9 +25,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.sites = () => sites;
+  AlternateFuturesSdkMock.prototype.sites = () => sites;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Get site by id, slug or let the user choose from list', () => {
@@ -35,7 +35,7 @@ describe('Get site by id, slug or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getSiteOrPrompt({ sdk: fakeSdk, id: 'firstSiteId' }),
@@ -48,7 +48,7 @@ describe('Get site by id, slug or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getSiteOrPrompt({ sdk: fakeSdk, slug: 'second-second-second' }),
@@ -66,7 +66,7 @@ describe('Get site by id, slug or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(getSiteOrPrompt({ sdk: fakeSdk })).resolves.toEqual({
       id: 'secondSiteId',
@@ -81,7 +81,7 @@ describe('Get site by id, slug or let the user choose from list', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.sites().list as Mock).mockResolvedValue([]);
     await expect(getSiteOrPrompt({ sdk: fakeSdk })).rejects.toThrowError(
       new SitesNotFoundError(),

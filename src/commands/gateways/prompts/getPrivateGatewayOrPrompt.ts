@@ -1,5 +1,5 @@
 import { PrivateGatewaysNotFoundError } from '@alternatefutures/errors';
-import type { FleekSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
@@ -7,7 +7,7 @@ import { t } from '../../../utils/translation';
 type GetPrivateGatewayOrPromptArgs = {
   id?: string;
   slug?: string;
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
 };
 
 export const getPrivateGatewayOrPrompt = async ({

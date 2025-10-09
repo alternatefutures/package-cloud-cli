@@ -1,13 +1,13 @@
-import type { FleekSdk, StoragePin } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, StoragePin } from '@alternatefutures/sdk/node';
 import {
-  getFleekXyzIpfsGatewayUrl,
+  getIpfsGatewayUrl,
   getPrivateIpfsGatewayUrl,
 } from '@alternatefutures/utils-ipfs';
 
 import { getAllActivePrivateGatewayDomains } from '../../gateways/utils/getAllPrivateGatewayDomains';
 
 type CreateOutputTableArgs = {
-  sdk: FleekSdk;
+  sdk: AlternateFuturesSdk;
   storage: StoragePin[];
 };
 
@@ -37,7 +37,7 @@ export const createOutputTable = async ({
             hash: s.cid,
           }),
         )
-      : [getFleekXyzIpfsGatewayUrl(s.cid)];
+      : [getIpfsGatewayUrl(s.cid)];
 
     return gatewayUrls.map((link) => ({
       filename,

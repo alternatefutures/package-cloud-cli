@@ -1,4 +1,4 @@
-import { vitestConfig } from '@fleek-platform/tester';
+import { vitestConfig } from '@alternatefutures/tester';
 import { merge } from 'lodash';
 import { defineConfig } from 'vitest/config';
 

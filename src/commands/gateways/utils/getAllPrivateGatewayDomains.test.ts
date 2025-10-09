@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -7,7 +7,7 @@ import {
 } from './getAllPrivateGatewayDomains';
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const privateGateways = {
     list: vi.fn().mockResolvedValue([
@@ -16,7 +16,7 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.privateGateways = () => privateGateways;
+  AlternateFuturesSdkMock.prototype.privateGateways = () => privateGateways;
 
   const domains = {
     listByZoneId: vi.fn().mockImplementation(({ zoneId }) => {
@@ -34,9 +34,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     }),
   };
 
-  FleekSdkMock.prototype.domains = () => domains;
+  AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('Get domains assigned to all private gateways under current project', () => {
@@ -45,7 +45,7 @@ describe('Get domains assigned to all private gateways under current project', (
       personalAccessToken: '',
     });
 
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getAllPrivateGatewayDomains({ sdk: fakeSdk }),
@@ -70,7 +70,7 @@ describe('Get domains assigned to all private gateways under current project', (
       personalAccessToken: '',
     });
 
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       getAllActivePrivateGatewayDomains({ sdk: fakeSdk }),
@@ -93,7 +93,7 @@ describe('Get domains assigned to all private gateways under current project', (
       personalAccessToken: '',
     });
 
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.privateGateways().list as Mock).mockResolvedValueOnce([]);
 
     await expect(

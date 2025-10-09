@@ -1,4 +1,4 @@
-import { FleekSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -16,7 +16,7 @@ vi.mock('../../cli', () => {
 });
 
 vi.mock('@alternatefutures/sdk/node', () => {
-  const FleekSdkMock = vi.fn();
+  const AlternateFuturesSdkMock = vi.fn();
 
   const ens = {
     list: vi.fn().mockResolvedValue([
@@ -49,7 +49,7 @@ vi.mock('@alternatefutures/sdk/node', () => {
     ]),
   };
 
-  FleekSdkMock.prototype.ens = () => ens;
+  AlternateFuturesSdkMock.prototype.ens = () => ens;
 
   const sites = {
     get: vi.fn().mockResolvedValue({
@@ -58,9 +58,9 @@ vi.mock('@alternatefutures/sdk/node', () => {
     }),
   };
 
-  FleekSdkMock.prototype.sites = () => sites;
+  AlternateFuturesSdkMock.prototype.sites = () => sites;
 
-  return { FleekSdk: FleekSdkMock, PersonalAccessTokenService: vi.fn() };
+  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
 });
 
 describe('List all ENS records', () => {
@@ -68,7 +68,7 @@ describe('List all ENS records', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
 
     await expect(
       listEnsRecordsAction({ sdk: fakeSdk, args: {} }),
@@ -92,7 +92,7 @@ describe('List all ENS records', () => {
     const accessTokenService = new PersonalAccessTokenService({
       personalAccessToken: '',
     });
-    const fakeSdk = new FleekSdk({ accessTokenService });
+    const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.ens().listByIpnsRecordId as Mock).mockResolvedValueOnce([
       {
         id: 'firstEnsId',
