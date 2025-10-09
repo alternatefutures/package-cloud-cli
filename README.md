@@ -1,12 +1,12 @@
 ![](.repo/images/repo/banner.png?202409201714)
 
-# ⚡️AlternateFutures CLI ⚡️
+# ✨ Alternate Futures CLI ✨
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-blue.svg)](https://conventionalcommits.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![Tests](https://github.com/alternatefutures/cloud-cli/actions/workflows/test-runner.yml/badge.svg)
 
-AlternateFutures CLI provides a unified command line interface to AlternateFutures Cloud.
+Alternate Futures CLI provides a unified command line interface to Alternate Futures Cloud.
 
 ## Overview
 
