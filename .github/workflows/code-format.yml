@@ -13,18 +13,14 @@ jobs:
     defaults:
       run:
         shell: bash
+    permissions:
+      contents: write
     steps:
-      - uses: actions/create-github-app-token@v1
-        id: af-platform-bot-token
-        with:
-          app-id: ${{ secrets.AF_PLATFORM_BOT_APP_ID }}
-          private-key: ${{ secrets.AF_PLATFORM_BOT_PRIVATE_KEY }}
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref }}
-          token: ${{ steps.af-platform-bot-token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
