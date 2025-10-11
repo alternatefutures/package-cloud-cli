@@ -11,10 +11,12 @@ Alternate Futures CLI provides a unified command line interface to Alternate Fut
 ## Overview
 
 * [🤖 Install](#install)
+* [🔐 Authentication](#authentication)
 * [👷‍♀️Development](#development)
   - [Code format](#code-format)
   - [Changeset](#changeset)
 * [📖 Docs](https://alternatefutures.ai/docs)
+* [🤖 AI Agent Documentation](./AGENTS.md) - Detailed context for AI agents
 * [🙏 Contributing](#contributing)
   - [Branching strategy](#branching-strategy)
   - [Contributing](#conventional-commits)
@@ -142,6 +144,43 @@ Declare an intent to release by executing the command and answering the wizard's
 ```sh
 pnpm changeset:add
 ```
+
+## Authentication
+
+The CLI requires authentication to interact with AlternateFutures Cloud. You can authenticate in two ways:
+
+### Interactive Login (Recommended)
+
+```bash
+af login
+```
+
+This will open a browser window for authentication. Your credentials are stored securely in your system's config directory.
+
+### Environment Variables
+
+For CI/CD pipelines or automated workflows, use environment variables:
+
+```bash
+export AF_TOKEN="your-personal-access-token"
+export AF_PROJECT_ID="your-project-id"
+```
+
+**Getting your tokens:**
+- Personal Access Token: Generate from [AlternateFutures Dashboard](https://app.alternatefutures.ai)
+- Project ID: Find in your project settings or use `af projects list`
+
+**CI/CD Example (GitHub Actions):**
+
+```yaml
+- name: Deploy to AlternateFutures
+  run: af sites deploy
+  env:
+    AF_TOKEN: ${{ secrets.AF_TOKEN }}
+    AF_PROJECT_ID: ${{ secrets.AF_PROJECT_ID }}
+```
+
+💡 **Note:** As of v0.2.0, the legacy environment variables `FLEEK_TOKEN` and `FLEEK_PROJECT_ID` are deprecated. Please use `AF_TOKEN` and `AF_PROJECT_ID` instead.
 
 ## Basic commands
 
