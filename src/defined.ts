@@ -21,7 +21,7 @@ export const defined: Defined = {
 // that the override is intentional we should stick
 // with the application prefix to avoid unexpected behaviour for
 // polluted environments that might have similar env vars
-// e.g. FLEEK__UI_APP_URL
+// e.g. AF__UI_APP_URL
 const override_env_var_prefix = '';
 
 export const getDefined = (key: keyof typeof defined) =>

@@ -49,15 +49,15 @@ export const getConfigurationPath = async ({
   throw new FleekConfigMissingFileError({});
 };
 
-const FLEEK_CONFIG_BASENAME = 'af.config';
-export const FLEEK_CONFIG_TMPL_JSON_PLACEHOLDER = '$jsonContent';
+const AF_CONFIG_BASENAME = 'af.config';
+export const AF_CONFIG_TMPL_JSON_PLACEHOLDER = '$jsonContent';
 
 export const getConfigFileByTypeName = (
   name: keyof typeof AlternateFuturesSiteConfigFormats,
-) => `${FLEEK_CONFIG_BASENAME}.${AlternateFuturesSiteConfigFormats[name]}`;
+) => `${AF_CONFIG_BASENAME}.${AlternateFuturesSiteConfigFormats[name]}`;
 
 export const getConfigFileByTypeValue = (val: AlternateFuturesSiteConfigFormatValue) =>
-  `${FLEEK_CONFIG_BASENAME}.${val}`;
+  `${AF_CONFIG_BASENAME}.${val}`;
 
 export const getConfigTemplateByTypeName = (
   name: keyof typeof AlternateFuturesSiteConfigFormats,

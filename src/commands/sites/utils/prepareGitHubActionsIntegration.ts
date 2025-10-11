@@ -12,7 +12,7 @@ import { requestDeploymentWorkflowInstallCommand } from './requestDeploymentWork
 import { saveDeploymentWorkflowYaml } from './saveDeploymentWorkflowYaml';
 import { loadJSONFromPackageRoot } from '../../../utils/json';
 
-export const ghWorkflowFilename = 'fleek-deploy.yaml';
+export const ghWorkflowFilename = 'af-deploy.yaml';
 export const ghActionsWorflowsDirectory = joinPath(
   process.cwd(),
   '.github/workflows',
@@ -25,14 +25,14 @@ export const ghActionsDeploySitesYamlPath = joinPath(
 type PrepareGitHubActionsIntegrationArgs = {
   personalAccessToken: string;
   projectId: string;
-  fleekConfigPath?: string;
+  afConfigPath?: string;
   output: Output;
 };
 
 export const prepareGitHubActionsIntegration = async ({
   personalAccessToken,
   projectId,
-  fleekConfigPath,
+  afConfigPath,
   output,
 }: PrepareGitHubActionsIntegrationArgs) => {
   let nodeVersion;
@@ -50,7 +50,7 @@ export const prepareGitHubActionsIntegration = async ({
   const installCommand = await requestDeploymentWorkflowInstallCommand();
   const yamlContent = generateDeploymentWorkflowYaml({
     nodeVersion,
-    fleekConfigPath,
+    fleekConfigPath: afConfigPath,
     installCommand,
   });
   const yamlPath = await getDeploymentWorkflowYamlLocation();

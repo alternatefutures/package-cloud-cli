@@ -2,7 +2,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
 import {
-  FLEEK_CONFIG_TMPL_JSON_PLACEHOLDER,
+  AF_CONFIG_TMPL_JSON_PLACEHOLDER,
   getConfigFileByTypeName,
   getConfigTemplateByTypeName,
 } from '../configuration';
@@ -70,7 +70,7 @@ export const saveConfiguration = async ({
         await fs.readFile(filePathForTypescriptConfig)
       ).toString();
       content = contentForTypescriptConfig.replace(
-        FLEEK_CONFIG_TMPL_JSON_PLACEHOLDER,
+        AF_CONFIG_TMPL_JSON_PLACEHOLDER,
         formattedOutput,
       );
       configFile = getConfigFileByTypeName('Typescript');
@@ -81,7 +81,7 @@ export const saveConfiguration = async ({
         await fs.readFile(filePathForJavascriptConfig)
       ).toString();
       content = contentForJavascriptConfig.replace(
-        FLEEK_CONFIG_TMPL_JSON_PLACEHOLDER,
+        AF_CONFIG_TMPL_JSON_PLACEHOLDER,
         formattedOutput,
       );
       configFile = getConfigFileByTypeName('Javascript');

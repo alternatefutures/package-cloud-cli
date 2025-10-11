@@ -78,7 +78,7 @@ const transpileCode = async (args: TranspileCodeArgs) => {
   if (!output.debugEnabled) {
     tempDir = os.tmpdir();
   } else {
-    tempDir = '.fleek';
+    tempDir = '.af';
 
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);

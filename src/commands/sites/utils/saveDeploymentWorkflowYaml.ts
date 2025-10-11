@@ -32,11 +32,11 @@ export const saveDeploymentWorkflowYaml = async ({
     output.chore(`${t('setSecretsInGithugRepoSettings')}:`);
     output.table([
       {
-        Name: 'FLEEK_TOKEN',
+        Name: 'AF_TOKEN',
         Value: personalAccessToken,
       },
       {
-        Name: 'FLEEK_PROJECT_ID',
+        Name: 'AF_PROJECT_ID',
         Value: projectId,
       },
     ]);

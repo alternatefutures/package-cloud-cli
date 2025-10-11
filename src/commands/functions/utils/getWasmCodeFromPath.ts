@@ -54,7 +54,7 @@ const enryptCode = async (args: { filePath: string }) => {
   if (!output.debugEnabled) {
     tempDir = os.tmpdir();
   } else {
-    tempDir = '.fleek';
+    tempDir = '.af';
 
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);

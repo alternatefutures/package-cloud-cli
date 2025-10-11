@@ -62,7 +62,7 @@ const deployAction: SdkGuardedFunction<DeployActionArgs> = async ({
   });
 
   const updatedEnv = {
-    FLEEK_URL: functionToDeploy.invokeUrl,
+    AF_URL: functionToDeploy.invokeUrl,
     ...env,
   };
 

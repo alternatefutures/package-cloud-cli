@@ -39,7 +39,7 @@ const ciAction: SdkGuardedFunction<CiActionArgs> = async ({ args }) => {
       await prepareGitHubActionsIntegration({
         projectId,
         personalAccessToken,
-        fleekConfigPath: args.predefinedConfigPath,
+        afConfigPath: args.predefinedConfigPath,
         output,
       });
       break;

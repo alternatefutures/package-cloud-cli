@@ -13,6 +13,6 @@
     "rootDir": "src"
   },
   "include": ["src/**/*", "global.d.ts", "locales/*.d.ts"],
-  "exclude": ["dist", "**/node_modules", "**/*.test.ts"],
+  "exclude": ["dist", "**/node_modules", "**/*.test.ts", "src/templates/**/*"],
   "extends": "@tsconfig/node16/tsconfig.json"
 }

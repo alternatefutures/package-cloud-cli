@@ -18,7 +18,7 @@ export default (program: Command): Command => {
   cmd
     .command('ci')
     .description(t('genConfForCIProviders'))
-    .option('-c, --config <fleekConfigPath>', t('specifyAfJsonPath'))
+    .option('-c, --config <afConfigPath>', t('specifyAfJsonPath'))
     .option('-p, --provider <provider>', t('specifyCIProvider'))
     .action((options: { config?: string; provider?: string }) =>
       ciActionHandler({
@@ -30,7 +30,7 @@ export default (program: Command): Command => {
   cmd
     .command('deploy')
     .description(t('deploySite'))
-    .option('-c, --config <fleekConfigPath>', t('deploySpecifyPathJson'))
+    .option('-c, --config <afConfigPath>', t('deploySpecifyPathJson'))
     .action((options: { config?: string }) =>
       deployActionHandler({ predefinedConfigPath: options.config }),
     );

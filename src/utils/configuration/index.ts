@@ -3,7 +3,7 @@ export {
   getConfigFileByTypeName,
   getConfigFileByTypeValue,
   getConfigTemplateByTypeName,
-  FLEEK_CONFIG_TMPL_JSON_PLACEHOLDER,
+  AF_CONFIG_TMPL_JSON_PLACEHOLDER,
 } from './getConfiguration';
 export { loadConfiguration } from './loadConfiguration';
 export { readConfigurationFile } from './readConfigurationFile';

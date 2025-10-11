@@ -1,11 +1,11 @@
 /* eslint-disable no-process-env */
 
 type Secrets = {
-  FLEEK_TOKEN?: string;
-  FLEEK_PROJECT_ID?: string;
+  AF_TOKEN?: string;
+  AF_PROJECT_ID?: string;
 };
 
 export const secrets: Secrets = {
-  FLEEK_TOKEN: process.env.FLEEK_TOKEN,
-  FLEEK_PROJECT_ID: process.env.FLEEK_PROJECT_ID,
+  AF_TOKEN: process.env.AF_TOKEN,
+  AF_PROJECT_ID: process.env.AF_PROJECT_ID,
 };

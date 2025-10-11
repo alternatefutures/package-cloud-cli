@@ -40,18 +40,18 @@ const updateAction: SdkGuardedFunction<UpdateFunctionArgs> = async ({
     ? await getFunctionStatusOrPrompt({ status: args.status })
     : undefined;
 
-  const fleekFunction = await getFunctionOrPrompt({
+  const afFunction = await getFunctionOrPrompt({
     name: args.functionName,
     sdk,
   });
 
-  if (!fleekFunction) {
+  if (!afFunction) {
     output.error(t('expectedNotFoundGeneric', { name: 'function' }));
 
     return;
   }
 
-  await sdk.functions().update({ id: fleekFunction.id, slug, status, name });
+  await sdk.functions().update({ id: afFunction.id, slug, status, name });
 
   output.printNewLine();
   output.success(
