@@ -106,8 +106,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0
       '@alternatefutures/sdk':
-        specifier: ^0.1.1
-        version: 0.1.1
+        specifier: ^0.2.1
+        version: 0.2.1
       '@alternatefutures/tester':
         specifier: ^0.1.0
         version: 0.1.0(graphql@15.10.1)
@@ -204,8 +204,8 @@ packages:
     peerDependencies:
       esbuild: '>=0.21.0'
 
-  '@alternatefutures/sdk@0.1.1':
-    resolution: {integrity: sha512-p1U/d8CSk06ttcu5hPZN0lOqWJl6/uZdYKnvzFbyw9uaeMydOnS5ueCNsLTLd37PHEI8eSH2YnCYgYl4XffQ1g==}
+  '@alternatefutures/sdk@0.2.1':
+    resolution: {integrity: sha512-l6ZLLYIlCEiUkgVf4BaWi45Fy870YaT6JBAK22bvwT/gvy5wVXC/Bl8ExltQTtsoDlH7hjAqMGXgV452E3Qi4g==}
     engines: {node: '>=18.18.2'}
 
   '@alternatefutures/tester@0.1.0':
@@ -3880,7 +3880,7 @@ snapshots:
     dependencies:
       esbuild: 0.21.5
 
-  '@alternatefutures/sdk@0.1.1':
+  '@alternatefutures/sdk@0.2.1':
     dependencies:
       '@noble/hashes': 1.8.0
       '@web-std/file': 3.0.3

@@ -76,7 +76,7 @@
     "@biomejs/biome": "^1.8.3",
     "@changesets/cli": "^2.27.6",
     "@alternatefutures/errors": "^0.1.0",
-    "@alternatefutures/sdk": "^0.1.1",
+    "@alternatefutures/sdk": "^0.2.1",
     "@alternatefutures/tester": "^0.1.0",
     "@alternatefutures/utils-gateways": "^0.1.1",
     "@alternatefutures/utils-github": "^0.1.0",
