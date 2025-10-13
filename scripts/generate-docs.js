@@ -18,7 +18,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const COMMANDS_DIR = join(__dirname, '../src/commands');
-const DOCS_REPO = join(__dirname, '../../altfutures-docs/docs/cli');
+
+// In CI: cloud-cli is inside altfutures-docs repo at altfutures-docs/cloud-cli
+// Locally: cloud-cli is a sibling of altfutures-docs
+const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
+const DOCS_REPO = isCI
+  ? join(__dirname, '../../docs/cli')  // In CI: scripts/../.. = altfutures-docs, then docs/cli
+  : join(__dirname, '../../altfutures-docs/docs/cli');  // Locally: sibling directory
 
 console.log('🔧 Generating CLI documentation...\n');
 
