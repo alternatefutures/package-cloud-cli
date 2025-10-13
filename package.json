@@ -38,7 +38,7 @@
     "test:watch": "vitest --dir src",
     "tsc": "tsc --noEmit",
     "watch": "tsc --watch",
-    "docs:generate": "node scripts/generate-docs.js"
+    "docs:generate": "node scripts/generate-docs.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-lambda": "^3.449.0",
