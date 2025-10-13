@@ -37,7 +37,8 @@
     "test:coverage": "vitest run --dir src --coverage",
     "test:watch": "vitest --dir src",
     "tsc": "tsc --noEmit",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "docs:generate": "node scripts/generate-docs.js"
   },
   "dependencies": {
     "@aws-sdk/client-lambda": "^3.449.0",
