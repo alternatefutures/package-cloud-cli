@@ -1,4 +1,4 @@
-import { AFFunctionPathNotValidError } from '@alternatefutures/errors';
+import { FleekFunctionPathNotValidError } from '@alternatefutures/errors';
 import {
   isFunctionPathValid,
   isValidFolder,
@@ -33,7 +33,7 @@ export const getFunctionPathOrPrompt = async ({
   const hasValidPath = await isValidPath(result);
 
   if (!hasValidPath) {
-    throw new AFFunctionPathNotValidError({ path: result });
+    throw new FleekFunctionPathNotValidError({ path: result });
   }
 
   const isFolder = await isValidFolder(result);

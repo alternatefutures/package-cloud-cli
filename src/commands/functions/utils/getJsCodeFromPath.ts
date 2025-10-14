@@ -2,10 +2,10 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 
 // TODO: These error messages should be revised
-// e.g. AFFunctionPathNotValidError happens regardless of bundling
+// e.g. FleekFunctionPathNotValidError happens regardless of bundling
 import {
-  AFFunctionBundlingFailedError,
-  AFFunctionPathNotValidError,
+  FleekFunctionBundlingFailedError,
+  FleekFunctionPathNotValidError,
   UnknownError,
 } from '@alternatefutures/errors';
 import cliProgress from 'cli-progress';
@@ -169,7 +169,7 @@ export const getFileLikeObject = async (path: string) => {
   const files = await filesFromPaths([path]);
 
   if (!files.length) {
-    throw new AFFunctionPathNotValidError({ path });
+    throw new FleekFunctionPathNotValidError({ path });
   }
 
   return files[0];
@@ -194,7 +194,7 @@ export const getJsCodeFromPath = async (args: {
   const { filePath, bundle, env, assetsCid } = args;
 
   if (!fs.existsSync(filePath)) {
-    throw new AFFunctionPathNotValidError({ path: filePath });
+    throw new FleekFunctionPathNotValidError({ path: filePath });
   }
 
   const isUserSourceCodeSupported = await checkUserSourceCodeSupport(filePath);
@@ -219,7 +219,7 @@ export const getJsCodeFromPath = async (args: {
       throw new UnknownError();
     }
 
-    throw new AFFunctionBundlingFailedError({
+    throw new FleekFunctionBundlingFailedError({
       error: transpileResponse.error,
     });
   }

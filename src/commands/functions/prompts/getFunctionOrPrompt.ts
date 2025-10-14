@@ -1,5 +1,5 @@
-import { AFFunctionsNotFoundError } from '@alternatefutures/errors';
-import type { AFFunction, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
+import { FleekFunctionsNotFoundError } from '@alternatefutures/errors';
+import type { FleekFunction, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
@@ -12,7 +12,7 @@ type GetFunctionOrPromptArgs = {
 export const getFunctionOrPrompt = async ({
   name,
   sdk,
-}: GetFunctionOrPromptArgs): Promise<AFFunction | undefined> => {
+}: GetFunctionOrPromptArgs): Promise<FleekFunction | undefined> => {
   if (name) {
     return sdk.functions().get({ name });
   }
@@ -20,7 +20,7 @@ export const getFunctionOrPrompt = async ({
   const functions = await sdk.functions().list();
 
   if (!functions.length) {
-    throw new AFFunctionsNotFoundError({});
+    throw new FleekFunctionsNotFoundError({});
   }
 
   const selectedFunctionId = await selectPrompt({
