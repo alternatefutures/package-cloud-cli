@@ -1,4 +1,4 @@
-import { FleekFunctionSlugNotValidError } from '@alternatefutures/errors';
+import { AFFunctionSlugNotValidError } from '@alternatefutures/errors';
 import { isFunctionSlugValid } from '@alternatefutures/utils-validation';
 
 type GetFunctionSlugOrPromptArgs = {
@@ -14,5 +14,5 @@ export const getFunctionSlugOrPrompt = async ({
 
   if (!slug) return;
 
-  throw new FleekFunctionSlugNotValidError({ slug });
+  throw new AFFunctionSlugNotValidError({ slug });
 };
