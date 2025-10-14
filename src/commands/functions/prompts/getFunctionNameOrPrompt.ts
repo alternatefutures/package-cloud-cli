@@ -1,4 +1,4 @@
-import { FleekFunctionNameNotValidError } from '@alternatefutures/errors';
+import { AFFunctionNameNotValidError } from '@alternatefutures/errors';
 import { isFunctionNameValid } from '@alternatefutures/utils-validation';
 
 import { enterFunctionNamePrompt } from './enterFunctionNamePrompt';
@@ -15,7 +15,7 @@ export const getFunctionNameOrPrompt = async ({
   }
 
   if (name && !isFunctionNameValid({ name })) {
-    throw new FleekFunctionNameNotValidError({ name });
+    throw new AFFunctionNameNotValidError({ name });
   }
 
   return enterFunctionNamePrompt();

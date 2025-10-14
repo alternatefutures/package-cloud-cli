@@ -1,5 +1,5 @@
-import { FleekFunctionStatusNotValidError } from '@alternatefutures/errors';
-import type { FleekFunctionStatus } from '@alternatefutures/sdk/node';
+import { AFFunctionStatusNotValidError } from '@alternatefutures/errors';
+import type { AFFunctionStatus } from '@alternatefutures/sdk/node';
 import { isFunctionStatusValid } from '@alternatefutures/utils-validation';
 
 type GetFunctionStatusOrPromptArgs = {
@@ -8,10 +8,10 @@ type GetFunctionStatusOrPromptArgs = {
 
 export const getFunctionStatusOrPrompt = async ({
   status,
-}: GetFunctionStatusOrPromptArgs): Promise<FleekFunctionStatus> => {
+}: GetFunctionStatusOrPromptArgs): Promise<AFFunctionStatus> => {
   if (status && isFunctionStatusValid({ status })) {
-    return status as FleekFunctionStatus;
+    return status as AFFunctionStatus;
   }
 
-  throw new FleekFunctionStatusNotValidError({});
+  throw new AFFunctionStatusNotValidError({});
 };
