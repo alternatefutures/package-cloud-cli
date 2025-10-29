@@ -6,25 +6,27 @@ import { getFunctionNameOrPrompt } from './prompts/getFunctionNameOrPrompt';
 import { getFunctionOrPrompt } from './prompts/getFunctionOrPrompt';
 import { getFunctionSlugOrPrompt } from './prompts/getFunctionSlugOrPrompt';
 import { getFunctionStatusOrPrompt } from './prompts/getFunctionStatusOrPrompt';
+import { parseRoutes, validateRoutes } from './utils/routeValidation';
 
 type UpdateFunctionArgs = {
   functionName?: string;
   name?: string;
   slug?: string;
   status?: string;
+  routes?: string;
 };
 
 const updateAction: SdkGuardedFunction<UpdateFunctionArgs> = async ({
   args,
   sdk,
 }) => {
-  if (!args.name && !args.slug && !args.status) {
+  if (!args.name && !args.slug && !args.status && !args.routes) {
     output.error(
       t('functionUpdateArgsNotValid', {
         param1: 'name',
         param2: 'slug',
         param3: 'status',
-      }),
+      }) + ' or routes'
     );
 
     return;
@@ -40,6 +42,24 @@ const updateAction: SdkGuardedFunction<UpdateFunctionArgs> = async ({
     ? await getFunctionStatusOrPrompt({ status: args.status })
     : undefined;
 
+  // Parse and validate routes if provided
+  let routes;
+  if (args.routes) {
+    try {
+      routes = await parseRoutes(args.routes);
+      const validation = validateRoutes(routes);
+      if (!validation.valid) {
+        output.error(`Invalid routes: ${validation.error}`);
+        return;
+      }
+    } catch (error) {
+      output.error(
+        `Failed to parse routes: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+      return;
+    }
+  }
+
   const afFunction = await getFunctionOrPrompt({
     name: args.functionName,
     sdk,
@@ -51,7 +71,13 @@ const updateAction: SdkGuardedFunction<UpdateFunctionArgs> = async ({
     return;
   }
 
-  await sdk.functions().update({ id: afFunction.id, slug, status, name });
+  await sdk.functions().update({
+    id: afFunction.id,
+    slug,
+    status,
+    name,
+    routes
+  });
 
   output.printNewLine();
   output.success(
@@ -60,6 +86,13 @@ const updateAction: SdkGuardedFunction<UpdateFunctionArgs> = async ({
       action: t('updated'),
     }),
   );
+
+  if (routes) {
+    output.log(
+      `Function updated with ${Object.keys(routes).length} route${Object.keys(routes).length === 1 ? '' : 's'}`
+    );
+  }
+
   output.printNewLine();
 };
 

@@ -224,7 +224,7 @@ sdk.ens()            // ENS integration
 
 ### User Configuration (`af.config.{js,ts,json}`)
 ```typescript
-// Example af.config.ts
+// Example af.config.ts with sites
 import { defineConfig } from '@alternatefutures/cli';
 
 export default defineConfig({
@@ -234,6 +234,22 @@ export default defineConfig({
     buildCommand: 'npm run build',
   }]
 });
+
+// Example af.config.ts with functions and routing
+import type { AlternateFuturesFunctionConfig } from '@alternatefutures/cli';
+
+const config: AlternateFuturesFunctionConfig = {
+  name: 'my-gateway',
+  type: 'function',
+  routes: {
+    '/api/users/*': 'https://users-service.com',
+    '/api/products/*': 'https://products-service.com',
+    '/api/*': 'https://api.example.com',
+    '/*': 'https://default.com'
+  },
+};
+
+export default config;
 ```
 
 ### Global Configuration
@@ -241,6 +257,180 @@ Stored in OS-specific config directory via `conf` package:
 - macOS: `~/Library/Preferences/alternate-futures-nodejs/global.json`
 - Linux: `~/.config/alternate-futures-nodejs/global.json`
 - Windows: `%APPDATA%\alternate-futures-nodejs\Config\global.json`
+
+## Function Routing Feature
+
+AlternateFutures Functions support native routing/proxying to enable gateway patterns and microservice routing. This allows a single function to act as a reverse proxy, routing requests to different backend services based on path patterns.
+
+### Overview
+
+The routing feature enables:
+- **API Gateway Pattern** - Route requests to multiple backend services
+- **Microservice Routing** - Direct traffic to different microservices based on paths
+- **Path-Based Proxying** - Forward requests with wildcard and exact matching
+- **Header Preservation** - Automatic forwarding of headers, query params, and body
+- **X-Forwarded Headers** - Automatic injection of X-Forwarded-* headers for proxying
+
+### Configuration
+
+Routes are configured as an object mapping path patterns to target URLs:
+
+```typescript
+routes: {
+  '/api/users/*': 'https://users-service.com',
+  '/api/products/*': 'https://products-service.com',
+  '/api/*': 'https://api.example.com',
+  '/*': 'https://default.com'
+}
+```
+
+**Path Pattern Rules:**
+- Must start with `/`
+- Supports wildcards with `*` (matches any path segment)
+- Routes are automatically prioritized:
+  1. Exact matches (e.g., `/api/users`)
+  2. Specific paths (e.g., `/api/users/123`)
+  3. Wildcards (e.g., `/api/*`, `/*`)
+
+**Target URL Requirements:**
+- Must be a valid URL
+- Must use `http://` or `https://` protocol
+- Can include ports, paths, and query parameters
+
+### CLI Usage
+
+#### Create Function with Routes
+
+```bash
+# Using command line flag with JSON
+af functions create --name my-gateway --routes '{""/api/*"": ""https://api.example.com""}'
+
+# Using command line flag with file path
+af functions create --name my-gateway --routes ./routes.json
+
+# Using af.config.js (automatic during deploy)
+af functions create --name my-gateway
+```
+
+#### Update Function Routes
+
+```bash
+# Update routes via command line
+af functions update --functionName my-gateway --routes '{""/new-path/*"": ""https://new-service.com""}'
+
+# Update routes via file
+af functions update --functionName my-gateway --routes ./new-routes.json
+```
+
+#### Deploy with Routes
+
+When deploying a function, routes are automatically loaded from `af.config.js` if present:
+
+```bash
+# Deploy function (reads routes from af.config.js automatically)
+af functions deploy --name my-gateway --path ./index.js
+```
+
+### Configuration File Integration
+
+Routes can be defined in `af.config.js`, `af.config.ts`, or `af.config.json`:
+
+**JavaScript Example (`af.config.js`):**
+```javascript
+module.exports = {
+  name: 'my-gateway',
+  type: 'function',
+  routes: {
+    '/api/users/*': 'https://users-service.com',
+    '/api/products/*': 'https://products-service.com',
+    '/api/*': 'https://api.example.com',
+    '/*': 'https://default.com'
+  },
+};
+```
+
+**TypeScript Example (`af.config.ts`):**
+```typescript
+import type { AlternateFuturesFunctionConfig } from '@alternatefutures/cli';
+
+const config: AlternateFuturesFunctionConfig = {
+  name: 'my-gateway',
+  type: 'function',
+  routes: {
+    '/api/users/*': 'https://users-service.com',
+    '/api/products/*': 'https://products-service.com',
+  },
+};
+
+export default config;
+```
+
+**JSON Example (`af.config.json`):**
+```json
+{
+  "functions": [{
+    "name": "my-gateway",
+    "type": "function",
+    "routes": {
+      "/api/users/*": "https://users-service.com",
+      "/api/products/*": "https://products-service.com"
+    }
+  }]
+}
+```
+
+### Route Validation
+
+The CLI validates routes before sending to the backend:
+- Path patterns must start with `/`
+- Target URLs must be valid and use http/https
+- Routes object cannot be empty
+- All values must be strings
+
+Validation errors will be displayed with helpful messages indicating the issue.
+
+### Examples
+
+**API Gateway Pattern:**
+```typescript
+// Route different API versions to different services
+{
+  '/v1/api/*': 'https://api-v1.example.com',
+  '/v2/api/*': 'https://api-v2.example.com',
+  '/*': 'https://api-latest.example.com'
+}
+```
+
+**Microservice Routing:**
+```typescript
+// Route to different microservices by domain
+{
+  '/auth/*': 'https://auth-service.com',
+  '/users/*': 'https://users-service.com',
+  '/orders/*': 'https://orders-service.com',
+  '/payments/*': 'https://payments-service.com',
+  '/*': 'https://frontend.com'
+}
+```
+
+**Development/Production Routing:**
+```typescript
+// Route to different environments
+{
+  '/staging/*': 'https://staging.example.com',
+  '/*': 'https://production.example.com'
+}
+```
+
+### Related Files
+
+- **Route Validation:** `src/commands/functions/utils/routeValidation.ts`
+- **Config Loading:** `src/commands/functions/utils/loadFunctionConfig.ts`
+- **Create Command:** `src/commands/functions/create.ts`
+- **Update Command:** `src/commands/functions/update.ts`
+- **Deploy Command:** `src/commands/functions/deploy.ts`
+- **Config Types:** `src/utils/configuration/types.ts`
+- **Tests:** `src/commands/functions/utils/*.test.ts`
 
 ## CI/CD Workflows
 

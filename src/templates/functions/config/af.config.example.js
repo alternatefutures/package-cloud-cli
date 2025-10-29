@@ -5,24 +5,13 @@
 module.exports = {
   name: 'my-gateway',
   type: 'function',
-  routes: [
-    {
-      path: '/api/users/*',
-      destination: 'https://users-service.com',
-      methods: ['GET', 'POST'],
-      preservePath: true,
-      priority: 10,
-    },
-    {
-      path: '/api/products/*',
-      destination: 'https://products-service.com',
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
-      priority: 20,
-    },
-    {
-      path: '/*',
-      destination: 'https://default.com',
-      priority: 999, // Lower priority = fallback
-    },
-  ],
+  // Routes map path patterns to target URLs
+  // Patterns support wildcards (*)
+  // Routes are automatically prioritized (exact matches > specific paths > wildcards)
+  routes: {
+    '/api/users/*': 'https://users-service.com',
+    '/api/products/*': 'https://products-service.com',
+    '/api/*': 'https://api.example.com',
+    '/*': 'https://default.com'
+  },
 };

@@ -28,9 +28,17 @@ export default (program: Command): Command => {
     .command('create')
     .option('-n, --name <functionName>', t('functionName'))
     .option('--site <siteId>', t('functionsSite'))
+    .option(
+      '-r, --routes <routes>',
+      'Route configuration as JSON string or path to JSON file'
+    )
     .description(t('functionsCreateDescription'))
-    .action((options: { name?: string; site?: string }) =>
-      createActionHandler({ name: options.name, siteId: options.site }),
+    .action((options: { name?: string; site?: string; routes?: string }) =>
+      createActionHandler({
+        name: options.name,
+        siteId: options.site,
+        routes: options.routes,
+      }),
     );
 
   cmd
@@ -48,18 +56,24 @@ export default (program: Command): Command => {
     .option('--name <newName>', t('functionName'))
     .option('--slug <newSlug>', t('functionSlug'))
     .option('--status <newStatus>', t('functionStatus'))
+    .option(
+      '-r, --routes <routes>',
+      'Route configuration as JSON string or path to JSON file'
+    )
     .action(
       (options: {
         functionName?: string;
         name?: string;
         slug?: string;
         status?: string;
+        routes?: string;
       }) =>
         updateActionHandler({
           functionName: options.functionName,
           name: options.name,
           slug: options.slug,
           status: options.status,
+          routes: options.routes,
         }),
     );
 
