@@ -103,11 +103,11 @@ importers:
         version: 5.1.7
     devDependencies:
       '@alternatefutures/errors':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.0
+        version: 0.2.0
       '@alternatefutures/sdk':
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.2.4
+        version: 0.2.4
       '@alternatefutures/tester':
         specifier: ^0.1.0
         version: 0.1.0(graphql@15.10.1)
@@ -198,14 +198,17 @@ packages:
   '@alternatefutures/errors@0.1.0':
     resolution: {integrity: sha512-s0WHmeVcWxd/vDVStn+rNMg45iIO+XVZSqA4VhD5ymh49p27zcm0oVUh/KswdwxvyFRb2nd3JzXJF26jngXFGw==}
 
+  '@alternatefutures/errors@0.2.0':
+    resolution: {integrity: sha512-roY+Dj+VRKOLsnbH0oGc4ovVjmYboefUMChB5T3gPmaX7BPM5Fscxir3abiNpwqISD8YWRYqCBoDzgDdjvGuvA==}
+
   '@alternatefutures/functions-esbuild-config@0.1.0':
     resolution: {integrity: sha512-yOU/h+ClwbJOzVX13+lAXyTF+D0QMySn1DIz1nAgWaxRWyFlwh95LLb1iUA7gHmGjjilfUACeFkrw0Uj17cLTA==}
     engines: {node: '>=18'}
     peerDependencies:
       esbuild: '>=0.21.0'
 
-  '@alternatefutures/sdk@0.2.1':
-    resolution: {integrity: sha512-l6ZLLYIlCEiUkgVf4BaWi45Fy870YaT6JBAK22bvwT/gvy5wVXC/Bl8ExltQTtsoDlH7hjAqMGXgV452E3Qi4g==}
+  '@alternatefutures/sdk@0.2.4':
+    resolution: {integrity: sha512-yCTGPLwVxh1vKADlduwwxl/VREyWyJ01J5bxOCBdwbnXHEFqMDujMC+5yx0n8heSQtkbjOQMXluoSleX6xsq7A==}
     engines: {node: '>=18.18.2'}
 
   '@alternatefutures/tester@0.1.0':
@@ -3876,11 +3879,15 @@ snapshots:
     dependencies:
       nanoid: 3.3.11
 
+  '@alternatefutures/errors@0.2.0':
+    dependencies:
+      nanoid: 3.3.11
+
   '@alternatefutures/functions-esbuild-config@0.1.0(esbuild@0.21.5)':
     dependencies:
       esbuild: 0.21.5
 
-  '@alternatefutures/sdk@0.2.1':
+  '@alternatefutures/sdk@0.2.4':
     dependencies:
       '@noble/hashes': 1.8.0
       '@web-std/file': 3.0.3

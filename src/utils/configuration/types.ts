@@ -1,22 +1,3 @@
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
-
-export type FunctionRoute = {
-  /** Route path pattern (supports wildcards: *, :param) */
-  path: string;
-  /** Destination URL to proxy to */
-  destination: string;
-  /** HTTP methods this route handles (default: all) */
-  methods?: HttpMethod[];
-  /** Whether to preserve the original path when proxying (default: true) */
-  preservePath?: boolean;
-  /** Priority for route matching (lower = higher priority, default: 100) */
-  priority?: number;
-  /** Custom headers to add to proxied requests */
-  headers?: Record<string, string>;
-  /** Timeout in milliseconds (default: 30000) */
-  timeout?: number;
-};
-
 export type AlternateFuturesSiteConfig = {
   /** An unique sequence of random words that identifies the site. */
   slug: string;
@@ -26,13 +7,25 @@ export type AlternateFuturesSiteConfig = {
   buildCommand?: string;
 };
 
+/**
+ * Route configuration mapping path patterns to target URLs
+ * @example
+ * {
+ *   '/api/users/*': 'https://users-service.com',
+ *   '/api/products/*': 'https://products-service.com',
+ *   '/api/*': 'https://api.example.com',
+ *   '/*': 'https://default.com'
+ * }
+ */
+export type RouteConfig = Record<string, string>;
+
 export type AlternateFuturesFunctionConfig = {
   /** An unique sequence of random words that identifies the function. */
   name: string;
   /** Type identifier for function configuration */
   type: 'function';
-  /** Optional routing configuration for the function */
-  routes?: FunctionRoute[];
+  /** Optional routing configuration mapping path patterns to target URLs */
+  routes?: RouteConfig;
 };
 
 export type AlternateFuturesRootConfig = {

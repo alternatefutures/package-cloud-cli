@@ -15,6 +15,8 @@ import { waitUntilFileAvailable } from './wait/waitUntilFileAvailable';
 
 import { getWasmCodeFromPath } from './utils/getWasmCodeFromPath';
 import { uploadFunctionAssets } from './utils/uploadFunctionAssets';
+import { loadFunctionConfig } from './utils/loadFunctionConfig';
+import { validateRoutes } from './utils/routeValidation';
 
 type DeployActionArgs = {
   filePath?: string;
@@ -48,6 +50,33 @@ const deployAction: SdkGuardedFunction<DeployActionArgs> = async ({
   if (!functionToDeploy) {
     output.error(t('expectedNotFoundGeneric', { name: 'function' }));
     return;
+  }
+
+  // Load routes from config file if available
+  const { routes: configRoutes } = await loadFunctionConfig(functionToDeploy.name);
+
+  // Update function with routes from config if they exist
+  if (configRoutes && Object.keys(configRoutes).length > 0) {
+    const validation = validateRoutes(configRoutes);
+    if (!validation.valid) {
+      output.error(`Invalid routes in config file: ${validation.error}`);
+      return;
+    }
+
+    // Update the function with routes from config
+    try {
+      await sdk.functions().update({
+        id: functionToDeploy.id,
+        routes: configRoutes,
+      });
+      output.log(
+        `Updated function with ${Object.keys(configRoutes).length} route${Object.keys(configRoutes).length === 1 ? '' : 's'} from config file`,
+      );
+    } catch (error) {
+      output.warn(
+        `Failed to update routes from config: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
+    }
   }
 
   if (assetsPath && isSGX) {

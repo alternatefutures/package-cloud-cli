@@ -2,9 +2,9 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 
 import {
-  FleekFunctionInvalidWasmCodeError,
-  FleekFunctionPathNotValidError,
-  FleekFunctionWasmEncryptionFailedError,
+  AFFunctionInvalidWasmCodeError,
+  AFFunctionPathNotValidError,
+  AFFunctionWasmEncryptionFailedError,
 } from '@alternatefutures/errors';
 import cliProgress from 'cli-progress';
 import { encrypt } from 'eciesjs';
@@ -37,7 +37,7 @@ const enryptCode = async (args: { filePath: string }) => {
   const buffer = await getWasm(filePath);
   if (!buffer) {
     output.error(t('invalidWasmCode', { path: filePath }));
-    throw new FleekFunctionInvalidWasmCodeError({});
+    throw new AFFunctionInvalidWasmCodeError({});
   }
 
   const progressBar = new cliProgress.SingleBar(
@@ -70,7 +70,7 @@ const enryptCode = async (args: { filePath: string }) => {
     await fs.promises.writeFile(outFile, encryptedData);
   } catch (error) {
     progressBar.stop();
-    throw new FleekFunctionWasmEncryptionFailedError({});
+    throw new AFFunctionWasmEncryptionFailedError({});
   }
   progressBar.update(100);
   progressBar.stop();
@@ -84,7 +84,7 @@ export const getWasmCodeFromPath = async (args: {
   const { filePath } = args;
 
   if (!fs.existsSync(filePath)) {
-    throw new FleekFunctionPathNotValidError({ path: filePath });
+    throw new AFFunctionPathNotValidError({ path: filePath });
   }
 
   return enryptCode({ filePath });

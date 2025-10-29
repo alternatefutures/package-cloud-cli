@@ -1,4 +1,4 @@
-import { FleekFunctionsNotFoundError } from '@alternatefutures/errors';
+import { AFFunctionsNotFoundError } from '@alternatefutures/errors';
 import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
@@ -85,7 +85,7 @@ describe('Get function by name, or let the user choose from list', () => {
     const fakeSdk = new AlternateFuturesSdk({ accessTokenService });
     (fakeSdk.functions().list as Mock).mockResolvedValue([]);
     await expect(getFunctionOrPrompt({ sdk: fakeSdk })).rejects.toThrowError(
-      new FleekFunctionsNotFoundError({}),
+      new AFFunctionsNotFoundError({}),
     );
 
     expect(fakeSdk.functions().list).toHaveBeenCalledOnce();
