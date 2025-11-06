@@ -4,13 +4,13 @@ import { withGuards } from '../../guards/withGuards';
 
 type InvoicesOptions = {
   status?: string;
-  limit: number;
+  limit?: string;
 };
 
-const invoicesAction: SdkGuardedFunction<InvoicesOptions> = async ({ sdk }, options) => {
+const invoicesAction: SdkGuardedFunction<InvoicesOptions> = async ({ sdk, args }) => {
   const invoices = await sdk.billing().listInvoices({
-    status: options.status,
-    limit: options.limit,
+    status: args.status,
+    limit: args.limit ? Number(args.limit) : 50,
   });
 
   if (!invoices || invoices.length === 0) {

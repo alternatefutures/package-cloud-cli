@@ -26,7 +26,7 @@ export default (program: Command): Command => {
     .option('--status <status>', 'Filter by invoice status (DRAFT, OPEN, PAID, VOID)')
     .option('--limit <number>', 'Limit number of results', '50')
     .action((options: { status?: string; limit?: string }) =>
-      invoicesActionHandler({ status: options.status, limit: Number(options.limit) || 50 }),
+      invoicesActionHandler(options),
     );
 
   cmd
