@@ -2,7 +2,7 @@ import type { Command } from 'commander';
 
 import { t } from '../../utils/translation';
 import { createDomainActionHandler } from './create';
-// TODO: Re-enable when SDK v0.2.5+ adds custom domain support with createCustomDomain, listDomainsForSite, setPrimaryDomain methods
+// TODO: Re-enable when prompt dependencies are added
 // import { createCustomDomainActionHandler } from './create-custom';
 import { deleteDomainActionHandler } from './delete';
 import { detailDomainActionHandler } from './detail';
@@ -10,7 +10,6 @@ import { listDomainsActionHandler } from './list';
 import { verifyDomainActionHandler } from './verify';
 // import { provisionSslActionHandler } from './provision-ssl';
 // import { setPrimaryDomainActionHandler } from './set-primary';
-// TODO: Re-enable when SDK v0.2.5+ adds Web3 domain support
 // import { registerArnsActionHandler } from './register-arns';
 // import { registerEnsActionHandler } from './register-ens';
 // import { registerIpnsActionHandler } from './register-ipns';
@@ -84,8 +83,7 @@ export default (program: Command): Command => {
       verifyDomainActionHandler(options),
     );
 
-  // TODO: Re-enable when SDK v0.2.5+ adds custom domain support
-  // New custom domains commands
+  // TODO: Re-enable when prompt dependencies are added
   // cmd
   //   .command('create-custom')
   //   .option('--siteId <string>', t('siteIdToCreateDomainFor'))
@@ -107,10 +105,8 @@ export default (program: Command): Command => {
   //     }) => createCustomDomainActionHandler(options),
   //   );
 
-  // TODO: Re-enable when SDK v0.2.5+ adds SSL provisioning support
-  // SSL commands under 'domains ssl' subcommand
+  // TODO: Re-enable when prompt dependencies are added
   // const sslCmd = cmd.command('ssl').description('Manage SSL certificates');
-
   // sslCmd
   //   .command('provision')
   //   .option('--id <string>', 'Domain ID to provision SSL for')
@@ -121,7 +117,7 @@ export default (program: Command): Command => {
   //     provisionSslActionHandler(options),
   //   );
 
-  // TODO: Re-enable when SDK v0.2.5+ adds setPrimaryDomain support
+  // TODO: Re-enable when prompt dependencies are added
   // cmd
   //   .command('set-primary')
   //   .option('--siteId <string>', 'Site ID')
@@ -138,10 +134,8 @@ export default (program: Command): Command => {
   //     }) => setPrimaryDomainActionHandler(options),
   //   );
 
-  // TODO: Re-enable when SDK v0.2.5+ adds Web3 domain support
-  // Web3 domain commands
+  // TODO: Re-enable when prompt dependencies are added
   // const web3Cmd = cmd.command('web3').description('Manage Web3 domains');
-
   // web3Cmd
   //   .command('arns')
   //   .option('--siteId <string>', 'Site ID')
@@ -152,7 +146,6 @@ export default (program: Command): Command => {
   //     (options: { siteId?: string; siteSlug?: string; arnsName?: string }) =>
   //       registerArnsActionHandler(options),
   //   );
-
   // web3Cmd
   //   .command('ens')
   //   .option('--siteId <string>', 'Site ID')
@@ -163,7 +156,6 @@ export default (program: Command): Command => {
   //     (options: { siteId?: string; siteSlug?: string; ensName?: string }) =>
   //       registerEnsActionHandler(options),
   //   );
-
   // web3Cmd
   //   .command('ipns')
   //   .option('--siteId <string>', 'Site ID')

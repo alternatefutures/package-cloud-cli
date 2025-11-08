@@ -1,8 +1,7 @@
 import { Command } from 'commander';
 import cmdApplications from './commands/applications/index';
 import cmdAuth from './commands/auth/index';
-// TODO: Re-enable when SDK v0.2.5+ adds billing() support
-// import cmdBilling from './commands/billing/index';
+import cmdBilling from './commands/billing/index';
 import cmdDomains from './commands/domains/index';
 import cmdEns from './commands/ens/index';
 import cmdFunctions from './commands/functions/index';
@@ -68,8 +67,7 @@ export const init = ({ version, parser }: InitArgs) => {
   const commands = [
     cmdAuth,
     cmdApplications,
-    // TODO: Re-enable when SDK v0.2.5+ adds billing() support
-    // cmdBilling,
+    cmdBilling,
     cmdDomains,
     cmdEns,
     cmdGateways,

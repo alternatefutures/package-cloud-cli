@@ -2,8 +2,8 @@
 import type { SdkGuardedFunction } from '../../guards/types';
 import { output } from '../../cli';
 import { t } from '../../utils/translation';
-import { withGuards } from '../../guards';
-import { promptForDomainSelection } from './prompts/promptForDomainSelection';
+import { withGuards } from '../../guards/withGuards';
+import { promptForDomainSelection } from './prompts/promptDomainSelection';
 import prompts from 'prompts';
 
 type Args = {

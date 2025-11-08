@@ -4,7 +4,7 @@ import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
 import { t } from '../../utils/translation';
 import { getHostnameOrPrompt } from './prompts/getHostnameOrPrompt';
-import { promptForSiteSelection } from '../sites/prompts';
+import { promptForSiteSelection } from '../sites/prompts/promptSiteSelection';
 import prompts from 'prompts';
 
 export type CreateCustomDomainActionArgs = {

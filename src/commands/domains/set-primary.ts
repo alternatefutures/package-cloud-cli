@@ -2,9 +2,9 @@
 import type { SdkGuardedFunction } from '../../guards/types';
 import { output } from '../../cli';
 import { t } from '../../utils/translation';
-import { withGuards } from '../../guards';
-import { promptForDomainSelection } from './prompts/promptForDomainSelection';
-import { promptForSiteSelection } from '../sites/prompts';
+import { withGuards } from '../../guards/withGuards';
+import { promptForDomainSelection } from './prompts/promptDomainSelection';
+import { promptForSiteSelection } from '../sites/prompts/promptSiteSelection';
 
 type Args = {
   siteId?: string;
