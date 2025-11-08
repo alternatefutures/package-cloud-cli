@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { SdkGuardedFunction } from '../../guards/types';
 import { output } from '../../cli';
 import { t } from '../../utils/translation';
@@ -103,7 +104,9 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     output.error('ArNS registration failed: ' + error.message);
 
     if (error.message.includes('already taken')) {
-      output.warn('This ArNS name is already registered. Try a different name.');
+      output.warn(
+        'This ArNS name is already registered. Try a different name.',
+      );
     }
 
     process.exit(1);

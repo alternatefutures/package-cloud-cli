@@ -30,7 +30,7 @@ export default (program: Command): Command => {
     .option('--site <siteId>', t('functionsSite'))
     .option(
       '-r, --routes <routes>',
-      'Route configuration as JSON string or path to JSON file'
+      'Route configuration as JSON string or path to JSON file',
     )
     .description(t('functionsCreateDescription'))
     .action((options: { name?: string; site?: string; routes?: string }) =>
@@ -58,7 +58,7 @@ export default (program: Command): Command => {
     .option('--status <newStatus>', t('functionStatus'))
     .option(
       '-r, --routes <routes>',
-      'Route configuration as JSON string or path to JSON file'
+      'Route configuration as JSON string or path to JSON file',
     )
     .action(
       (options: {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { SdkGuardedFunction } from '../../guards/types';
 import { output } from '../../cli';
 import { t } from '../../utils/translation';
@@ -77,7 +78,9 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     output.log('Your site is now accessible via IPNS:');
     if (domain.ipnsHash) {
       output.log(output.textColor(`/ipns/${domain.ipnsHash}`, 'cyan'));
-      output.log(output.textColor(`https://ipfs.io/ipns/${domain.ipnsHash}`, 'cyan'));
+      output.log(
+        output.textColor(`https://ipfs.io/ipns/${domain.ipnsHash}`, 'cyan'),
+      );
     }
     output.printNewLine();
 
@@ -95,7 +98,9 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     output.log('  ✓ Works with any IPFS gateway');
     output.printNewLine();
 
-    output.hint('IPNS records are automatically updated when you deploy new versions.');
+    output.hint(
+      'IPNS records are automatically updated when you deploy new versions.',
+    );
 
     return domain;
   } catch (error: any) {

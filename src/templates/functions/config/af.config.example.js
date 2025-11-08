@@ -12,6 +12,6 @@ module.exports = {
     '/api/users/*': 'https://users-service.com',
     '/api/products/*': 'https://products-service.com',
     '/api/*': 'https://api.example.com',
-    '/*': 'https://default.com'
+    '/*': 'https://default.com',
   },
 };

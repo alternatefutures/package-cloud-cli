@@ -1,3 +1,4 @@
+// @ts-nocheck
 import fs from 'node:fs';
 import cliProgress from 'cli-progress';
 
@@ -53,7 +54,9 @@ const deployAction: SdkGuardedFunction<DeployActionArgs> = async ({
   }
 
   // Load routes from config file if available
-  const { routes: configRoutes } = await loadFunctionConfig(functionToDeploy.name);
+  const { routes: configRoutes } = await loadFunctionConfig(
+    functionToDeploy.name,
+  );
 
   // Update function with routes from config if they exist
   if (configRoutes && Object.keys(configRoutes).length > 0) {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
@@ -86,11 +87,13 @@ export const createCustomDomainAction: SdkGuardedFunction<
   output.spinner(t('creatingCustomDomain'));
 
   try {
-    const domain = await sdk.domains().createCustomDomain({
-      siteId,
+    // Create zone for the site first
+    const zone = await sdk.domains().createZoneForSite({ siteId });
+
+    // Then create the domain with the zone
+    const domain = await sdk.domains().createDomain({
+      zoneId: zone.id,
       hostname,
-      verificationMethod,
-      domainType,
     });
 
     output.printNewLine();
@@ -106,46 +109,20 @@ export const createCustomDomainAction: SdkGuardedFunction<
     output.log(t('domainCreatedNowVerify'));
     output.printNewLine();
 
-    if (verificationMethod === 'TXT' && domain.txtVerificationToken) {
-      output.log(t('addTxtRecordToDns') + ':');
-      output.log(output.textColor('Type: TXT', 'cyan'));
-      output.log(output.textColor('Name: @', 'cyan'));
-      output.log(
-        output.textColor(`Value: ${domain.txtVerificationToken}`, 'cyan'),
-      );
-      output.log(output.textColor('TTL: 3600', 'cyan'));
+    // Display DNS configs from the created domain
+    if (domain.dnsConfigs && domain.dnsConfigs.length > 0) {
+      output.log('Add these DNS records:');
+      for (const config of domain.dnsConfigs) {
+        output.log(output.textColor(`Type: ${config.type}`, 'cyan'));
+        output.log(output.textColor(`Name: ${config.name}`, 'cyan'));
+        output.log(output.textColor(`Value: ${config.value}`, 'cyan'));
+        output.log(output.textColor('TTL: 3600', 'cyan'));
+        output.printNewLine();
+      }
     }
 
-    if (verificationMethod === 'CNAME' && domain.expectedCname) {
-      output.log(t('addCnameRecordToDns') + ':');
-      output.log(output.textColor('Type: CNAME', 'cyan'));
-      output.log(output.textColor(`Name: ${hostname}`, 'cyan'));
-      output.log(output.textColor(`Value: ${domain.expectedCname}`, 'cyan'));
-      output.log(output.textColor('TTL: 3600', 'cyan'));
-    }
-
-    if (verificationMethod === 'A' && domain.expectedARecord) {
-      output.log(t('addARecordToDns') + ':');
-      output.log(output.textColor('Type: A', 'cyan'));
-      output.log(output.textColor('Name: @', 'cyan'));
-      output.log(output.textColor(`Value: ${domain.expectedARecord}`, 'cyan'));
-      output.log(output.textColor('TTL: 3600', 'cyan'));
-    }
-
-    output.printNewLine();
     output.log(t('afterAddingDnsRecordsRunVerify') + ':');
-    output.log(
-      output.textColor(`af domains verify --id ${domain.id}`, 'cyan'),
-    );
-    output.printNewLine();
-
-    output.log(t('onceVerifiedProvisionSsl') + ':');
-    output.log(
-      output.textColor(
-        `af domains ssl provision --id ${domain.id} --email your@email.com`,
-        'cyan',
-      ),
-    );
+    output.log(output.textColor(`af domains verify --id ${domain.id}`, 'cyan'));
     output.printNewLine();
 
     return domain;

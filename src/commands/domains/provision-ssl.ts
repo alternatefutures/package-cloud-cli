@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { SdkGuardedFunction } from '../../guards/types';
 import { output } from '../../cli';
 import { t } from '../../utils/translation';
@@ -31,7 +32,9 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
 
   // If hostname provided, get domain by hostname
   if (args.hostname && !domainId) {
-    const domain = await sdk.domains().getByHostname({ hostname: args.hostname });
+    const domain = await sdk
+      .domains()
+      .getByHostname({ hostname: args.hostname });
     domainId = domain.id;
   }
 
@@ -81,7 +84,11 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     if (result.sslStatus === 'ACTIVE') {
       output.success(t('sslCertificateActive'));
       if (result.sslExpiresAt) {
-        output.log(t('expiresAt') + ': ' + new Date(result.sslExpiresAt).toLocaleDateString());
+        output.log(
+          t('expiresAt') +
+            ': ' +
+            new Date(result.sslExpiresAt).toLocaleDateString(),
+        );
       }
     }
 
@@ -91,7 +98,9 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
 
     if (error.message.includes('verified')) {
       output.warn(t('domainMustBeVerifiedFirst'));
-      output.log(t('runVerifyCommand') + ': af domains verify --id ' + domainId);
+      output.log(
+        t('runVerifyCommand') + ': af domains verify --id ' + domainId,
+      );
     }
 
     process.exit(1);

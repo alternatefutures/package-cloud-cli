@@ -53,9 +53,11 @@ vi.mock('@alternatefutures/sdk/node', () => {
   };
 
   const sites = {
-    list: vi.fn().mockResolvedValue([
-      { id: 'site-123', slug: 'my-site', name: 'My Site' },
-    ]),
+    list: vi
+      .fn()
+      .mockResolvedValue([
+        { id: 'site-123', slug: 'my-site', name: 'My Site' },
+      ]),
     getBySlug: vi.fn().mockResolvedValue({
       id: 'site-123',
       slug: 'my-site',

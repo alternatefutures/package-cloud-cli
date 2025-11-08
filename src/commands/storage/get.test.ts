@@ -1,4 +1,7 @@
-import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import {
+  AlternateFuturesSdk,
+  PersonalAccessTokenService,
+} from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -109,7 +112,10 @@ vi.mock('@alternatefutures/sdk/node', () => {
   AlternateFuturesSdkMock.prototype.privateGateways = () => privateGateways;
   AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
+  return {
+    AlternateFuturesSdk: AlternateFuturesSdkMock,
+    PersonalAccessTokenService: vi.fn(),
+  };
 });
 
 describe('Get storage files/folder for the given cid or name', () => {

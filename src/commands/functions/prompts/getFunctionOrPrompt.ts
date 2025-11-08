@@ -1,5 +1,8 @@
 import { AFFunctionsNotFoundError } from '@alternatefutures/errors';
-import type { AFFunction, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
+import type {
+  AFFunction,
+  AlternateFuturesSdk,
+} from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';

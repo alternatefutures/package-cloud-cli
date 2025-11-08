@@ -23,11 +23,7 @@ export const getConfigurationPath = async ({
   }
 
   // Sorted by priority, we return only the first match
-  const supposedFilenames = [
-    'af.config.ts',
-    'af.config.js',
-    'af.config.json',
-  ];
+  const supposedFilenames = ['af.config.ts', 'af.config.js', 'af.config.json'];
 
   for (const supposedFilename of supposedFilenames) {
     const absolutePath = joinPath(process.cwd(), supposedFilename);

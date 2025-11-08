@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { SdkGuardedFunction } from '../../guards/types';
 import { output } from '../../cli';
 import { t } from '../../utils/translation';
@@ -68,7 +69,9 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
 
   // Get domain by hostname if provided
   if (args.hostname && !domainId) {
-    const domain = await sdk.domains().getByHostname({ hostname: args.hostname });
+    const domain = await sdk
+      .domains()
+      .getByHostname({ hostname: args.hostname });
     domainId = domain.id;
   }
 

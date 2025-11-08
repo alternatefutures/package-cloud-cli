@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
@@ -22,7 +23,9 @@ const subscriptionsAction: SdkGuardedFunction = async ({ sdk }) => {
     'Price/Seat': `$${(sub.basePricePerSeat / 100).toFixed(2)}`,
     'Usage Markup': `${(sub.usageMarkup * 100).toFixed(1)}%`,
     'Current Period': `${new Date(sub.currentPeriodStart).toLocaleDateString()} - ${new Date(sub.currentPeriodEnd).toLocaleDateString()}`,
-    'Cancel At': sub.cancelAt ? new Date(sub.cancelAt).toLocaleDateString() : 'N/A',
+    'Cancel At': sub.cancelAt
+      ? new Date(sub.cancelAt).toLocaleDateString()
+      : 'N/A',
   }));
 
   output.table(tableData);

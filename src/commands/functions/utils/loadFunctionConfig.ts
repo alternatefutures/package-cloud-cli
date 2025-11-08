@@ -1,5 +1,8 @@
 import { loadConfiguration } from '../../../utils/configuration/loadConfiguration';
-import type { AlternateFuturesFunctionConfig, RouteConfig } from '../../../utils/configuration/types';
+import type {
+  AlternateFuturesFunctionConfig,
+  RouteConfig,
+} from '../../../utils/configuration/types';
 
 type LoadFunctionConfigResult = {
   routes?: RouteConfig;

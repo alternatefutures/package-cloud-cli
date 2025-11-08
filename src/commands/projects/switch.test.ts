@@ -65,7 +65,9 @@ describe('Switch between projects', () => {
       switchProjectAction({ sdk: {} as AlternateFuturesSdk, args: {} }),
     ).resolves.toBeUndefined();
 
-    expect(getProjectOrPrompt).toHaveBeenCalledWith({ sdk: {} as AlternateFuturesSdk });
+    expect(getProjectOrPrompt).toHaveBeenCalledWith({
+      sdk: {} as AlternateFuturesSdk,
+    });
     expect(config.projectId.set).toHaveBeenCalledWith('secondProjetId');
     expect(output.success).toHaveBeenCalledWith(
       'You have switched to project "second project".',

@@ -1,5 +1,8 @@
 import { PrivateGatewaysNotFoundError } from '@alternatefutures/errors';
-import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import {
+  AlternateFuturesSdk,
+  PersonalAccessTokenService,
+} from '@alternatefutures/sdk/node';
 // eslint-disable-next-line no-restricted-imports
 import prompts from 'prompts';
 import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -45,7 +48,10 @@ vi.mock('@alternatefutures/sdk/node', () => {
 
   AlternateFuturesSdkMock.prototype.privateGateways = () => privateGateways;
 
-  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
+  return {
+    AlternateFuturesSdk: AlternateFuturesSdkMock,
+    PersonalAccessTokenService: vi.fn(),
+  };
 });
 
 type TestContext = {

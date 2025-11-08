@@ -9,7 +9,8 @@ const BUILD_DIST_PATHNAME = path.join(path.sep, 'dist');
 // Fallback path is the `src` used in tests
 const TEST_SRC_PATHNAME = path.join(path.sep, 'src');
 
-const leadingSlash = (str: string) => (str.startsWith(path.sep) ? str : `${path.sep}${str}`);
+const leadingSlash = (str: string) =>
+  str.startsWith(path.sep) ? str : `${path.sep}${str}`;
 
 const resolvePath = (filename: string) => {
   /* eslint-disable no-process-env */

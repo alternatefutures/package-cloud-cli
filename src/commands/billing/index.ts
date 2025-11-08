@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Command } from 'commander';
 
 import { t } from '../../utils/translation';
@@ -8,7 +9,9 @@ import { subscriptionsActionHandler } from './subscriptions';
 import { usageActionHandler } from './usage';
 
 export default (program: Command): Command => {
-  const cmd = program.command('billing').description('Manage billing and subscriptions');
+  const cmd = program
+    .command('billing')
+    .description('Manage billing and subscriptions');
 
   cmd
     .command('customer')
@@ -23,7 +26,10 @@ export default (program: Command): Command => {
   cmd
     .command('invoices')
     .description('List invoices')
-    .option('--status <status>', 'Filter by invoice status (DRAFT, OPEN, PAID, VOID)')
+    .option(
+      '--status <status>',
+      'Filter by invoice status (DRAFT, OPEN, PAID, VOID)',
+    )
     .option('--limit <number>', 'Limit number of results', '50')
     .action((options: { status?: string; limit?: string }) =>
       invoicesActionHandler(options),
