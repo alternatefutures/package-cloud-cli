@@ -1,4 +1,8 @@
-import type { Domain, DomainStatus, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
+import type {
+  Domain,
+  DomainStatus,
+  AlternateFuturesSdk,
+} from '@alternatefutures/sdk/node';
 
 type DomainFilter = {
   status?: DomainStatus;

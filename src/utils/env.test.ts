@@ -18,7 +18,8 @@ describe('Parse environment variables', () => {
 
       expect(parsed).toMatchObject({
         'process.env.UI__APP_URL': '"https://mock.alternatefutures.ai"',
-        'process.env.SDK__GRAPHQL_API_URL': '"https://mock.alternatefutures.ai/graphql"',
+        'process.env.SDK__GRAPHQL_API_URL':
+          '"https://mock.alternatefutures.ai/graphql"',
       });
     });
 

@@ -1,4 +1,8 @@
-import type { AlternateFuturesSdk, PrivateGateway, Site } from '@alternatefutures/sdk/node';
+import type {
+  AlternateFuturesSdk,
+  PrivateGateway,
+  Site,
+} from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';

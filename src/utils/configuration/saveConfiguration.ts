@@ -7,7 +7,10 @@ import {
   getConfigTemplateByTypeName,
 } from '../configuration';
 
-import { type AlternateFuturesRootConfig, AlternateFuturesSiteConfigFormats } from './types';
+import {
+  type AlternateFuturesRootConfig,
+  AlternateFuturesSiteConfigFormats,
+} from './types';
 
 import {
   ExpectedOneOfValuesError,

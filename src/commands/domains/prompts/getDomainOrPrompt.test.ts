@@ -34,7 +34,10 @@ vi.mock('@alternatefutures/sdk/node', () => {
 
   AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
+  return {
+    AlternateFuturesSdk: AlternateFuturesSdkMock,
+    PersonalAccessTokenService: vi.fn(),
+  };
 });
 
 describe('Get domain by id, hostname or let the user choose from list', () => {

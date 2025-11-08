@@ -8,7 +8,10 @@ import ts from 'typescript';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { fileExists } from '../fs';
 import { saveConfiguration } from './saveConfiguration';
-import { type AlternateFuturesRootConfig, AlternateFuturesSiteConfigFormats } from './types';
+import {
+  type AlternateFuturesRootConfig,
+  AlternateFuturesSiteConfigFormats,
+} from './types';
 
 const clearConfigFile = async ({
   configFilePath,
@@ -237,7 +240,9 @@ describe('The saveConfiguration utils', () => {
       const buf = await fs.readFile(configFilePath as string);
       const content = buf.toString();
 
-      expect(content).toContain("import('@alternatefutures/cli').AlternateFuturesConfig");
+      expect(content).toContain(
+        "import('@alternatefutures/cli').AlternateFuturesConfig",
+      );
       expect(content).toContain('module.exports');
     });
 
@@ -294,7 +299,8 @@ describe('The saveConfiguration utils', () => {
     let format: AlternateFuturesSiteConfigFormats;
 
     beforeEach(() => {
-      config = ': 12345, foo, { bar: 1}' as unknown as AlternateFuturesRootConfig;
+      config =
+        ': 12345, foo, { bar: 1}' as unknown as AlternateFuturesRootConfig;
       format = AlternateFuturesSiteConfigFormats.JSON;
     });
 

@@ -6,7 +6,9 @@ import { AlternateFuturesSiteConfigFormats } from '../../../utils/configuration/
 
 const choices = Object.keys(AlternateFuturesSiteConfigFormats).map((name) => {
   const value =
-    AlternateFuturesSiteConfigFormats[name as keyof typeof AlternateFuturesSiteConfigFormats];
+    AlternateFuturesSiteConfigFormats[
+      name as keyof typeof AlternateFuturesSiteConfigFormats
+    ];
 
   const configFile = getConfigFileByTypeValue(value);
 

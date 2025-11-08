@@ -2,10 +2,17 @@ import type { Command } from 'commander';
 
 import { t } from '../../utils/translation';
 import { createDomainActionHandler } from './create';
+// TODO: Re-enable when prompt dependencies are added
+// import { createCustomDomainActionHandler } from './create-custom';
 import { deleteDomainActionHandler } from './delete';
 import { detailDomainActionHandler } from './detail';
 import { listDomainsActionHandler } from './list';
 import { verifyDomainActionHandler } from './verify';
+// import { provisionSslActionHandler } from './provision-ssl';
+// import { setPrimaryDomainActionHandler } from './set-primary';
+// import { registerArnsActionHandler } from './register-arns';
+// import { registerEnsActionHandler } from './register-ens';
+// import { registerIpnsActionHandler } from './register-ipns';
 
 export default (program: Command): Command => {
   const cmd = program.command('domains').description(t('domainsDesc'));
@@ -75,6 +82,90 @@ export default (program: Command): Command => {
     .action((options: { hostname?: string }) =>
       verifyDomainActionHandler(options),
     );
+
+  // TODO: Re-enable when prompt dependencies are added
+  // cmd
+  //   .command('create-custom')
+  //   .option('--siteId <string>', t('siteIdToCreateDomainFor'))
+  //   .option('--siteSlug <string>', t('slugCreateDomainFor'))
+  //   .option('--hostname <string>', t('hostnameCreateDomainFor'))
+  //   .option(
+  //     '--verificationMethod <string>',
+  //     'Verification method: TXT, CNAME, or A',
+  //   )
+  //   .option('--domainType <string>', 'Domain type: WEB2, ARNS, ENS, or IPNS')
+  //   .description('Create custom domain with SSL support')
+  //   .action(
+  //     (options: {
+  //       siteId?: string;
+  //       siteSlug?: string;
+  //       hostname?: string;
+  //       verificationMethod?: 'TXT' | 'CNAME' | 'A';
+  //       domainType?: 'WEB2' | 'ARNS' | 'ENS' | 'IPNS';
+  //     }) => createCustomDomainActionHandler(options),
+  //   );
+
+  // TODO: Re-enable when prompt dependencies are added
+  // const sslCmd = cmd.command('ssl').description('Manage SSL certificates');
+  // sslCmd
+  //   .command('provision')
+  //   .option('--id <string>', 'Domain ID to provision SSL for')
+  //   .option('--hostname <string>', 'Domain hostname to provision SSL for')
+  //   .option('--email <string>', "Email for Let's Encrypt notifications")
+  //   .description('Provision SSL certificate for domain')
+  //   .action((options: { id?: string; hostname?: string; email?: string }) =>
+  //     provisionSslActionHandler(options),
+  //   );
+
+  // TODO: Re-enable when prompt dependencies are added
+  // cmd
+  //   .command('set-primary')
+  //   .option('--siteId <string>', 'Site ID')
+  //   .option('--siteSlug <string>', 'Site slug')
+  //   .option('--domainId <string>', 'Domain ID to set as primary')
+  //   .option('--hostname <string>', 'Domain hostname to set as primary')
+  //   .description('Set a domain as the primary domain for a site')
+  //   .action(
+  //     (options: {
+  //       siteId?: string;
+  //       siteSlug?: string;
+  //       domainId?: string;
+  //       hostname?: string;
+  //     }) => setPrimaryDomainActionHandler(options),
+  //   );
+
+  // TODO: Re-enable when prompt dependencies are added
+  // const web3Cmd = cmd.command('web3').description('Manage Web3 domains');
+  // web3Cmd
+  //   .command('arns')
+  //   .option('--siteId <string>', 'Site ID')
+  //   .option('--siteSlug <string>', 'Site slug')
+  //   .option('--arnsName <string>', 'ArNS name (e.g., my-site)')
+  //   .description('Register ArNS domain on Arweave')
+  //   .action(
+  //     (options: { siteId?: string; siteSlug?: string; arnsName?: string }) =>
+  //       registerArnsActionHandler(options),
+  //   );
+  // web3Cmd
+  //   .command('ens')
+  //   .option('--siteId <string>', 'Site ID')
+  //   .option('--siteSlug <string>', 'Site slug')
+  //   .option('--ensName <string>', 'ENS domain (e.g., mysite.eth)')
+  //   .description('Link ENS domain')
+  //   .action(
+  //     (options: { siteId?: string; siteSlug?: string; ensName?: string }) =>
+  //       registerEnsActionHandler(options),
+  //   );
+  // web3Cmd
+  //   .command('ipns')
+  //   .option('--siteId <string>', 'Site ID')
+  //   .option('--siteSlug <string>', 'Site slug')
+  //   .option('--ipnsName <string>', 'IPNS name (optional)')
+  //   .description('Create IPNS name')
+  //   .action(
+  //     (options: { siteId?: string; siteSlug?: string; ipnsName?: string }) =>
+  //       registerIpnsActionHandler(options),
+  //   );
 
   return cmd;
 };

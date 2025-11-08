@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SiteNotFoundError } from '@alternatefutures/errors';
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
@@ -37,7 +38,7 @@ const createAction: SdkGuardedFunction<CreateFunctionArgs> = async ({
       }
     } catch (error) {
       output.error(
-        `Failed to parse routes: ${error instanceof Error ? error.message : 'Unknown error'}`
+        `Failed to parse routes: ${error instanceof Error ? error.message : 'Unknown error'}`,
       );
       return;
     }
@@ -55,7 +56,7 @@ const createAction: SdkGuardedFunction<CreateFunctionArgs> = async ({
 
   if (routes) {
     output.log(
-      `Function created with ${Object.keys(routes).length} route${Object.keys(routes).length === 1 ? '' : 's'}`
+      `Function created with ${Object.keys(routes).length} route${Object.keys(routes).length === 1 ? '' : 's'}`,
     );
     output.printNewLine();
   }

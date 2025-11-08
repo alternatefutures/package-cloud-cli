@@ -1,5 +1,8 @@
 import { ProjectsNotFoundError } from '@alternatefutures/errors';
-import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import {
+  AlternateFuturesSdk,
+  PersonalAccessTokenService,
+} from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
@@ -24,7 +27,10 @@ vi.mock('@alternatefutures/sdk/node', () => {
 
   AlternateFuturesSdkMock.prototype.projects = () => projects;
 
-  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
+  return {
+    AlternateFuturesSdk: AlternateFuturesSdkMock,
+    PersonalAccessTokenService: vi.fn(),
+  };
 });
 
 describe('Get project by its id or let the user choose from list', () => {

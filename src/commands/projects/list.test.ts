@@ -1,4 +1,7 @@
-import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import {
+  AlternateFuturesSdk,
+  PersonalAccessTokenService,
+} from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
@@ -42,7 +45,10 @@ vi.mock('@alternatefutures/sdk/node', () => {
 
   AlternateFuturesSdkMock.prototype.projects = () => projects;
 
-  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
+  return {
+    AlternateFuturesSdk: AlternateFuturesSdkMock,
+    PersonalAccessTokenService: vi.fn(),
+  };
 });
 
 describe('List projects in which the user has memebership', () => {

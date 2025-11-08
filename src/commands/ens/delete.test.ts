@@ -1,5 +1,8 @@
 import { EnsRecordNotFoundError } from '@alternatefutures/errors';
-import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import {
+  AlternateFuturesSdk,
+  PersonalAccessTokenService,
+} from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import { output as fakeOutput } from '../../cli';
@@ -52,7 +55,10 @@ vi.mock('@alternatefutures/sdk/node', () => {
 
   AlternateFuturesSdkMock.prototype.ens = () => ens;
 
-  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
+  return {
+    AlternateFuturesSdk: AlternateFuturesSdkMock,
+    PersonalAccessTokenService: vi.fn(),
+  };
 });
 
 describe('Delete ENS record', () => {

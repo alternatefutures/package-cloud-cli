@@ -24,7 +24,9 @@ describe('loadFunctionConfig', () => {
   });
 
   it('should return empty object when config file not found', async () => {
-    vi.mocked(loadConfiguration).mockRejectedValue(new Error('Config not found'));
+    vi.mocked(loadConfiguration).mockRejectedValue(
+      new Error('Config not found'),
+    );
 
     const result = await loadFunctionConfig();
     expect(result).toEqual({});

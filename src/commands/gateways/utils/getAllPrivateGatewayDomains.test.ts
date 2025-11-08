@@ -1,4 +1,7 @@
-import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import {
+  AlternateFuturesSdk,
+  PersonalAccessTokenService,
+} from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -36,7 +39,10 @@ vi.mock('@alternatefutures/sdk/node', () => {
 
   AlternateFuturesSdkMock.prototype.domains = () => domains;
 
-  return { AlternateFuturesSdk: AlternateFuturesSdkMock, PersonalAccessTokenService: vi.fn() };
+  return {
+    AlternateFuturesSdk: AlternateFuturesSdkMock,
+    PersonalAccessTokenService: vi.fn(),
+  };
 });
 
 describe('Get domains assigned to all private gateways under current project', () => {

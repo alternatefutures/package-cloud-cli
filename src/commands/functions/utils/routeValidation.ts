@@ -6,7 +6,10 @@ export type { RouteConfig };
  * Validates a route configuration object
  * Matches validation logic from backend
  */
-export function validateRoutes(routes: any): { valid: boolean; error?: string } {
+export function validateRoutes(routes: any): {
+  valid: boolean;
+  error?: string;
+} {
   if (!routes) {
     return { valid: true };
   }
@@ -83,7 +86,7 @@ export async function parseRoutes(routesInput: string): Promise<RouteConfig> {
       return JSON.parse(fileContent);
     } catch (fileError) {
       throw new Error(
-        `Failed to parse routes. Expected JSON string or path to JSON file.\nJSON parse error: ${jsonError instanceof Error ? jsonError.message : 'Unknown'}\nFile read error: ${fileError instanceof Error ? fileError.message : 'Unknown'}`
+        `Failed to parse routes. Expected JSON string or path to JSON file.\nJSON parse error: ${jsonError instanceof Error ? jsonError.message : 'Unknown'}\nFile read error: ${fileError instanceof Error ? fileError.message : 'Unknown'}`,
       );
     }
   }

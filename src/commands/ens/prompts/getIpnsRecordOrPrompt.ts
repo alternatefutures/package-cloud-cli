@@ -1,4 +1,7 @@
-import type { AlternateFuturesSdk, IpnsRecord } from '@alternatefutures/sdk/node';
+import type {
+  AlternateFuturesSdk,
+  IpnsRecord,
+} from '@alternatefutures/sdk/node';
 
 import { output } from '../../../cli';
 import { selectPrompt } from '../../../prompts/selectPrompt';

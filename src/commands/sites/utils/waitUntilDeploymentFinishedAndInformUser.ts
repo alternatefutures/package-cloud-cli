@@ -40,9 +40,7 @@ export const waitUntilDeploymentFinishedAndInformUser = async ({
     output.log(
       `${t('commonWaitAndCheckStatusViaCmd', { subject: t('deploymentStatus') })}`,
     );
-    output.log(
-      output.textColor(`af sites deployments --id ${siteId}`, 'cyan'),
-    );
+    output.log(output.textColor(`af sites deployments --id ${siteId}`, 'cyan'));
 
     return;
   }

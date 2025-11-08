@@ -1,4 +1,7 @@
-import type { AlternateFuturesSdk, StoragePin } from '@alternatefutures/sdk/node';
+import type {
+  AlternateFuturesSdk,
+  StoragePin,
+} from '@alternatefutures/sdk/node';
 import {
   getIpfsGatewayUrl,
   getPrivateIpfsGatewayUrl,

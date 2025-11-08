@@ -1,4 +1,7 @@
-import { AlternateFuturesSdk, PersonalAccessTokenService } from '@alternatefutures/sdk/node';
+import {
+  AlternateFuturesSdk,
+  PersonalAccessTokenService,
+} from '@alternatefutures/sdk/node';
 import { getDefined } from '../defined';
 
 import { output } from '../cli';

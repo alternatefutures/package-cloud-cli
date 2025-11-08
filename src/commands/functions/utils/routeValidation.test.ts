@@ -35,7 +35,8 @@ describe('validateRoutes', () => {
   it('should reject path patterns not starting with /', () => {
     expect(validateRoutes({ 'api/test': 'https://example.com' })).toEqual({
       valid: false,
-      error: 'Invalid path pattern "api/test". Path patterns must start with "/"',
+      error:
+        'Invalid path pattern "api/test". Path patterns must start with "/"',
     });
   });
 
@@ -49,14 +50,16 @@ describe('validateRoutes', () => {
   it('should reject invalid URL formats', () => {
     expect(validateRoutes({ '/api': 'not-a-url' })).toEqual({
       valid: false,
-      error: 'Invalid target URL "not-a-url" for path "/api". Must be a valid URL',
+      error:
+        'Invalid target URL "not-a-url" for path "/api". Must be a valid URL',
     });
   });
 
   it('should reject URLs without http/https protocol', () => {
     expect(validateRoutes({ '/api': 'ftp://example.com' })).toEqual({
       valid: false,
-      error: 'Invalid target URL "ftp://example.com" for path "/api". Must use http:// or https:// protocol',
+      error:
+        'Invalid target URL "ftp://example.com" for path "/api". Must use http:// or https:// protocol',
     });
   });
 

@@ -1,5 +1,8 @@
 import { IpnsRecordsNotFoundError } from '@alternatefutures/errors';
-import type { AlternateFuturesSdk, IpnsRecord } from '@alternatefutures/sdk/node';
+import type {
+  AlternateFuturesSdk,
+  IpnsRecord,
+} from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';

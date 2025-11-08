@@ -1,4 +1,7 @@
-import type { EnsRecord, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
+import type {
+  EnsRecord,
+  AlternateFuturesSdk,
+} from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 
