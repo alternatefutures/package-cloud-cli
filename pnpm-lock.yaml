@@ -73,8 +73,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       multiformats:
-        specifier: ^9.9.0
-        version: 9.9.0
+        specifier: ^13.4.1
+        version: 13.4.1
       nanoid:
         specifier: ^3.3.4
         version: 3.3.11
@@ -2653,6 +2653,9 @@ packages:
   multicodec@3.2.1:
     resolution: {integrity: sha512-+expTPftro8VAW8kfvcuNNNBgb9gPeNYV9dn+z1kJRWF2vih+/S79f2RVeIwmrJBUJ6NT9IUPWnZDQvegEh5pw==}
     deprecated: This module has been superseded by the multiformats module
+
+  multiformats@13.4.1:
+    resolution: {integrity: sha512-VqO6OSvLrFVAYYjgsr8tyv62/rCQhPgsZUXLTqoFLSgdkgiUYKYeArbt1uWLlEpkjxQe+P0+sHlbPEte1Bi06Q==}
 
   multiformats@9.9.0:
     resolution: {integrity: sha512-HoMUjhH9T8DDBNT+6xzkrd9ga/XiBI4xLr58LJACwK6G3HTOPeMz4nB4KJs33L2BelrIJa7P0VuNaVF3hMYfjg==}
@@ -6732,6 +6735,8 @@ snapshots:
     dependencies:
       uint8arrays: 3.1.1
       varint: 6.0.0
+
+  multiformats@13.4.1: {}
 
   multiformats@9.9.0: {}
 
