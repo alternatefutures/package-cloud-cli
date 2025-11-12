@@ -4,7 +4,9 @@
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-blue.svg)](https://conventionalcommits.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Tests](https://github.com/alternatefutures/cloud-cli/actions/workflows/test-runner.yml/badge.svg)
+![Tests](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/test-runner.yml/badge.svg)
+![Security](https://img.shields.io/badge/security-audited-brightgreen.svg)
+[![CodeQL](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/codeql.yml/badge.svg)](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/codeql.yml)
 
 Alternate Futures CLI provides a unified command line interface to Alternate Futures Cloud.
 
@@ -12,6 +14,8 @@ Alternate Futures CLI provides a unified command line interface to Alternate Fut
 
 * [🤖 Install](#install)
 * [🔐 Authentication](#authentication)
+* [🌐 Decentralization & Censorship Resistance](#decentralization--censorship-resistance)
+* [🛡️ Security](#security)
 * [👷‍♀️Development](#development)
   - [Code format](#code-format)
   - [Changeset](#changeset)
@@ -20,6 +24,7 @@ Alternate Futures CLI provides a unified command line interface to Alternate Fut
 * [🙏 Contributing](#contributing)
   - [Branching strategy](#branching-strategy)
   - [Contributing](#conventional-commits)
+  - [Code of Conduct](./CODE_OF_CONDUCT.md)
 * [⏱️ Changelog](./CHANGELOG.md)
 
 ## Requirements
@@ -43,7 +48,7 @@ For a quick start, learn the [basic commands](#basic-commands), or alternatively
 
 ## Development
 
-For developers looking to contribute to the CLI tool itself, [clone](https://github.com/alternatefutures/cloud-cli) the repository and follow the [contribution guide](#contributing).
+For developers looking to contribute to the CLI tool itself, [clone](https://github.com/alternatefutures/package-cloud-cli) the repository and follow the [contribution guide](#contributing).
 
 Once cloned, you'll have to set up the local development environment, e.g. to have access to the source-code, iterate, run tests and much more.
 
@@ -182,6 +187,96 @@ export AF_PROJECT_ID="your-project-id"
 
 💡 **Note:** As of v0.2.0, the legacy environment variables `FLEEK_TOKEN` and `FLEEK_PROJECT_ID` are deprecated. Please use `AF_TOKEN` and `AF_PROJECT_ID` instead.
 
+## Decentralization & Censorship Resistance
+
+Alternate Futures is built on decentralized infrastructure, ensuring your applications are **censorship-resistant** and **unstoppable**.
+
+### 🌍 Decentralized Storage & Naming
+
+| Technology | Purpose | Command |
+|-----------|---------|---------|
+| **IPFS** | Decentralized content storage | `af ipfs add ./file` |
+| **IPNS** | Mutable pointers to IPFS content | `af ipns create --name myapp` |
+| **ENS** | Human-readable .eth domains | `af domains register-ens --domain myapp.eth` |
+| **Arweave** | Permanent, pay-once storage | `af domains register-arns --domain mysite` |
+
+### Quick Start: Deploy to IPFS
+
+```bash
+# Deploy static site to decentralized IPFS network
+af sites deploy --ipfs
+
+# Create updatable IPNS record
+af ipns create --name my-website --hash QmXxxx...
+
+# Register human-readable ENS domain
+af domains register-ens --domain myapp.eth --ipns k51qzi5uqu5...
+```
+
+### Why Decentralization?
+
+✅ **No Single Point of Failure** - Content distributed across global network
+✅ **Censorship Resistant** - No authority can take down your content
+✅ **Immutable & Verifiable** - Content addressed by cryptographic hash
+✅ **Cost Effective** - No server hosting fees
+✅ **Privacy Focused** - No tracking or analytics by default
+
+### Architecture
+
+```
+User Browser → ENS (myapp.eth) → IPNS → IPFS → Distributed Nodes
+```
+
+### Learn More
+
+- **[Complete Decentralization Guide](./docs/DECENTRALIZATION.md)** - In-depth documentation
+- **[IPFS Commands](./docs/DECENTRALIZATION.md#decentralized-storage-ipfs)** - Upload to IPFS
+- **[IPNS Guide](./docs/DECENTRALIZATION.md#mutable-addressing-ipns)** - Mutable content addressing
+- **[ENS Domains](./docs/DECENTRALIZATION.md#decentralized-naming-ens)** - Human-readable names
+- **[Arweave Storage](./docs/DECENTRALIZATION.md#permanent-storage-arweave)** - Permanent archival
+- **[Best Practices](./docs/DECENTRALIZATION.md#best-practices)** - Production deployment patterns
+
+## Security
+
+Security is a top priority for Alternate Futures. We maintain comprehensive security practices to protect our users and their data.
+
+### Security Status
+
+- ✅ **0 Known Vulnerabilities** - All dependencies regularly audited
+- ✅ **Automated Security Scanning** - Daily vulnerability checks and CodeQL analysis
+- ✅ **Secret Protection** - TruffleHog scans for leaked credentials
+- ✅ **Dependency Monitoring** - Weekly Dependabot updates
+
+### Resources
+
+- [**Security Policy (SECURITY.md)**](./SECURITY.md) - Vulnerability reporting and security best practices
+- [**Security Guidelines (docs/SECURITY_GUIDELINES.md)**](./docs/SECURITY_GUIDELINES.md) - Developer security guidelines
+- [**Security Improvements Summary**](./SECURITY_IMPROVEMENTS.md) - Recent security enhancements
+- [**Report a Vulnerability**](mailto:security@alternatefutures.ai) - Private security disclosure
+
+### Best Practices
+
+**For End Users:**
+- Keep the CLI updated to the latest version
+- Never commit credentials or `.env` files
+- Use environment variables for tokens in CI/CD
+- Rotate access tokens regularly
+
+**For Developers:**
+- Run `pnpm audit` before committing
+- Review the [Security Guidelines](./docs/SECURITY_GUIDELINES.md)
+- Complete the security checklist in PR templates
+- Validate all user input
+
+### Automated Security
+
+This repository includes:
+- **CodeQL Analysis** - Automated code security scanning
+- **Dependabot** - Automated dependency updates
+- **Secret Scanning** - Detection of committed secrets
+- **Dependency Review** - PR-based vulnerability blocking
+- **Daily Audits** - Continuous vulnerability monitoring
+
 ## Basic commands
 
 The AlternateFutures CLI command has the following structure:
@@ -213,7 +308,7 @@ af --version
 
 This section guides you through the process of contributing to our open-source project. From creating a feature branch to submitting a pull request, get started by:
 
-1. Fork the project [here](https://github.com/alternatefutures/cloud-cli)
+1. Fork the project [here](https://github.com/alternatefutures/package-cloud-cli)
 2. Create your feature branch using our [branching strategy](#branching-strategy), e.g. `git checkout -b feat/my-new-feature`
 3. Run the tests: `pnpm test`
 4. Commit your changes by following our [commit conventions](#conventional-commits), e.g. `git commit -m 'chore: 🤖 my contribution description'`

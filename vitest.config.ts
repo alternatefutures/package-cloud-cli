@@ -11,10 +11,10 @@ export default defineConfig(
         inline: ['vitest-mock-process'],
       },
       coverage: {
-        branches: 70,
-        functions: 40,
-        lines: 45,
-        statements: 45,
+        branches: 75,
+        functions: 60,
+        lines: 60,
+        statements: 60,
       },
     },
   })

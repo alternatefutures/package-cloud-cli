@@ -16,7 +16,41 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "security": {
+        "noDangerouslySetInnerHtml": "error",
+        "noGlobalEval": "error"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "warn",
+        "noAssignInExpressions": "error",
+        "noAsyncPromiseExecutor": "error",
+        "noCatchAssign": "error",
+        "noCommentText": "warn",
+        "noCompareNegZero": "error",
+        "noConsoleLog": "warn",
+        "noConstEnum": "warn",
+        "noControlCharactersInRegex": "error",
+        "noDebugger": "error",
+        "noDoubleEquals": "warn",
+        "noDuplicateCase": "error",
+        "noDuplicateClassMembers": "error",
+        "noDuplicateObjectKeys": "error",
+        "noEmptyBlockStatements": "warn",
+        "noExplicitAny": "warn",
+        "noFallthroughSwitchClause": "error",
+        "noGlobalAssign": "error",
+        "noRedeclare": "error",
+        "noShadowRestrictedNames": "error",
+        "noUnsafeDeclarationMerging": "error",
+        "noUnsafeNegation": "error"
+      },
+      "complexity": {
+        "noBannedTypes": "warn",
+        "noForEach": "off",
+        "noUselessConstructor": "warn",
+        "useOptionalChain": "warn"
+      }
     }
   },
   "javascript": {

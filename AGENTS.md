@@ -120,8 +120,8 @@ export const deployActionHandler = withGuards(deployAction, {
 ### Setup
 ```bash
 # Clone and install dependencies
-git clone https://github.com/alternatefutures/cloud-cli.git
-cd cloud-cli
+git clone https://github.com/alternatefutures/package-cloud-cli.git
+cd package-cloud-cli
 pnpm install
 
 # Link CLI globally for testing
@@ -505,7 +505,7 @@ af whoami
 
 See the main [README.md](./README.md) for contribution guidelines, branching strategy, and commit conventions.
 
-For questions or issues, open an issue at: https://github.com/alternatefutures/cloud-cli/issues
+For questions or issues, open an issue at: https://github.com/alternatefutures/package-cloud-cli/issues
 
 ---
 
