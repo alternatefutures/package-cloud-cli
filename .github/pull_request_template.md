@@ -26,6 +26,13 @@ Clear and short explanation here.
 
 - [ ] Sensitive data has been identified and is being protected properly
 - [ ] Injection has been prevented (parameterized queries, no eval or system calls)
+- [ ] No hardcoded secrets, tokens, API keys, or passwords
+- [ ] Input validation is implemented where necessary
+- [ ] Authentication and authorization checks are in place
+- [ ] Error messages don't leak sensitive information
+- [ ] Dependencies have no known security vulnerabilities (`pnpm audit` passes)
+- [ ] Secrets are stored in environment variables or secure storage
+- [ ] No new security warnings from CodeQL or linters
 
 ## Preview?
 
