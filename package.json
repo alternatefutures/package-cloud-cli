@@ -88,7 +88,7 @@
     "@types/ansi-escapes": "3.0.1",
     "@types/cli-progress": "^3.11.5",
     "@types/eslint": "8.56.2",
-    "@types/eslint-scope": "3.7.7",
+    "@types/eslint-scope": "8.3.2",
     "@types/estree": "1.0.5",
     "@types/glob": "^8.0.1",
     "@types/lodash": "^4.14.191",
