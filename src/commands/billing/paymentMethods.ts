@@ -25,15 +25,14 @@ const paymentMethodsAction: SdkGuardedFunction = async ({ sdk }) => {
         Default: method.isDefault ? '✓' : '',
         Created: new Date(method.createdAt).toLocaleDateString(),
       };
-    } else {
-      return {
-        Type: 'Crypto',
-        Details: `${method.blockchain}: ${method.walletAddress?.substring(0, 10)}...${method.walletAddress?.substring(method.walletAddress.length - 8)}`,
-        Expiry: 'N/A',
-        Default: method.isDefault ? '✓' : '',
-        Created: new Date(method.createdAt).toLocaleDateString(),
-      };
     }
+    return {
+      Type: 'Crypto',
+      Details: `${method.blockchain}: ${method.walletAddress?.substring(0, 10)}...${method.walletAddress?.substring(method.walletAddress.length - 8)}`,
+      Expiry: 'N/A',
+      Default: method.isDefault ? '✓' : '',
+      Created: new Date(method.createdAt).toLocaleDateString(),
+    };
   });
 
   output.table(tableData);

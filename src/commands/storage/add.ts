@@ -2,8 +2,8 @@ import { existsSync } from 'node:fs';
 import { basename } from 'node:path';
 
 import {
-  getPrivateIpfsGatewayUrl,
   getIpfsGatewayUrl,
+  getPrivateIpfsGatewayUrl,
 } from '@alternatefutures/utils-ipfs';
 import cliProgress from 'cli-progress';
 import { filesFromPaths } from 'files-from-path';

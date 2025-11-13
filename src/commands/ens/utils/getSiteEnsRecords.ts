@@ -1,6 +1,6 @@
 import type {
-  EnsRecord,
   AlternateFuturesSdk,
+  EnsRecord,
   Site,
 } from '@alternatefutures/sdk/node';
 

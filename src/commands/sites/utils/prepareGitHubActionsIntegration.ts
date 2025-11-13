@@ -5,12 +5,12 @@ import { parse as parseSemver } from 'semver';
 
 import type { Output } from '../../../output/Output';
 import { fileExists } from '../../../utils/fs';
+import { loadJSONFromPackageRoot } from '../../../utils/json';
 import { confirmFileOverridePrompt } from '../prompts/confirmFileOverridePrompt';
 import { getDeploymentWorkflowYamlLocation } from './getDeploymentWorkflowYamlLocation';
 import { initializeDeploymentWorkflowDirectory } from './initializeDeploymentWorkflowDirectory';
 import { requestDeploymentWorkflowInstallCommand } from './requestDeploymentWorkflowInstallCommand';
 import { saveDeploymentWorkflowYaml } from './saveDeploymentWorkflowYaml';
-import { loadJSONFromPackageRoot } from '../../../utils/json';
 
 export const ghWorkflowFilename = 'af-deploy.yaml';
 export const ghActionsWorflowsDirectory = joinPath(
@@ -35,7 +35,7 @@ export const prepareGitHubActionsIntegration = async ({
   afConfigPath,
   output,
 }: PrepareGitHubActionsIntegrationArgs) => {
-  let nodeVersion;
+  let nodeVersion: number;
 
   try {
     const nodeSemver = loadJSONFromPackageRoot(

@@ -62,7 +62,6 @@ describe('The saveConfiguration utils', () => {
         await clearConfigFile({ configFilePath });
       } catch (error) {
         if (error.code === 'ENOENT') {
-          console.log(`Oops! ${configFilePath} does not exist.`);
           return;
         }
 
@@ -123,7 +122,6 @@ describe('The saveConfiguration utils', () => {
         await clearConfigFile({ configFilePath });
       } catch (error) {
         if (error.code === 'ENOENT') {
-          console.log(`Oops! ${configFilePath} does not exist.`);
           return;
         }
 
@@ -204,7 +202,6 @@ describe('The saveConfiguration utils', () => {
         await clearConfigFile({ configFilePath });
       } catch (error) {
         if (error.code === 'ENOENT') {
-          console.log(`Oops! ${configFilePath} does not exist.`);
           return;
         }
 

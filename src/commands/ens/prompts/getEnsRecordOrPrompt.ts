@@ -1,7 +1,7 @@
 import { EnsRecordNotFoundError } from '@alternatefutures/errors';
 import type {
-  EnsRecord,
   AlternateFuturesSdk,
+  EnsRecord,
 } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';

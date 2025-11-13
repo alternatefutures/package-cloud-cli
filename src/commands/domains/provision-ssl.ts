@@ -1,10 +1,10 @@
+import prompts from 'prompts';
+import { output } from '../../cli';
 // @ts-nocheck
 import type { SdkGuardedFunction } from '../../guards/types';
-import { output } from '../../cli';
-import { t } from '../../utils/translation';
 import { withGuards } from '../../guards/withGuards';
+import { t } from '../../utils/translation';
 import { promptForDomainSelection } from './prompts/promptDomainSelection';
-import prompts from 'prompts';
 
 type Args = {
   id?: string;
@@ -74,7 +74,7 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     });
 
     output.success(t('sslProvisioningInitiated'));
-    output.log(t('sslStatus') + ': ' + result.sslStatus);
+    output.log(`${t('sslStatus')}: ${result.sslStatus}`);
 
     if (result.sslStatus === 'PENDING') {
       output.warn(t('sslProvisioningTakesTime'));
@@ -85,21 +85,20 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
       output.success(t('sslCertificateActive'));
       if (result.sslExpiresAt) {
         output.log(
-          t('expiresAt') +
-            ': ' +
-            new Date(result.sslExpiresAt).toLocaleDateString(),
+          `${t('expiresAt')}: ${new Date(result.sslExpiresAt).toLocaleDateString()}`,
         );
       }
     }
 
     return result;
-  } catch (error: any) {
-    output.error(t('sslProvisioningFailed') + ': ' + error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    output.error(`${t('sslProvisioningFailed')}: ${errorMessage}`);
 
-    if (error.message.includes('verified')) {
+    if (errorMessage.includes('verified')) {
       output.warn(t('domainMustBeVerifiedFirst'));
       output.log(
-        t('runVerifyCommand') + ': af domains verify --id ' + domainId,
+        `${t('runVerifyCommand')}: af domains verify --id ${domainId}`,
       );
     }
 

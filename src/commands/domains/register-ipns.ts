@@ -1,10 +1,10 @@
+import prompts from 'prompts';
+import { output } from '../../cli';
 // @ts-nocheck
 import type { SdkGuardedFunction } from '../../guards/types';
-import { output } from '../../cli';
-import { t } from '../../utils/translation';
 import { withGuards } from '../../guards/withGuards';
+import { t } from '../../utils/translation';
 import { promptForSiteSelection } from '../sites/prompts/promptSiteSelection';
-import prompts from 'prompts';
 
 type Args = {
   siteId?: string;
@@ -103,10 +103,11 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     );
 
     return domain;
-  } catch (error: any) {
-    output.error('IPNS creation failed: ' + error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    output.error(`IPNS creation failed: ${errorMessage}`);
 
-    if (error.message.includes('already exists')) {
+    if (errorMessage.includes('already exists')) {
       output.warn('This IPNS name already exists. Try a different name.');
     }
 

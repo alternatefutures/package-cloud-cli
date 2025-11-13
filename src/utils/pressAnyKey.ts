@@ -1,7 +1,7 @@
 type HandlerArgs = Buffer;
 
 export const usePressAnyKey = () => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // biome-ignore lint/suspicious/noEmptyBlockStatements: Initial no-op function, will be replaced
   const cancel = { current: () => {} };
 
   const waitForAnyKey = async () =>

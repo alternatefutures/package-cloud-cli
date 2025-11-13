@@ -1,11 +1,11 @@
+import prompts from 'prompts';
 // @ts-nocheck
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
 import { t } from '../../utils/translation';
-import { getHostnameOrPrompt } from './prompts/getHostnameOrPrompt';
 import { promptForSiteSelection } from '../sites/prompts/promptSiteSelection';
-import prompts from 'prompts';
+import { getHostnameOrPrompt } from './prompts/getHostnameOrPrompt';
 
 export type CreateCustomDomainActionArgs = {
   siteId?: string;
@@ -118,15 +118,16 @@ export const createCustomDomainAction: SdkGuardedFunction<
       }
     }
 
-    output.log(t('afterAddingDnsRecordsRunVerify') + ':');
+    output.log(`${t('afterAddingDnsRecordsRunVerify')}:`);
     output.log(output.textColor(`af domains verify --id ${domain.id}`, 'cyan'));
     output.printNewLine();
 
     return domain;
-  } catch (error: any) {
-    output.error(t('createDomainFailure') + ': ' + error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    output.error(`${t('createDomainFailure')}: ${errorMessage}`);
 
-    if (error.message.includes('already registered')) {
+    if (errorMessage.includes('already registered')) {
       output.warn(t('domainAlreadyExists'));
     }
 

@@ -1,7 +1,7 @@
 import { DomainsNotFoundError } from '@alternatefutures/errors';
 import {
-  type Domain,
   AlternateFuturesSdk,
+  type Domain,
   PersonalAccessTokenService,
 } from '@alternatefutures/sdk/node';
 import { type Mock, describe, expect, it, vi } from 'vitest';

@@ -83,6 +83,7 @@ vi.mock('@alternatefutures/sdk/node', () => {
 });
 
 describe('setPrimaryDomainAction', () => {
+  // biome-ignore lint/suspicious/noExplicitAny: Mock object in test
   const sdk = new AlternateFuturesSdk({ accessTokenService: {} as any });
   const mockDomains = sdk.domains();
   const mockSites = sdk.sites();
@@ -131,7 +132,7 @@ describe('setPrimaryDomainAction', () => {
       siteId: 'site-123',
     });
 
-    const verifiedDomains = result.filter((d: any) => d.verified);
+    const verifiedDomains = result.filter((d) => d.verified);
     expect(verifiedDomains).toHaveLength(1);
   });
 

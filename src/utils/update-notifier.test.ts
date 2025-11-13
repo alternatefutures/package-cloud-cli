@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock update-notifier-cjs before importing the module
 vi.mock('update-notifier-cjs', () => {
@@ -16,9 +16,9 @@ vi.mock('./translation', () => ({
   t: vi.fn((key: string) => key),
 }));
 
+import updateNotifier from 'update-notifier-cjs';
 // Import after mocks are set up
 import { checkForPackageUpdates } from './update-notifier';
-import updateNotifier from 'update-notifier-cjs';
 
 // Get references to the mocked functions
 const mockUpdateNotifier = vi.mocked(updateNotifier);

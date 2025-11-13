@@ -1,5 +1,5 @@
 import { DomainsNotFoundError } from '@alternatefutures/errors';
-import type { Domain, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, Domain } from '@alternatefutures/sdk/node';
 
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';

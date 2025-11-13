@@ -1,10 +1,10 @@
+import prompts from 'prompts';
+import { output } from '../../cli';
 // @ts-nocheck
 import type { SdkGuardedFunction } from '../../guards/types';
-import { output } from '../../cli';
-import { t } from '../../utils/translation';
 import { withGuards } from '../../guards/withGuards';
+import { t } from '../../utils/translation';
 import { promptForSiteSelection } from '../sites/prompts/promptSiteSelection';
-import prompts from 'prompts';
 
 type Args = {
   siteId?: string;
@@ -98,10 +98,11 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     output.log(output.textColor(`ens://${ensName}`, 'cyan'));
 
     return domain;
-  } catch (error: any) {
-    output.error('ENS linking failed: ' + error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    output.error(`ENS linking failed: ${errorMessage}`);
 
-    if (error.message.includes('not owned')) {
+    if (errorMessage.includes('not owned')) {
       output.warn('You must own this ENS domain to link it.');
       output.log('Register an ENS domain at: https://app.ens.domains');
     }

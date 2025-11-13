@@ -7,7 +7,11 @@ import { getFunctionNameOrPrompt } from './prompts/getFunctionNameOrPrompt';
 import { getFunctionOrPrompt } from './prompts/getFunctionOrPrompt';
 import { getFunctionSlugOrPrompt } from './prompts/getFunctionSlugOrPrompt';
 import { getFunctionStatusOrPrompt } from './prompts/getFunctionStatusOrPrompt';
-import { parseRoutes, validateRoutes } from './utils/routeValidation';
+import {
+  type RouteConfig,
+  parseRoutes,
+  validateRoutes,
+} from './utils/routeValidation';
 
 type UpdateFunctionArgs = {
   functionName?: string;
@@ -23,11 +27,11 @@ const updateAction: SdkGuardedFunction<UpdateFunctionArgs> = async ({
 }) => {
   if (!args.name && !args.slug && !args.status && !args.routes) {
     output.error(
-      t('functionUpdateArgsNotValid', {
+      `${t('functionUpdateArgsNotValid', {
         param1: 'name',
         param2: 'slug',
         param3: 'status',
-      }) + ' or routes',
+      })} or routes`,
     );
 
     return;
@@ -44,7 +48,7 @@ const updateAction: SdkGuardedFunction<UpdateFunctionArgs> = async ({
     : undefined;
 
   // Parse and validate routes if provided
-  let routes;
+  let routes: RouteConfig | undefined;
   if (args.routes) {
     try {
       routes = await parseRoutes(args.routes);

@@ -6,7 +6,7 @@ export type { RouteConfig };
  * Validates a route configuration object
  * Matches validation logic from backend
  */
-export function validateRoutes(routes: any): {
+export function validateRoutes(routes: unknown): {
   valid: boolean;
   error?: string;
 } {

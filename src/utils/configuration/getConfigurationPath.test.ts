@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { promises as fs, constants } from 'node:fs';
+import { constants, promises as fs } from 'node:fs';
 import { join as joinPath } from 'node:path';
 import { FleekConfigMissingFileError } from '@alternatefutures/errors';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getConfigurationPath } from './getConfigurationPath';
 
 // Mock fs promises
@@ -258,7 +258,7 @@ describe('getConfigurationPath', () => {
     });
 
     it('should handle very long paths', async () => {
-      const longPath = 'a'.repeat(200) + '/config.ts';
+      const longPath = `${'a'.repeat(200)}/config.ts`;
       const expectedPath = joinPath(process.cwd(), longPath);
 
       vi.mocked(fs.access).mockResolvedValueOnce(undefined);

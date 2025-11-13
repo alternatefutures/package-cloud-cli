@@ -5,7 +5,11 @@ import { withGuards } from '../../guards/withGuards';
 import { t } from '../../utils/translation';
 import { getFunctionNameOrPrompt } from './prompts/getFunctionNameOrPrompt';
 import { isSiteIdValid } from './utils/isSiteIdValid';
-import { parseRoutes, validateRoutes } from './utils/routeValidation';
+import {
+  type RouteConfig,
+  parseRoutes,
+  validateRoutes,
+} from './utils/routeValidation';
 
 type CreateFunctionArgs = {
   name?: string;
@@ -26,7 +30,7 @@ const createAction: SdkGuardedFunction<CreateFunctionArgs> = async ({
   }
 
   // Parse and validate routes if provided
-  let routes;
+  let routes: RouteConfig | undefined;
   if (routesInput) {
     try {
       routes = await parseRoutes(routesInput);
