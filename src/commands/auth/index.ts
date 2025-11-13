@@ -1,0 +1,33 @@
+import { MissingExpectedDataError } from '@alternatefutures/errors';
+import type { Command } from 'commander';
+
+import { getDefined } from '../../defined';
+import { t } from '../../utils/translation';
+import { loginActionHandler } from './login';
+import { logoutActionHandler } from './logout';
+
+export default (cmd: Command): Command => {
+  cmd
+    .command('login')
+    .description(t('cmdAuthLoginDescription'))
+    .action(() => {
+      const uiAppUrl = getDefined('UI__APP_URL');
+      const authApiUrl = getDefined('SDK__GRAPHQL_API_URL');
+
+      if (!uiAppUrl || !authApiUrl) {
+        throw new MissingExpectedDataError();
+      }
+
+      return loginActionHandler({
+        uiAppUrl,
+        authApiUrl,
+      });
+    });
+
+  cmd
+    .command('logout')
+    .description(t('cmdAuthLogoutDescription'))
+    .action(logoutActionHandler);
+
+  return cmd;
+};

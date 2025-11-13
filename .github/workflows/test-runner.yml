@@ -1,0 +1,61 @@
+name: 💍 Tester runner
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      IPFS_GATEWAY_HOSTNAME: "gateway-ipfs.alternatefutures.ai"
+      SDK__AUTH_APPS_URL: "https://auth-apps.service.alternatefutures.ai"
+      SDK__GRAPHQL_API_URL: "https://graphql.service.alternatefutures.ai/graphql"
+      SDK__IPFS__STORAGE_API_URL: "https://storage-ipfs.service.alternatefutures.ai"
+      SDK__UPLOAD_PROXY_API_URL: "https://uploads.service.alternatefutures.ai"
+      SITE_SLUG_DOMAIN: "af-cloud.app"
+      UI__APP_URL: "https://app.alternatefutures.ai"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 7.32.4
+          run_install: false
+
+      - name: Update .npmrc with token
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ env.NODE_AUTH_TOKEN }}" > .npmrc
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install
+        run: pnpm i
+        
+      - name: Build CLI
+        run: pnpm build
+
+      - name: Run tests
+        run: |
+          pnpm test

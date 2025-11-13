@@ -1,0 +1,22 @@
+# Code owners are automatically requested for review when someone opens a PR
+# that modifies code that they own.
+
+# Default owners for everything in the repo
+*                                   @alternatefutures/maintainers
+
+# Security-sensitive files
+SECURITY.md                         @alternatefutures/security
+.github/workflows/security-*.yml    @alternatefutures/security
+.github/workflows/codeql.yml        @alternatefutures/security
+.github/dependabot.yml              @alternatefutures/security
+
+# Authentication and authorization
+src/commands/auth/**                @alternatefutures/security
+src/config.ts                       @alternatefutures/security
+
+# CI/CD workflows
+.github/workflows/**                @alternatefutures/devops
+
+# Dependencies
+package.json                        @alternatefutures/maintainers
+pnpm-lock.yaml                      @alternatefutures/maintainers

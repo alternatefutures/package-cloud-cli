@@ -1,0 +1,53 @@
+import type {
+  AlternateFuturesSdk,
+  StoragePin,
+} from '@alternatefutures/sdk/node';
+import {
+  getIpfsGatewayUrl,
+  getPrivateIpfsGatewayUrl,
+} from '@alternatefutures/utils-ipfs';
+
+import { getAllActivePrivateGatewayDomains } from '../../gateways/utils/getAllPrivateGatewayDomains';
+
+type CreateOutputTableArgs = {
+  sdk: AlternateFuturesSdk;
+  storage: StoragePin[];
+};
+
+type TableCoulmns = {
+  filename: string;
+  cid: string;
+  'filecoin id'?: string;
+  'arweave id'?: string;
+  link: string;
+};
+
+export const createOutputTable = async ({
+  sdk,
+  storage,
+}: CreateOutputTableArgs): Promise<TableCoulmns[]> => {
+  const privateGatewayDomains = await getAllActivePrivateGatewayDomains({
+    sdk,
+  });
+  const privateGatewayExists = privateGatewayDomains.length > 0;
+
+  return storage.flatMap((s) => {
+    const filename = `${s.filename}${s.extension ? `.${s.extension}` : ''}`;
+    const gatewayUrls = privateGatewayExists
+      ? privateGatewayDomains.map((privateGatewayDomain) =>
+          getPrivateIpfsGatewayUrl({
+            hostname: privateGatewayDomain.hostname,
+            hash: s.cid,
+          }),
+        )
+      : [getIpfsGatewayUrl(s.cid)];
+
+    return gatewayUrls.map((link) => ({
+      filename,
+      cid: s.cid,
+      'filecoin id': s.filecoinDealIds,
+      'arweave id': s.arweaveId,
+      link,
+    }));
+  });
+};
