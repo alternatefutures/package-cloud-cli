@@ -377,7 +377,7 @@ Special thanks to:
 
 ## 📜 License
 
-MIT License - See LICENSE file for details
+GNU General Public License v3.0 or later - See LICENSE file for details
 
 ---
 
