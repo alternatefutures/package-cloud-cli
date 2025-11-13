@@ -1,5 +1,5 @@
 import * as fs from 'node:fs';
-import * as os from 'node:os';
+import * as tmp from 'tmp';
 
 import {
   AFFunctionInvalidWasmCodeError,
@@ -49,18 +49,19 @@ const enryptCode = async (args: { filePath: string }) => {
     cliProgress.Presets.shades_grey,
   );
 
-  let tempDir: string;
+  let outFile: string;
 
   if (!output.debugEnabled) {
-    tempDir = os.tmpdir();
+    // Use secure temporary file creation
+    const tmpFile = tmp.fileSync({ prefix: 'function-', postfix: '.wasm', keep: true });
+    outFile = tmpFile.name;
   } else {
-    tempDir = '.af';
-
+    const tempDir = '.af';
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);
     }
+    outFile = `${tempDir}/function.wasm`;
   }
-  const outFile = `${tempDir}/function.wasm`;
 
   progressBar.start(100, 10);
   try {

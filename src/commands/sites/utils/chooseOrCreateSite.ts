@@ -22,7 +22,7 @@ export const chooseOrCreateSite = async ({
   const useExistingSite = await confirmUseExistingSitePrompt();
 
   if (useExistingSite) {
-    const site = getSiteOrPrompt({ sdk });
+    const site = await getSiteOrPrompt({ sdk });
 
     if (!site) {
       output.error(t('expectedNotFoundGeneric', { name: 'site' }));

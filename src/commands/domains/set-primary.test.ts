@@ -1,11 +1,6 @@
 import { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { output as fakeOutput } from '../../cli';
-import { setPrimaryDomainActionHandler } from './set-primary';
-import { promptForDomainSelection as fakePromptForDomainSelection } from './prompts/promptForDomainSelection';
-import { promptForSiteSelection as fakePromptForSiteSelection } from '../sites/prompts';
-
 vi.mock('./prompts/promptForDomainSelection', () => ({
   promptForDomainSelection: vi.fn().mockResolvedValue({
     id: 'domain-123',

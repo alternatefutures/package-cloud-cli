@@ -42,12 +42,6 @@ const showUnsupportedModules = (args: ShowUnsupportedModulesArgs) => {
   }
 };
 
-const buildEnvVars = (args: { env: EnvironmentVariables }) => {
-  return Object.entries(args.env)
-    .map(([key, value]) => `${key}: "${value}"`)
-    .join(',');
-};
-
 type TranspileCodeArgs = {
   filePath: string;
   bundle: boolean;

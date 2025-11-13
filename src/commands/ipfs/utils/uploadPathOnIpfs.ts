@@ -8,19 +8,32 @@ type UploadPathOnIpfsArgs = {
 };
 
 export const uploadPathOnIpfs = async ({ sdk, path }: UploadPathOnIpfsArgs) => {
-  const stat = await fs.stat(path);
+  // Open file/directory first to avoid race condition
+  let fileHandle;
+  try {
+    fileHandle = await fs.open(path, 'r');
+    const stat = await fileHandle.stat();
 
-  if (stat.isDirectory()) {
-    const uploadResults = await sdk.ipfs().addFromPath(path, {
-      wrapWithDirectory: true,
-      // We must pass plain object instead of URLSearchParams because of ipfs-http-client bug
-      searchParams: { alias: basename(path) } as unknown as URLSearchParams,
-    });
+    if (stat.isDirectory()) {
+      await fileHandle.close();
+      const uploadResults = await sdk.ipfs().addFromPath(path, {
+        wrapWithDirectory: true,
+        // We must pass plain object instead of URLSearchParams because of ipfs-http-client bug
+        searchParams: { alias: basename(path) } as unknown as URLSearchParams,
+      });
 
-    return uploadResults.pop();
+      return uploadResults.pop();
+    }
+
+    // Read from file descriptor instead of path
+    const content = await fileHandle.readFile();
+    await fileHandle.close();
+
+    return sdk.ipfs().add({ path, content });
+  } catch (error) {
+    if (fileHandle) {
+      await fileHandle.close();
+    }
+    throw error;
   }
-
-  const content = await fs.readFile(path);
-
-  return sdk.ipfs().add({ path, content });
 };

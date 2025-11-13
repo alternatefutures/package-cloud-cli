@@ -1,10 +1,6 @@
 import { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { output as fakeOutput } from '../../cli';
-import { provisionSslActionHandler } from './provision-ssl';
-import { promptForDomainSelection as fakePromptForDomainSelection } from './prompts/promptForDomainSelection';
-
 vi.mock('./prompts/promptForDomainSelection', () => ({
   promptForDomainSelection: vi.fn().mockResolvedValue({
     id: 'domain-123',
@@ -71,11 +67,6 @@ describe('provisionSslAction', () => {
   });
 
   it('should provision SSL certificate with domain ID and email', async () => {
-    const args = {
-      id: 'domain-123',
-      email: 'admin@example.com',
-    };
-
     // Note: We can't directly test the action function since it's wrapped
     // This tests the handler behavior through mocks
     expect(mockDomains.provisionSsl).toBeDefined();

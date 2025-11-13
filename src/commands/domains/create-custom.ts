@@ -81,9 +81,6 @@ export const createCustomDomainAction: SdkGuardedFunction<
     }
   }
 
-  // Get domain type
-  const domainType = args.domainType || 'WEB2';
-
   output.spinner(t('creatingCustomDomain'));
 
   try {

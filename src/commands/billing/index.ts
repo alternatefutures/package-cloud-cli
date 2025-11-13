@@ -1,7 +1,6 @@
 // @ts-nocheck
 import type { Command } from 'commander';
 
-import { t } from '../../utils/translation';
 import { customerActionHandler } from './customer';
 import { invoicesActionHandler } from './invoices';
 import { paymentMethodsActionHandler } from './paymentMethods';

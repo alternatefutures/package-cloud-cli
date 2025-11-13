@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { SiteNotFoundError } from '@alternatefutures/errors';
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';

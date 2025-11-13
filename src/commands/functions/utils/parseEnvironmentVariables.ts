@@ -15,20 +15,29 @@ export const parseEnvironmentVariablesFile = (
 ): EnvironmentVariables => {
   const { envFile } = args;
 
-  if (!fs.statSync(envFile).isFile()) {
-    output.mistake(t('filePathNotFound', { envFile }));
-
-    return {};
-  }
-
   try {
-    const envFileContent = fs.readFileSync(envFile);
-    const config = dotenv.parse(envFileContent);
+    // Use file descriptor to avoid race condition
+    const fd = fs.openSync(envFile, 'r');
+    try {
+      const stats = fs.fstatSync(fd);
 
-    return config;
+      if (!stats.isFile()) {
+        output.mistake(t('filePathNotFound', { envFile }));
+        fs.closeSync(fd);
+        return {};
+      }
+
+      const envFileContent = fs.readFileSync(fd);
+      fs.closeSync(fd);
+
+      const config = dotenv.parse(envFileContent);
+      return config;
+    } catch (err) {
+      fs.closeSync(fd);
+      throw err;
+    }
   } catch (err) {
     output.mistake(t('envFileParseError', { envFile }));
-
     return {};
   }
 };

@@ -175,8 +175,6 @@ describe('getConfigurationPath', () => {
 
   describe('edge cases', () => {
     it('should handle empty predefinedConfigPath', async () => {
-      const expectedPath = joinPath(process.cwd(), 'af.config.ts');
-
       vi.mocked(fs.access).mockResolvedValueOnce(undefined);
 
       const result = await getConfigurationPath({

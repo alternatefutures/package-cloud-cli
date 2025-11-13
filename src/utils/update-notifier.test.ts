@@ -22,10 +22,6 @@ import updateNotifier from 'update-notifier-cjs';
 
 // Get references to the mocked functions
 const mockUpdateNotifier = vi.mocked(updateNotifier);
-const getMockNotify = () => {
-  const lastCall = mockUpdateNotifier.mock.results[mockUpdateNotifier.mock.results.length - 1];
-  return lastCall?.value?.notify;
-};
 
 describe('update-notifier', () => {
   let mockNotify: ReturnType<typeof vi.fn>;
