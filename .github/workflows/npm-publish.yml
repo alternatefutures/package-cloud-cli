@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
+      id-token: write # Required for npm provenance
 
     steps:
       - name: Checkout repository
@@ -49,10 +49,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Update .npmrc with token
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
-
       - name: Install dependencies
         run: pnpm install
 
@@ -62,8 +58,8 @@ jobs:
       - name: Run tests
         run: pnpm test
 
-      - name: Publish to npm
-        run: pnpm publish --access=public --no-git-checks
+      - name: Publish to npm with provenance
+        run: pnpm publish --access=public --no-git-checks --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -74,3 +70,4 @@ jobs:
           echo "**Package:** @alternatefutures/cli" >> $GITHUB_STEP_SUMMARY
           echo "**Version:** $(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
           echo "**Registry:** https://www.npmjs.com/package/@alternatefutures/cli" >> $GITHUB_STEP_SUMMARY
+          echo "**Provenance:** ✅ Enabled (verifiable build attestation)" >> $GITHUB_STEP_SUMMARY
