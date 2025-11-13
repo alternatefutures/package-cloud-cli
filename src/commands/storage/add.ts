@@ -1,4 +1,4 @@
-import { promises as fs, existsSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { basename } from 'node:path';
 
 import {
