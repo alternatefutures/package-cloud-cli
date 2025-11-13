@@ -53,7 +53,11 @@ const enryptCode = async (args: { filePath: string }) => {
 
   if (!output.debugEnabled) {
     // Use secure temporary file creation
-    const tmpFile = tmp.fileSync({ prefix: 'function-', postfix: '.wasm', keep: true });
+    const tmpFile = tmp.fileSync({
+      prefix: 'function-',
+      postfix: '.wasm',
+      keep: true,
+    });
     outFile = tmpFile.name;
   } else {
     const tempDir = '.af';

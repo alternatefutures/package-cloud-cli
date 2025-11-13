@@ -1,10 +1,10 @@
 // @ts-nocheck
-import type { SdkGuardedFunction } from '../../guards/types';
 import { output } from '../../cli';
-import { t } from '../../utils/translation';
+import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
-import { promptForDomainSelection } from './prompts/promptDomainSelection';
+import { t } from '../../utils/translation';
 import { promptForSiteSelection } from '../sites/prompts/promptSiteSelection';
+import { promptForDomainSelection } from './prompts/promptDomainSelection';
 
 type Args = {
   siteId?: string;
@@ -55,7 +55,7 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     }
 
     // Filter to only verified domains
-    const verifiedDomains = domains.filter((d: any) => d.verified);
+    const verifiedDomains = domains.filter((d) => d.verified);
 
     if (verifiedDomains.length === 0) {
       output.error(t('noVerifiedDomainsFound'));
@@ -91,18 +91,19 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     output.success(t('primaryDomainSet'));
 
     if (result.primaryDomain) {
-      output.log(t('primaryDomain') + ': ' + result.primaryDomain.hostname);
+      output.log(`${t('primaryDomain')}: ${result.primaryDomain.hostname}`);
     }
 
     return result;
-  } catch (error: any) {
-    output.error(t('setPrimaryDomainFailed') + ': ' + error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    output.error(`${t('setPrimaryDomainFailed')}: ${errorMessage}`);
 
-    if (error.message.includes('verified')) {
+    if (errorMessage.includes('verified')) {
       output.warn(t('onlyVerifiedDomainsCanBePrimary'));
     }
 
-    if (error.message.includes('does not belong')) {
+    if (errorMessage.includes('does not belong')) {
       output.warn(t('domainDoesNotBelongToSite'));
     }
 

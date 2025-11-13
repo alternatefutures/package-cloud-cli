@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 
 import {
-  getPrivateIpfsGatewayUrl,
   getIpfsGatewayUrl,
+  getPrivateIpfsGatewayUrl,
 } from '@alternatefutures/utils-ipfs';
 
 import { output } from '../../cli';

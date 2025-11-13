@@ -1,4 +1,5 @@
 import { promises as fs } from 'node:fs';
+import type { FileHandle } from 'node:fs/promises';
 import { basename } from 'node:path';
 import type { AlternateFuturesSdk } from '@alternatefutures/sdk/node';
 
@@ -9,7 +10,7 @@ type UploadPathOnIpfsArgs = {
 
 export const uploadPathOnIpfs = async ({ sdk, path }: UploadPathOnIpfsArgs) => {
   // Open file/directory first to avoid race condition
-  let fileHandle;
+  let fileHandle: FileHandle | undefined;
   try {
     fileHandle = await fs.open(path, 'r');
     const stat = await fileHandle.stat();

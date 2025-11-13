@@ -1,7 +1,7 @@
 import type {
+  AlternateFuturesSdk,
   Domain,
   DomainStatus,
-  AlternateFuturesSdk,
 } from '@alternatefutures/sdk/node';
 
 type DomainFilter = {

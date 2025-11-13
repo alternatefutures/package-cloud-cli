@@ -59,6 +59,7 @@ vi.mock('@alternatefutures/sdk/node', () => {
 });
 
 describe('provisionSslAction', () => {
+  // biome-ignore lint/suspicious/noExplicitAny: Mock object in test
   const sdk = new AlternateFuturesSdk({ accessTokenService: {} as any });
   const mockDomains = sdk.domains();
 

@@ -1,6 +1,6 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { loadFunctionConfig } from './loadFunctionConfig';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AlternateFuturesRootConfig } from '../../../utils/configuration/types';
+import { loadFunctionConfig } from './loadFunctionConfig';
 
 vi.mock('../../../utils/configuration/loadConfiguration', () => ({
   loadConfiguration: vi.fn(),
@@ -51,7 +51,7 @@ describe('loadFunctionConfig', () => {
     const result = await loadFunctionConfig();
     expect(result).toEqual({
       routes: { '/api/*': 'https://example.com' },
-      functionConfig: mockConfig.functions![0],
+      functionConfig: mockConfig.functions?.[0],
     });
   });
 
@@ -81,7 +81,7 @@ describe('loadFunctionConfig', () => {
     const result = await loadFunctionConfig('function-2');
     expect(result).toEqual({
       routes: { '/api2/*': 'https://api2.example.com' },
-      functionConfig: mockConfig.functions![1],
+      functionConfig: mockConfig.functions?.[1],
     });
   });
 
@@ -105,7 +105,7 @@ describe('loadFunctionConfig', () => {
     // When name not found but only one function exists, returns that function
     expect(result).toEqual({
       routes: { '/api/*': 'https://example.com' },
-      functionConfig: mockConfig.functions![0],
+      functionConfig: mockConfig.functions?.[0],
     });
   });
 
@@ -146,7 +146,7 @@ describe('loadFunctionConfig', () => {
     const result = await loadFunctionConfig('my-function');
     expect(result).toEqual({
       routes: undefined,
-      functionConfig: mockConfig.functions![0],
+      functionConfig: mockConfig.functions?.[0],
     });
   });
 });

@@ -15,9 +15,9 @@ import { getUploadResult } from './utils/upload';
 import { waitUntilFileAvailable } from './wait/waitUntilFileAvailable';
 
 import { getWasmCodeFromPath } from './utils/getWasmCodeFromPath';
-import { uploadFunctionAssets } from './utils/uploadFunctionAssets';
 import { loadFunctionConfig } from './utils/loadFunctionConfig';
 import { validateRoutes } from './utils/routeValidation';
+import { uploadFunctionAssets } from './utils/uploadFunctionAssets';
 
 type DeployActionArgs = {
   filePath?: string;

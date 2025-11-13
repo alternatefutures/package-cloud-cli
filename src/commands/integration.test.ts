@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 /**
  * Integration Tests
@@ -15,27 +15,31 @@ vi.mock('@alternatefutures/sdk', () => ({
         { id: 'project1', name: 'Test Project 1' },
         { id: 'project2', name: 'Test Project 2' },
       ]),
-      get: vi.fn().mockResolvedValue({ id: 'project1', name: 'Test Project 1' }),
+      get: vi
+        .fn()
+        .mockResolvedValue({ id: 'project1', name: 'Test Project 1' }),
     })),
     sites: vi.fn(() => ({
-      list: vi.fn().mockResolvedValue([
-        { id: 'site1', name: 'Test Site 1', projectId: 'project1' },
-      ]),
+      list: vi
+        .fn()
+        .mockResolvedValue([
+          { id: 'site1', name: 'Test Site 1', projectId: 'project1' },
+        ]),
       get: vi.fn().mockResolvedValue({ id: 'site1', name: 'Test Site 1' }),
     })),
     ipfs: vi.fn(() => ({
       add: vi.fn().mockResolvedValue({ hash: 'QmXxxx...xxxxx' }),
     })),
     ipns: vi.fn(() => ({
-      list: vi.fn().mockResolvedValue([
-        { name: 'my-app', hash: 'QmYyyy...yyyyy' },
-      ]),
+      list: vi
+        .fn()
+        .mockResolvedValue([{ name: 'my-app', hash: 'QmYyyy...yyyyy' }]),
       create: vi.fn().mockResolvedValue({ name: 'new-app', id: 'k51qzi5...' }),
     })),
     domains: vi.fn(() => ({
-      list: vi.fn().mockResolvedValue([
-        { domain: 'example.com', status: 'active' },
-      ]),
+      list: vi
+        .fn()
+        .mockResolvedValue([{ domain: 'example.com', status: 'active' }]),
     })),
   })),
 }));
@@ -264,15 +268,11 @@ describe('Integration Tests', () => {
       const { FleekSdk } = await import('@alternatefutures/sdk');
       const sdk = new FleekSdk();
 
-      const uploads = [
-        sdk.ipfs().add(),
-        sdk.ipfs().add(),
-        sdk.ipfs().add(),
-      ];
+      const uploads = [sdk.ipfs().add(), sdk.ipfs().add(), sdk.ipfs().add()];
 
       const results = await Promise.all(uploads);
       expect(results).toHaveLength(3);
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result.hash).toBeTruthy();
       });
     });

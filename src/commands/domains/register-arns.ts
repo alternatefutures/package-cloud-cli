@@ -1,10 +1,10 @@
 // @ts-nocheck
-import type { SdkGuardedFunction } from '../../guards/types';
-import { output } from '../../cli';
-import { t } from '../../utils/translation';
-import { withGuards } from '../../guards/withGuards';
-import { promptForSiteSelection } from '../sites/prompts/promptSiteSelection';
 import prompts from 'prompts';
+import { output } from '../../cli';
+import type { SdkGuardedFunction } from '../../guards/types';
+import { withGuards } from '../../guards/withGuards';
+import { t } from '../../utils/translation';
+import { promptForSiteSelection } from '../sites/prompts/promptSiteSelection';
 
 type Args = {
   siteId?: string;
@@ -100,10 +100,11 @@ const action: SdkGuardedFunction<Args> = async ({ sdk, args }) => {
     output.hint('Note: ArNS propagation may take a few minutes.');
 
     return domain;
-  } catch (error: any) {
-    output.error('ArNS registration failed: ' + error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    output.error(`ArNS registration failed: ${errorMessage}`);
 
-    if (error.message.includes('already taken')) {
+    if (errorMessage.includes('already taken')) {
       output.warn(
         'This ArNS name is already registered. Try a different name.',
       );

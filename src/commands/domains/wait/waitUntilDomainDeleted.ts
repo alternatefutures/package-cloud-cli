@@ -1,4 +1,4 @@
-import type { Domain, AlternateFuturesSdk } from '@alternatefutures/sdk/node';
+import type { AlternateFuturesSdk, Domain } from '@alternatefutures/sdk/node';
 
 import { checkPeriodicallyUntil } from '../../../utils/checkPeriodicallyUntil';
 
