@@ -1,5 +1,5 @@
-import prompts from 'prompts';
 // @ts-nocheck
+import prompts from 'prompts';
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';

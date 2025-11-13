@@ -1,5 +1,5 @@
-import { output } from '../../cli';
 // @ts-nocheck
+import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
 import { t } from '../../utils/translation';
