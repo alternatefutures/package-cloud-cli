@@ -4,12 +4,11 @@ on:
   workflow_dispatch:
   push:
 
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       IPFS_GATEWAY_HOSTNAME: "gateway-ipfs.alternatefutures.ai"
