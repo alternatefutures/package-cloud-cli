@@ -1,7 +1,26 @@
 {
   "name": "@alternatefutures/cli",
   "version": "0.2.1",
+  "description": "Unified command line interface to Alternate Futures Cloud - decentralized cloud infrastructure with censorship resistance",
   "license": "GPL-3.0-or-later",
+  "author": "Alternate Futures",
+  "homepage": "https://github.com/alternatefutures/package-cloud-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alternatefutures/package-cloud-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alternatefutures/package-cloud-cli/issues"
+  },
+  "keywords": [
+    "cli",
+    "cloud",
+    "decentralized",
+    "ipfs",
+    "web3",
+    "censorship-resistant",
+    "alternate-futures"
+  ],
   "bin": {
     "af": "bin/index.js"
   },
