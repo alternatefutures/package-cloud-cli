@@ -55,7 +55,7 @@ importers:
         specifier: 0.4.7
         version: 0.4.7
       esbuild:
-        specifier: ^0.27.0
+        specifier: '>=0.25.0'
         version: 0.27.0
       files-from-path:
         specifier: 1.0.0
@@ -98,7 +98,7 @@ importers:
         version: 0.2.5
       ts-node:
         specifier: 10.9.1
-        version: 10.9.1(@types/node@24.7.0)(typescript@4.9.3)
+        version: 10.9.1(@types/node@24.7.0)(typescript@5.9.3)
       undici:
         specifier: ^6.21.0
         version: 6.22.0
@@ -132,7 +132,7 @@ importers:
         version: 0.1.0
       '@alternatefutures/utils-validation':
         specifier: ^0.1.2
-        version: 0.1.2(typescript@4.9.3)
+        version: 0.1.2(typescript@5.9.3)
       '@biomejs/biome':
         specifier: ^1.8.3
         version: 1.9.4
@@ -188,8 +188,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       typescript:
-        specifier: 4.9.3
-        version: 4.9.3
+        specifier: 5.9.3
+        version: 5.9.3
       vitest:
         specifier: 1.6.1
         version: 1.6.1(@types/node@24.7.0)
@@ -3445,9 +3445,9 @@ packages:
   typedarray-to-buffer@3.1.5:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
 
-  typescript@4.9.3:
-    resolution: {integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==}
-    engines: {node: '>=4.2.0'}
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
     hasBin: true
 
   ufo@1.6.1:
@@ -3791,10 +3791,10 @@ snapshots:
     dependencies:
       '@alternatefutures/errors': 0.1.0
 
-  '@alternatefutures/utils-validation@0.1.2(typescript@4.9.3)':
+  '@alternatefutures/utils-validation@0.1.2(typescript@5.9.3)':
     dependencies:
       '@adraffy/ens-normalize': 1.11.1
-      viem: 1.21.4(typescript@4.9.3)(zod@3.22.4)
+      viem: 1.21.4(typescript@5.9.3)(zod@3.22.4)
       zod: 3.22.4
       zod-validation-error: 3.0.3(zod@3.22.4)
     transitivePeerDependencies:
@@ -5248,9 +5248,9 @@ snapshots:
   '@zxing/text-encoding@0.9.0':
     optional: true
 
-  abitype@0.9.8(typescript@4.9.3)(zod@3.22.4):
+  abitype@0.9.8(typescript@5.9.3)(zod@3.22.4):
     optionalDependencies:
-      typescript: 4.9.3
+      typescript: 5.9.3
       zod: 3.22.4
 
   accepts@1.3.8:
@@ -7521,7 +7521,7 @@ snapshots:
 
   tree-kill@1.2.2: {}
 
-  ts-node@10.9.1(@types/node@24.7.0)(typescript@4.9.3):
+  ts-node@10.9.1(@types/node@24.7.0)(typescript@5.9.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -7535,7 +7535,7 @@ snapshots:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.9.3
+      typescript: 5.9.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
@@ -7573,7 +7573,7 @@ snapshots:
     dependencies:
       is-typedarray: 1.0.0
 
-  typescript@4.9.3: {}
+  typescript@5.9.3: {}
 
   ufo@1.6.1: {}
 
@@ -7651,18 +7651,18 @@ snapshots:
 
   vary@1.1.2: {}
 
-  viem@1.21.4(typescript@4.9.3)(zod@3.22.4):
+  viem@1.21.4(typescript@5.9.3)(zod@3.22.4):
     dependencies:
       '@adraffy/ens-normalize': 1.10.0
       '@noble/curves': 1.2.0
       '@noble/hashes': 1.3.2
       '@scure/bip32': 1.3.2
       '@scure/bip39': 1.2.1
-      abitype: 0.9.8(typescript@4.9.3)(zod@3.22.4)
+      abitype: 0.9.8(typescript@5.9.3)(zod@3.22.4)
       isows: 1.0.3(ws@8.18.3)
       ws: 8.18.3
     optionalDependencies:
-      typescript: 4.9.3
+      typescript: 5.9.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
