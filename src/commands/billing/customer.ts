@@ -1,10 +1,13 @@
-// @ts-nocheck
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
+import { getBillingClient } from './utils/getBillingClient';
 
 const customerAction: SdkGuardedFunction = async ({ sdk }) => {
-  const customer = await sdk.billing().getCustomer();
+  const billingClient = getBillingClient(sdk);
+  if (!billingClient) return;
+
+  const customer = await billingClient.getCustomer();
 
   if (!customer) {
     output.warn('No customer information found');
@@ -20,10 +23,9 @@ const customerAction: SdkGuardedFunction = async ({ sdk }) => {
     { Field: 'ID', Value: customer.id },
     { Field: 'Email', Value: customer.email || 'N/A' },
     { Field: 'Name', Value: customer.name || 'N/A' },
-    { Field: 'Stripe Customer ID', Value: customer.stripeCustomerId || 'N/A' },
     {
       Field: 'Created',
-      Value: new Date(customer.createdAt).toLocaleDateString(),
+      Value: new Date(customer.createdAt * 1000).toLocaleDateString(),
     },
   ];
 

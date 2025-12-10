@@ -1,7 +1,7 @@
-// @ts-nocheck
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
+import { getBillingClient } from './utils/getBillingClient';
 
 type InvoicesOptions = {
   status?: string;
@@ -12,7 +12,10 @@ const invoicesAction: SdkGuardedFunction<InvoicesOptions> = async ({
   sdk,
   args,
 }) => {
-  const invoices = await sdk.billing().listInvoices({
+  const billingClient = getBillingClient(sdk);
+  if (!billingClient) return;
+
+  const invoices = await billingClient.listInvoices({
     status: args.status,
     limit: args.limit ? Number(args.limit) : 50,
   });
@@ -26,18 +29,21 @@ const invoicesAction: SdkGuardedFunction<InvoicesOptions> = async ({
   output.log(`Invoices (showing ${invoices.length}):`);
   output.printNewLine();
 
-  const tableData = invoices.map((invoice) => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tableData = invoices.map((invoice: any) => ({
     'Invoice #': invoice.invoiceNumber,
     Status: invoice.status,
     Total: `$${(invoice.total / 100).toFixed(2)}`,
     'Amount Due': `$${(invoice.amountDue / 100).toFixed(2)}`,
     'Due Date': invoice.dueDate
-      ? new Date(invoice.dueDate).toLocaleDateString()
+      ? new Date(invoice.dueDate * 1000).toLocaleDateString()
       : 'N/A',
     'Paid At': invoice.paidAt
-      ? new Date(invoice.paidAt).toLocaleDateString()
+      ? new Date(invoice.paidAt * 1000).toLocaleDateString()
       : 'N/A',
-    Period: `${new Date(invoice.periodStart).toLocaleDateString()} - ${new Date(invoice.periodEnd).toLocaleDateString()}`,
+    Period: invoice.periodStart && invoice.periodEnd
+      ? `${new Date(invoice.periodStart * 1000).toLocaleDateString()} - ${new Date(invoice.periodEnd * 1000).toLocaleDateString()}`
+      : 'N/A',
     PDF: invoice.pdfUrl || 'N/A',
   }));
 

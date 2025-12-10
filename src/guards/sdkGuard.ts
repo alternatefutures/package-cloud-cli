@@ -26,12 +26,21 @@ export const getSdkClient = () => {
     projectId,
     personalAccessToken,
   });
-  const sdk = new AlternateFuturesSdk({
+  // Build SDK options - only include authServiceUrl if SDK supports it
+  const sdkOptions: ConstructorParameters<typeof AlternateFuturesSdk>[0] = {
     accessTokenService,
     graphqlServiceApiUrl: getDefined('SDK__GRAPHQL_API_URL'),
     ipfsStorageApiUrl: getDefined('SDK__IPFS__STORAGE_API_URL'),
     uploadProxyApiUrl: getDefined('SDK__UPLOAD_PROXY_API_URL'),
-  });
+  };
+
+  // Add authServiceUrl if available (for billing support in newer SDK versions)
+  const authServiceUrl = getDefined('SDK__AUTH_SERVICE_URL') || getDefined('AUTH__API_URL');
+  if (authServiceUrl) {
+    (sdkOptions as Record<string, unknown>).authServiceUrl = authServiceUrl;
+  }
+
+  const sdk = new AlternateFuturesSdk(sdkOptions);
 
   return sdk;
 };

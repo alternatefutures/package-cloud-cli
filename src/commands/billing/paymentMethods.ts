@@ -1,10 +1,13 @@
-// @ts-nocheck
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
+import { getBillingClient } from './utils/getBillingClient';
 
 const paymentMethodsAction: SdkGuardedFunction = async ({ sdk }) => {
-  const methods = await sdk.billing().listPaymentMethods();
+  const billingClient = getBillingClient(sdk);
+  if (!billingClient) return;
+
+  const methods = await billingClient.listPaymentMethods();
 
   if (!methods || methods.length === 0) {
     output.warn('No payment methods found');
@@ -16,14 +19,15 @@ const paymentMethodsAction: SdkGuardedFunction = async ({ sdk }) => {
   output.log('Payment Methods:');
   output.printNewLine();
 
-  const tableData = methods.map((method) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tableData = methods.map((method: any) => {
     if (method.type === 'CARD') {
       return {
         Type: 'Card',
         Details: `${method.cardBrand} •••• ${method.cardLast4}`,
         Expiry: `${method.cardExpMonth}/${method.cardExpYear}`,
         Default: method.isDefault ? '✓' : '',
-        Created: new Date(method.createdAt).toLocaleDateString(),
+        Created: new Date(method.createdAt * 1000).toLocaleDateString(),
       };
     }
     return {
@@ -31,7 +35,7 @@ const paymentMethodsAction: SdkGuardedFunction = async ({ sdk }) => {
       Details: `${method.blockchain}: ${method.walletAddress?.substring(0, 10)}...${method.walletAddress?.substring(method.walletAddress.length - 8)}`,
       Expiry: 'N/A',
       Default: method.isDefault ? '✓' : '',
-      Created: new Date(method.createdAt).toLocaleDateString(),
+      Created: new Date(method.createdAt * 1000).toLocaleDateString(),
     };
   });
 

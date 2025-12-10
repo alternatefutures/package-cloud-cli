@@ -1,6 +1,6 @@
 {
   "name": "@alternatefutures/cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Unified command line interface to Alternate Futures Cloud - decentralized cloud infrastructure with censorship resistance",
   "license": "GPL-3.0-or-later",
   "author": "Alternate Futures",
@@ -26,7 +26,13 @@
   },
   "main": "dist/cli.js",
   "types": "./dist/cli.d.ts",
-  "files": ["bin", "dist", "locales", "README.md", "LICENSE"],
+  "files": [
+    "bin",
+    "dist",
+    "locales",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "pnpm clean:dist && pnpm transpile && pnpm bundle && npx cpy-cli ./src/templates ./dist",
     "build:ci": "pnpm run build",

@@ -19,7 +19,7 @@ export const verifyDomainAction: SdkGuardedFunction<
     id: args.id,
     hostname: args.hostname,
     sdk,
-    choicesFilter: (domain: Domain) => domain.isVerified,
+    choicesFilter: (domain: Domain) => domain.isVerified === true,
   });
 
   if (!domain) {

@@ -33,14 +33,14 @@ export const detailDomainAction: SdkGuardedFunction<
     return;
   }
 
-  if (domainCreationPending.includes(domain.status)) {
+  if (domain.status && domainCreationPending.includes(domain.status)) {
     output.printNewLine();
     output.warn(t('domainCreationPending'));
 
     return;
   }
 
-  if (domainCreationFailed.includes(domain.status)) {
+  if (domain.status && domainCreationFailed.includes(domain.status)) {
     output.printNewLine();
     output.error(t('domainCreationFailed'));
 
@@ -58,7 +58,7 @@ export const detailDomainAction: SdkGuardedFunction<
   output.log(`${t('configDomainAsTable')}:`);
 
   output.table(
-    domain.dnsConfigs.map(
+    (domain.dnsConfigs || []).map(
       (domain: {
         type: string;
         name: string;

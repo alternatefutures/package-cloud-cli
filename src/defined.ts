@@ -4,8 +4,10 @@ export type Defined = {
   UI__APP_URL?: string;
   SDK__GRAPHQL_API_URL?: string;
   SDK__AUTH_APPS_URL?: string;
+  SDK__AUTH_SERVICE_URL?: string;
   SDK__IPFS__STORAGE_API_URL?: string;
   SDK__UPLOAD_PROXY_API_URL?: string;
+  AUTH__API_URL?: string;
 };
 
 // WARNING: Those values will be visible in public source code pushed to NPM
@@ -13,8 +15,10 @@ export const defined: Defined = {
   UI__APP_URL: process.env.UI__APP_URL,
   SDK__GRAPHQL_API_URL: process.env.SDK__GRAPHQL_API_URL,
   SDK__AUTH_APPS_URL: process.env.SDK__AUTH_APPS_URL,
+  SDK__AUTH_SERVICE_URL: process.env.SDK__AUTH_SERVICE_URL,
   SDK__IPFS__STORAGE_API_URL: process.env.SDK__IPFS__STORAGE_API_URL,
   SDK__UPLOAD_PROXY_API_URL: process.env.SDK__UPLOAD_PROXY_API_URL,
+  AUTH__API_URL: process.env.AUTH__API_URL,
 };
 
 // The variables are parsed at build time, in order to ensure

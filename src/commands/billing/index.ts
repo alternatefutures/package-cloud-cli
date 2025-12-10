@@ -1,4 +1,3 @@
-// @ts-nocheck
 import type { Command } from 'commander';
 
 import { customerActionHandler } from './customer';

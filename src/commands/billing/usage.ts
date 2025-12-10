@@ -1,10 +1,13 @@
-// @ts-nocheck
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
+import { getBillingClient } from './utils/getBillingClient';
 
 const usageAction: SdkGuardedFunction = async ({ sdk }) => {
-  const usage = await sdk.billing().getCurrentUsage();
+  const billingClient = getBillingClient(sdk);
+  if (!billingClient) return;
+
+  const usage = await billingClient.getCurrentUsage();
 
   if (!usage) {
     output.warn('No usage data found');

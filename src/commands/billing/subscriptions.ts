@@ -1,10 +1,13 @@
-// @ts-nocheck
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
+import { getBillingClient } from './utils/getBillingClient';
 
 const subscriptionsAction: SdkGuardedFunction = async ({ sdk }) => {
-  const subscriptions = await sdk.billing().listSubscriptions();
+  const billingClient = getBillingClient(sdk);
+  if (!billingClient) return;
+
+  const subscriptions = await billingClient.listSubscriptions();
 
   if (!subscriptions || subscriptions.length === 0) {
     output.warn('No subscriptions found');
@@ -16,15 +19,16 @@ const subscriptionsAction: SdkGuardedFunction = async ({ sdk }) => {
   output.log('Subscriptions:');
   output.printNewLine();
 
-  const tableData = subscriptions.map((sub) => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const tableData = subscriptions.map((sub: any) => ({
     Plan: sub.plan,
     Status: sub.status,
     Seats: sub.seats,
     'Price/Seat': `$${(sub.basePricePerSeat / 100).toFixed(2)}`,
     'Usage Markup': `${(sub.usageMarkup * 100).toFixed(1)}%`,
-    'Current Period': `${new Date(sub.currentPeriodStart).toLocaleDateString()} - ${new Date(sub.currentPeriodEnd).toLocaleDateString()}`,
+    'Current Period': `${new Date(sub.currentPeriodStart * 1000).toLocaleDateString()} - ${new Date(sub.currentPeriodEnd * 1000).toLocaleDateString()}`,
     'Cancel At': sub.cancelAt
-      ? new Date(sub.cancelAt).toLocaleDateString()
+      ? new Date(sub.cancelAt * 1000).toLocaleDateString()
       : 'N/A',
   }));
 

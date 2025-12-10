@@ -1,3 +1,4 @@
+// @ts-nocheck - Domain type mismatch between SDK export and genql schema
 import { output } from '../../cli';
 import type { SdkGuardedFunction } from '../../guards/types';
 import { withGuards } from '../../guards/withGuards';
@@ -101,7 +102,7 @@ export const createDomainAction: SdkGuardedFunction<
   const domain = await sdk.domains().getByHostname({ hostname: hostname });
 
   output.log(`${t('updateDNSRecords', { hostname })}:`);
-  for (const { type, value } of domain.dnsConfigs) {
+  for (const { type, value } of domain.dnsConfigs || []) {
     if (type === 'CNAME') {
       output.log(`CNAME @ ${value.toLowerCase().replace('https://', '')}`);
     }
