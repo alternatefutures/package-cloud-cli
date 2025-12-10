@@ -35,7 +35,8 @@ export const getSdkClient = () => {
   };
 
   // Add authServiceUrl if available (for billing support in newer SDK versions)
-  const authServiceUrl = getDefined('SDK__AUTH_SERVICE_URL') || getDefined('AUTH__API_URL');
+  const authServiceUrl =
+    getDefined('SDK__AUTH_SERVICE_URL') || getDefined('AUTH__API_URL');
   if (authServiceUrl) {
     (sdkOptions as Record<string, unknown>).authServiceUrl = authServiceUrl;
   }
