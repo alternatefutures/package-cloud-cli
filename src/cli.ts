@@ -8,6 +8,7 @@ import cmdFunctions from './commands/functions/index';
 import cmdGateways from './commands/gateways/index';
 import cmdIPFS from './commands/ipfs/index';
 import cmdIPNS from './commands/ipns/index';
+import cmdObservability from './commands/observability/index';
 import cmdPAT from './commands/pat/index';
 import cmdProjects from './commands/projects/index';
 import cmdSites from './commands/sites/index';
@@ -73,6 +74,7 @@ export const init = ({ version, parser }: InitArgs) => {
     cmdGateways,
     cmdIPFS,
     cmdIPNS,
+    cmdObservability,
     cmdPAT,
     cmdProjects,
     cmdSites,
