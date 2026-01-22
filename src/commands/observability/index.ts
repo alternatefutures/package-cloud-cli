@@ -10,7 +10,9 @@ export default (program: Command): Command => {
   const cmd = program
     .command('observability')
     .alias('obs')
-    .description('Query and manage APM observability data (traces, logs, metrics)');
+    .description(
+      'Query and manage APM observability data (traces, logs, metrics)',
+    );
 
   cmd
     .command('traces')
@@ -39,7 +41,10 @@ export default (program: Command): Command => {
     .command('logs')
     .description('Query logs')
     .option('--service <name>', 'Filter by service name')
-    .option('--severity <level>', 'Filter by severity (DEBUG, INFO, WARN, ERROR)')
+    .option(
+      '--severity <level>',
+      'Filter by severity (DEBUG, INFO, WARN, ERROR)',
+    )
     .option('--search <text>', 'Search in log body')
     .option('--hours <number>', 'Look back N hours (default: 1)', '1')
     .option('--limit <number>', 'Maximum number of logs to return', '50')
