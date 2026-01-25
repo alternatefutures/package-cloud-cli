@@ -7,10 +7,10 @@ import { getDefined } from '../defined';
 import { t } from '../utils/translation';
 
 export const loginGuard = async () => {
-  const uiAppUrl = getDefined('UI__APP_URL');
-  const authApiUrl = getDefined('SDK__GRAPHQL_API_URL');
+  const authServiceUrl =
+    getDefined('SDK__AUTH_SERVICE_URL') || getDefined('AUTH__API_URL');
 
-  if (!uiAppUrl || !authApiUrl) {
+  if (!authServiceUrl) {
     throw new MissingExpectedDataError();
   }
 
@@ -24,7 +24,6 @@ export const loginGuard = async () => {
   output.printNewLine();
 
   await loginActionHandler({
-    uiAppUrl,
-    authApiUrl,
+    authServiceUrl,
   });
 };

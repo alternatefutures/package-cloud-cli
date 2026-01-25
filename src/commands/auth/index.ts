@@ -24,16 +24,17 @@ export default (cmd: Command): Command => {
       }
 
       // Default: browser-based login
-      const uiAppUrl = getDefined('UI__APP_URL');
-      const authApiUrl = getDefined('SDK__GRAPHQL_API_URL');
+      const authServiceUrl =
+        options.authUrl ||
+        getDefined('SDK__AUTH_SERVICE_URL') ||
+        getDefined('AUTH__API_URL');
 
-      if (!uiAppUrl || !authApiUrl) {
+      if (!authServiceUrl) {
         throw new MissingExpectedDataError();
       }
 
       return loginActionHandler({
-        uiAppUrl,
-        authApiUrl,
+        authServiceUrl,
       });
     });
 

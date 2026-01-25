@@ -1,31 +1,54 @@
-import { createClient } from '@alternatefutures/sdk/node';
-
 import { output } from '../../cli';
 import { config } from '../../config';
-import { generateVerificationSessionId } from '../../utils/token/generateVerificationSessionId';
 import { showVerificationSessionLink } from '../../utils/token/showVerificationSessionLink';
-import { waitForPersonalAccessTokenFromVerificationSession } from '../../utils/token/waitForPersonalAccessTokenFromVerificationSession';
+import { waitForPersonalAccessTokenFromCliSession } from '../../utils/token/waitForPersonalAccessTokenFromCliSession';
 import { t } from '../../utils/translation';
 
 type LoginActionHandlerArgs = {
-  uiAppUrl: string;
-  authApiUrl: string;
+  authServiceUrl: string;
 };
 
 export const loginActionHandler = async ({
-  uiAppUrl,
-  authApiUrl,
+  authServiceUrl,
 }: LoginActionHandlerArgs) => {
-  const verificationSessionId = generateVerificationSessionId();
+  // Start a CLI login session on the auth service
+  const startResponse = await fetch(`${authServiceUrl}/auth/cli/start`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: 'CLI Login' }),
+  }).catch((): null => null);
 
-  showVerificationSessionLink({ output, uiAppUrl, verificationSessionId });
+  if (!startResponse || !startResponse.ok) {
+    output.error(t('timeoutPATfetch'));
+    output.printNewLine();
+    return;
+  }
 
-  const client = createClient({ url: authApiUrl });
-  const personalAccessToken =
-    await waitForPersonalAccessTokenFromVerificationSession({
-      verificationSessionId,
-      client,
-    });
+  const startData = (await startResponse.json().catch((): null => null)) as
+    | {
+        verificationSessionId: string;
+        pollSecret: string;
+        verificationUrl: string;
+      }
+    | null;
+
+  if (
+    !startData?.verificationSessionId ||
+    !startData.pollSecret ||
+    !startData.verificationUrl
+  ) {
+    output.error(t('timeoutPATfetch'));
+    output.printNewLine();
+    return;
+  }
+
+  showVerificationSessionLink({ output, url: startData.verificationUrl });
+
+  const personalAccessToken = await waitForPersonalAccessTokenFromCliSession({
+    authServiceUrl,
+    verificationSessionId: startData.verificationSessionId,
+    pollSecret: startData.pollSecret,
+  });
 
   if (!personalAccessToken) {
     output.error(t('timeoutPATfetch'));

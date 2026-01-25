@@ -1,17 +1,8 @@
-import { createClient } from '@alternatefutures/sdk/node';
 import { describe, expect, it, vi } from 'vitest';
 
 import { output } from '../../cli';
 import { config } from '../../config';
-import { getVerificationSessionLink } from '../../utils/token/showVerificationSessionLink';
-import { waitForPersonalAccessTokenFromVerificationSession } from '../../utils/token/waitForPersonalAccessTokenFromVerificationSession';
 import { loginActionHandler } from './login';
-
-vi.mock('crypto', () => ({
-  randomBytes: vi.fn().mockReturnValue({
-    toString: vi.fn().mockReturnValue('mockVerificationSession'),
-  }),
-}));
 
 vi.mock('../../cli', () => {
   const output = {
@@ -20,6 +11,7 @@ vi.mock('../../cli', () => {
     link: vi.fn(),
     success: vi.fn(),
     spinner: vi.fn(),
+    error: vi.fn(),
     printNewLine: vi.fn(),
   };
 
@@ -38,66 +30,26 @@ vi.mock('../../config', () => ({
   },
 }));
 
-// Assumes user goes ahead with the flow and logs in
-vi.mock('@alternatefutures/sdk/node', () => {
-  const MockClient = vi.fn();
-  MockClient.prototype.mutation = vi.fn().mockResolvedValue({
-    createPersonalAccessTokenFromVerificationSession: 'mockPat',
-  });
+vi.mock('../../utils/token/waitForPersonalAccessTokenFromCliSession', () => ({
+  waitForPersonalAccessTokenFromCliSession: vi.fn().mockResolvedValue('mockPat'),
+}));
 
-  const createClientMock = vi.fn().mockReturnValue(new MockClient());
-
-  return { createClient: createClientMock };
-});
-
-describe('Login', async () => {
-  it('should request token from verification session', async () => {
-    const mockClient = createClient({ url: '' });
-    const result = await waitForPersonalAccessTokenFromVerificationSession({
-      verificationSessionId: 'mockVerificationSession',
-      client: mockClient,
-    });
-
-    expect(result).toBe('mockPat');
-    expect(mockClient.mutation).toHaveBeenCalledWith({
-      createPersonalAccessTokenFromVerificationSession: {
-        __args: {
-          data: { name: undefined },
-          where: {
-            id: 'mockVerificationSession',
-          },
-        },
-      },
-    });
-  });
-
-  it('should log the messages correctly', async () => {
-    await loginActionHandler({
-      uiAppUrl: '',
-      authApiUrl: '',
-    });
-
-    expect(output.chore).toHaveBeenCalledWith(
-      'Please follow the link to log in to AlternateFutures Platform.',
-    );
-
-    expect(output.spinner).toHaveBeenCalledWith(
-      getVerificationSessionLink({
-        uiAppUrl: '',
-        verificationSessionId: 'mockVerificationSession',
-      }),
-    );
-    expect(output.success).toHaveBeenCalledWith(
-      'You are now logged in to the AlternateFutures Platform.',
-    );
-  });
-
+describe('Login', () => {
   it('should update config correctly', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        verificationSessionId: 'sess',
+        pollSecret: 'secret',
+        verificationUrl: 'https://app.alternatefutures.ai/login/sess',
+      }),
+    }));
+
     await loginActionHandler({
-      uiAppUrl: '',
-      authApiUrl: '',
+      authServiceUrl: 'https://auth.service',
     });
 
+    expect(output.success).toHaveBeenCalled();
     expect(config.personalAccessToken.set).toHaveBeenCalledWith('mockPat');
     expect(config.projectId.clear).toHaveBeenCalled();
   });
