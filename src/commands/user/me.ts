@@ -1,9 +1,9 @@
 import { MissingExpectedDataError } from '@alternatefutures/errors';
-import type { SdkGuardedFunction } from '../../guards/types';
-import { withGuards } from '../../guards/withGuards';
+import { output } from '../../cli';
 import { config } from '../../config';
 import { getDefined } from '../../defined';
-import { output } from '../../cli';
+import type { SdkGuardedFunction } from '../../guards/types';
+import { withGuards } from '../../guards/withGuards';
 import { t } from '../../utils/translation';
 
 type MeActionArgs = {
@@ -89,4 +89,3 @@ export const meActionHandler = withGuards(meAction, {
     site: false,
   },
 });
-

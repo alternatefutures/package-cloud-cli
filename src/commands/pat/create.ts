@@ -29,13 +29,11 @@ export const createPersonalAccessTokenActionHandler = async ({
     return;
   }
 
-  const startData = (await startResponse.json().catch((): null => null)) as
-    | {
-        verificationSessionId: string;
-        pollSecret: string;
-        verificationUrl: string;
-      }
-    | null;
+  const startData = (await startResponse.json().catch((): null => null)) as {
+    verificationSessionId: string;
+    pollSecret: string;
+    verificationUrl: string;
+  } | null;
 
   if (
     !startData?.verificationSessionId ||

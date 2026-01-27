@@ -17,4 +17,3 @@ export default (program: Command): Command => {
 
   return cmd;
 };
-

@@ -26,13 +26,13 @@ export const waitForPersonalAccessTokenFromCliSession = async ({
 
       if (!response.ok) return null;
 
-      const data = (await response.json().catch(() => null)) as
-        | { success?: boolean; token?: string }
-        | null;
+      const data = (await response.json().catch(() => null)) as {
+        success?: boolean;
+        token?: string;
+      } | null;
 
       return data?.token ?? null;
     },
     period: 2_000,
     tries: 500,
   });
-

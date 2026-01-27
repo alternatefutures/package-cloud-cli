@@ -31,19 +31,24 @@ vi.mock('../../config', () => ({
 }));
 
 vi.mock('../../utils/token/waitForPersonalAccessTokenFromCliSession', () => ({
-  waitForPersonalAccessTokenFromCliSession: vi.fn().mockResolvedValue('mockPat'),
+  waitForPersonalAccessTokenFromCliSession: vi
+    .fn()
+    .mockResolvedValue('mockPat'),
 }));
 
 describe('Login', () => {
   it('should update config correctly', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        verificationSessionId: 'sess',
-        pollSecret: 'secret',
-        verificationUrl: 'https://app.alternatefutures.ai/login/sess',
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          verificationSessionId: 'sess',
+          pollSecret: 'secret',
+          verificationUrl: 'https://app.alternatefutures.ai/login/sess',
+        }),
       }),
-    }));
+    );
 
     await loginActionHandler({
       authServiceUrl: 'https://auth.service',

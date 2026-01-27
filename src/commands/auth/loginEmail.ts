@@ -1,4 +1,4 @@
-import * as readline from 'readline';
+import * as readline from 'node:readline';
 import { output } from '../../cli';
 import { config } from '../../config';
 
@@ -30,7 +30,10 @@ const createPrompt = (): readline.Interface => {
   });
 };
 
-const askQuestion = (rl: readline.Interface, question: string): Promise<string> => {
+const askQuestion = (
+  rl: readline.Interface,
+  question: string,
+): Promise<string> => {
   return new Promise((resolve) => {
     rl.question(question, (answer) => {
       resolve(answer.trim());
@@ -38,7 +41,9 @@ const askQuestion = (rl: readline.Interface, question: string): Promise<string> 
   });
 };
 
-export const emailLoginActionHandler = async ({ authApiUrl }: EmailLoginActionHandlerArgs) => {
+export const emailLoginActionHandler = async ({
+  authApiUrl,
+}: EmailLoginActionHandlerArgs) => {
   const rl = createPrompt();
 
   try {
@@ -78,11 +83,16 @@ export const emailLoginActionHandler = async ({ authApiUrl }: EmailLoginActionHa
 
     output.success('Verification code sent to your email');
     output.log('');
-    output.log(`📬 Check your inbox for a 6-digit code (expires in ${Math.floor((requestData.expiresIn || 300) / 60)} minutes)`);
+    output.log(
+      `📬 Check your inbox for a 6-digit code (expires in ${Math.floor((requestData.expiresIn || 300) / 60)} minutes)`,
+    );
     output.log('');
 
     // Step 3: Get verification code
-    const code = await askQuestion(rl, '🔐 Enter the 6-digit verification code: ');
+    const code = await askQuestion(
+      rl,
+      '🔐 Enter the 6-digit verification code: ',
+    );
 
     if (!code || code.length !== 6) {
       output.error('Invalid verification code. Please enter a 6-digit code.');
@@ -117,7 +127,7 @@ export const emailLoginActionHandler = async ({ authApiUrl }: EmailLoginActionHa
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         name: `CLI Token - ${new Date().toISOString().split('T')[0]}`,
@@ -143,7 +153,9 @@ export const emailLoginActionHandler = async ({ authApiUrl }: EmailLoginActionHa
     output.log('');
     output.log(`✅ Logged in as: ${email}`);
     output.log('');
-    output.log('You can now use the AlternateFutures CLI to deploy your projects.');
+    output.log(
+      'You can now use the AlternateFutures CLI to deploy your projects.',
+    );
     output.printNewLine();
 
     rl.close();
@@ -163,14 +175,20 @@ export const emailLoginActionHandler = async ({ authApiUrl }: EmailLoginActionHa
         output.log('');
 
         if (fetchError.cause) {
-          output.log(`Technical details: ${fetchError.cause.message || fetchError.cause}`);
+          output.log(
+            `Technical details: ${fetchError.cause.message || fetchError.cause}`,
+          );
         }
 
         output.log('');
         output.log('Troubleshooting:');
-        output.log(`  1. Verify the auth service is running: curl -k ${authApiUrl}/health`);
+        output.log(
+          `  1. Verify the auth service is running: curl -k ${authApiUrl}/health`,
+        );
         output.log('  2. Check your network connection');
-        output.log('  3. Try setting NODE_TLS_REJECT_UNAUTHORIZED=0 if using self-signed certs');
+        output.log(
+          '  3. Try setting NODE_TLS_REJECT_UNAUTHORIZED=0 if using self-signed certs',
+        );
       } else {
         output.error(error.message);
         if (fetchError.cause) {
