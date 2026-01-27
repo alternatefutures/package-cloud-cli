@@ -4,26 +4,13 @@ import { t } from '../../utils/translation';
 
 type ShowVerificationSessionLinkArgs = {
   output: Output;
-  uiAppUrl: string;
-  verificationSessionId: string;
+  url: string;
 };
-
-export const getVerificationSessionLink = ({
-  verificationSessionId,
-  uiAppUrl,
-}: { verificationSessionId: string; uiAppUrl: string }) =>
-  `${uiAppUrl}/login/${verificationSessionId}`;
 
 export const showVerificationSessionLink = ({
   output,
-  uiAppUrl,
-  verificationSessionId,
+  url,
 }: ShowVerificationSessionLinkArgs) => {
-  const url = getVerificationSessionLink({
-    uiAppUrl,
-    verificationSessionId,
-  });
-
   output.spinner(url);
   output.chore(t('followLinkToLogin'));
   output.link(url);

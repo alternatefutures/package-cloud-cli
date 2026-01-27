@@ -361,5 +361,7 @@
   "functionsSite": "The Site ID where the Function will be deployed",
   "siteNotFound": "Site not found!",
   "failedAuthentication": "This command failed to authenticate. Have you run 'af login' to sign in? If the issue persists contact our support team at https://alternatefutures.ai/support",
-  "missingPersonalAccessToken": "Missing a valid personal access token. Visit https://alternatefutures.ai/docs for detailed instructions and try again, please!"
+  "missingPersonalAccessToken": "Missing a valid personal access token. Visit https://alternatefutures.ai/docs for detailed instructions and try again, please!",
+  "userDescription": "Show information about the authenticated user",
+  "userMeDescription": "Show the currently authenticated user"
 }

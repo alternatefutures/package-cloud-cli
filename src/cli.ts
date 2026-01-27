@@ -13,6 +13,7 @@ import cmdPAT from './commands/pat/index';
 import cmdProjects from './commands/projects/index';
 import cmdSites from './commands/sites/index';
 import cmdStorage from './commands/storage/index';
+import cmdUser from './commands/user/index';
 
 import { Output } from './output/Output';
 import { t } from './utils/translation';
@@ -31,17 +32,16 @@ type InitArgs = {
 };
 
 const logo = `
+▞▀▖▜▐              ▐             
+▙▄▌▐▜▀ ▞▀▖▙▀▖▛▀▖▝▀▖▜▀ ▞▀▖      
+▌ ▌▐▐ ▖▛▀ ▌  ▌ ▌▞▀▌▐ ▖▛▀         
+▘ ▘ ▘▀ ▝▀▘▘  ▘ ▘▝▀▘ ▀ ▝▀▘        
+             ▛▀▘  ▐              
+             ▙▄▌ ▌▜▀ ▌ ▌▙▀▖▞▀▖▞▀▘
+             ▌ ▌ ▌▐ ▖▌ ▌▌  ▛▀ ▝▀▖
+             ▘ ▝▀▘ ▀ ▝▀▘▘  ▝▀▘▀▀ 
 
-     $$$$$$\  $$$$$$$$\
-    $$  __$$\ $$  _____|
-    $$ /  $$ |$$ |
-    $$$$$$$$ |$$$$$\
-    $$  __$$ |$$  __|
-    $$ |  $$ |$$ |
-    $$ |  $$ |$$ |
-    \__|  \__|\__|
-
-    ${t('aboutAlternateFutures')}
+${t('aboutAlternateFutures')}
 `;
 
 export const init = ({ version, parser }: InitArgs) => {
@@ -80,6 +80,7 @@ export const init = ({ version, parser }: InitArgs) => {
     cmdSites,
     cmdStorage,
     cmdFunctions,
+    cmdUser,
     cmdVersion,
   ];
 

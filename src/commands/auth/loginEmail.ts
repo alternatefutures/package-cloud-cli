@@ -20,7 +20,7 @@ type EmailVerifyResponse = {
 };
 
 type PatCreateResponse = {
-  token: string;
+  token: { token: string };
 };
 
 const createPrompt = (): readline.Interface => {
@@ -113,7 +113,7 @@ export const emailLoginActionHandler = async ({ authApiUrl }: EmailLoginActionHa
 
     output.spinner('Creating CLI access token...');
 
-    const patResponse = await fetch(`${authApiUrl}/auth/pat/create`, {
+    const patResponse = await fetch(`${authApiUrl}/tokens`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ export const emailLoginActionHandler = async ({ authApiUrl }: EmailLoginActionHa
 
     if (patResponse.ok) {
       const patData = (await patResponse.json()) as PatCreateResponse;
-      personalAccessToken = patData.token;
+      personalAccessToken = patData.token.token;
     } else {
       // If PAT creation endpoint doesn't exist, use the access token directly
       // This is a fallback for compatibility
