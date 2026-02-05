@@ -2,17 +2,20 @@
   "compilerOptions": {
     "module": "node16",
     "target": "es2020",
+    "lib": ["es2021"],
+    "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "moduleResolution": "node16",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "outDir": "dist",
     "useUnknownInCatchVariables": true,
     "rootDir": "src"
   },
   "include": ["src/**/*", "global.d.ts", "locales/*.d.ts"],
-  "exclude": ["dist", "**/node_modules", "**/*.test.ts", "src/templates/**/*"],
-  "extends": "@tsconfig/node16/tsconfig.json"
+  "exclude": ["dist", "**/node_modules", "**/*.test.ts", "src/templates/**/*"]
 }
