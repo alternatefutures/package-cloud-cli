@@ -30,7 +30,7 @@ export const uploadPathOnIpfs = async ({ sdk, path }: UploadPathOnIpfsArgs) => {
     const content = await fileHandle.readFile();
     await fileHandle.close();
 
-    return sdk.ipfs().add({ path, content });
+    return sdk.ipfs().add({ path, content: content.buffer as ArrayBuffer });
   } catch (error) {
     if (fileHandle) {
       await fileHandle.close();

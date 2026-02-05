@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "node16",
     "target": "es2020",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "sourceMap": true,
     "outDir": "dist",
     "useUnknownInCatchVariables": true,
