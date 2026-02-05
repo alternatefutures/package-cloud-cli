@@ -182,8 +182,8 @@ importers:
         specifier: 1.6.1
         version: 1.6.1(vitest@1.6.1(@types/node@24.7.0))
       concurrently:
-        specifier: ^7.6.0
-        version: 7.6.0
+        specifier: ^9.2.1
+        version: 9.2.1
       mock-stdin:
         specifier: ^1.0.0
         version: 1.0.0
@@ -1681,9 +1681,9 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
-  concurrently@7.6.0:
-    resolution: {integrity: sha512-BKtRgvcJGeZ4XttiDiNcFiRlxoAeZOseqUvyYRUp/Vtd+9p1ULmeoSqGsDA+2ivdeDFpqrJvGvmI+StKfKl5hw==}
-    engines: {node: ^12.20.0 || ^14.13.0 || >=16.0.0}
+  concurrently@9.2.1:
+    resolution: {integrity: sha512-fsfrO0MxV64Znoy8/l1vVIjjHa29SZyyqPgQBwhiDcaW8wJc2W3XWVOGx4M3oJBnv/zdUZIIp1gDeS98GzP8Ng==}
+    engines: {node: '>=18'}
     hasBin: true
 
   conf@10.2.0:
@@ -1769,10 +1769,6 @@ packages:
   data-uri-to-buffer@6.0.2:
     resolution: {integrity: sha512-7hvf7/GW8e86rW0ptuwS3OcBGDjIi6SZva7hCyWC0yYry2cOPmLIjXAUHI6DK2HsnwJd9ifmt57i8eV2n4YNpw==}
     engines: {node: '>= 14'}
-
-  date-fns@2.30.0:
-    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
-    engines: {node: '>=0.11'}
 
   debounce-fn@4.0.0:
     resolution: {integrity: sha512-8pYCQiL9Xdcg0UPSD3d+0KMlOjp+KGU5EPwYddgzQ7DATsg4fuUDjQtsYLmWjnk2obnNHgV3vE2Y4jejSOJVBQ==}
@@ -3249,9 +3245,6 @@ packages:
   source-map@0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
-
-  spawn-command@0.0.2:
-    resolution: {integrity: sha512-zC8zGoGkmc8J9ndvml8Xksr1Amk9qBujgbF0JAIWO7kXr43w0h/0GJNM/Vustixu+YE8N/MTrQ7N31FvHUACxQ==}
 
   spawndamnit@3.0.1:
     resolution: {integrity: sha512-MmnduQUuHCoFckZoWnXsTg7JaiLBJrKFj9UI2MbRPGaJeVpsLcVBu6P/IGZovziM/YBsellCmsprgNA+w0CzVg==}
@@ -5647,14 +5640,11 @@ snapshots:
 
   concat-map@0.0.1: {}
 
-  concurrently@7.6.0:
+  concurrently@9.2.1:
     dependencies:
       chalk: 4.1.2
-      date-fns: 2.30.0
-      lodash: 4.17.21
       rxjs: 7.8.2
       shell-quote: 1.8.3
-      spawn-command: 0.0.2
       supports-color: 8.1.1
       tree-kill: 1.2.2
       yargs: 17.7.2
@@ -5778,10 +5768,6 @@ snapshots:
   crypto-random-string@2.0.0: {}
 
   data-uri-to-buffer@6.0.2: {}
-
-  date-fns@2.30.0:
-    dependencies:
-      '@babel/runtime': 7.28.4
 
   debounce-fn@4.0.0:
     dependencies:
@@ -7394,8 +7380,6 @@ snapshots:
 
   source-map@0.6.1:
     optional: true
-
-  spawn-command@0.0.2: {}
 
   spawndamnit@3.0.1:
     dependencies:
