@@ -17,9 +17,7 @@ export default (cmd: Command): Command => {
     .action((options) => {
       // If --email flag is provided, use email-based login (no browser needed)
       if (options.email) {
-        // Use europlots ingress URL which has valid SSL (*.europlots.com wildcard cert)
-        // Custom domain auth.alternatefutures.ai has cert mismatch with Akash provider
-        const authApiUrl = options.authUrl || getDefined('AUTH__API_URL') || 'https://ubsm31q4ol97b1pi5l06iognug.ingress.europlots.com';
+        const authApiUrl = options.authUrl || getDefined('AUTH__API_URL') || 'https://auth.alternatefutures.ai';
         return emailLoginActionHandler({ authApiUrl });
       }
 
