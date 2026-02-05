@@ -13,11 +13,17 @@ export default (cmd: Command): Command => {
     .command('login')
     .description(t('cmdAuthLoginDescription'))
     .option('-e, --email', 'Login via email verification (no browser required)')
-    .option('--auth-url <url>', 'Override auth service URL (e.g., http://localhost:3001)')
+    .option(
+      '--auth-url <url>',
+      'Override auth service URL (e.g., http://localhost:3001)',
+    )
     .action((options) => {
       // If --email flag is provided, use email-based login (no browser needed)
       if (options.email) {
-        const authApiUrl = options.authUrl || getDefined('AUTH__API_URL') || 'https://auth.alternatefutures.ai';
+        const authApiUrl =
+          options.authUrl ||
+          getDefined('AUTH__API_URL') ||
+          'https://auth.alternatefutures.ai';
         return emailLoginActionHandler({ authApiUrl });
       }
 
@@ -39,7 +45,8 @@ export default (cmd: Command): Command => {
     .command('signup')
     .description('Create a new account using email verification')
     .action(() => {
-      const authApiUrl = getDefined('AUTH__API_URL') || 'https://auth.alternatefutures.ai';
+      const authApiUrl =
+        getDefined('AUTH__API_URL') || 'https://auth.alternatefutures.ai';
 
       return signupActionHandler({
         authApiUrl,
