@@ -85,7 +85,7 @@
     "nanoid": "^3.3.4",
     "native-fetch": "^4.0.2",
     "ora": "^3.4.0",
-    "press-any-key": "^0.1.1",
+    "press-any-key": "^1.1.0",
     "prompts": "^2.4.2",
     "semver": "^7.3.8",
     "tmp": "^0.2.5",
