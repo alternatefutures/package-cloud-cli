@@ -16,9 +16,14 @@ export const getBillingClient = (sdk: AnySdk): AnyBillingClient | null => {
   try {
     return sdk.billing();
   } catch (error) {
-    if (error instanceof Error && error.message.includes('SDK__AUTH_SERVICE_URL')) {
+    if (
+      error instanceof Error &&
+      error.message.includes('SDK__AUTH_SERVICE_URL')
+    ) {
       output.error('Billing requires SDK__AUTH_SERVICE_URL to be configured.');
-      output.hint('Add SDK__AUTH_SERVICE_URL to your environment configuration.');
+      output.hint(
+        'Add SDK__AUTH_SERVICE_URL to your environment configuration.',
+      );
       return null;
     }
     throw error;

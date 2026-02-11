@@ -25,7 +25,9 @@ const servicesAction: SdkGuardedFunction<ServicesActionArgs> = async ({
   const projectId = config.projectId.get();
 
   if (!projectId) {
-    output.error('No project selected. Use `af projects switch` to select a project.');
+    output.error(
+      'No project selected. Use `af projects switch` to select a project.',
+    );
     return;
   }
 
@@ -34,20 +36,24 @@ const servicesAction: SdkGuardedFunction<ServicesActionArgs> = async ({
   const endTime = new Date();
   const startTime = new Date(endTime.getTime() - hours * 60 * 60 * 1000);
 
-  output.spinner(`Fetching service statistics for the last ${hours} hour(s)...`);
+  output.spinner(
+    `Fetching service statistics for the last ${hours} hour(s)...`,
+  );
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const services = await (sdk as any)
+    const services = (await (sdk as any)
       .observability()
-      .getServices(projectId, startTime, endTime) as ServiceStats[];
+      .getServices(projectId, startTime, endTime)) as ServiceStats[];
 
     output.stopSpinner();
 
     if (!services || services.length === 0) {
       output.warn('No services found with telemetry data');
       output.printNewLine();
-      output.log('Make sure your application is sending traces to AlternateFutures.');
+      output.log(
+        'Make sure your application is sending traces to AlternateFutures.',
+      );
       output.log('See: https://docs.alternatefutures.ai/observability/setup');
       return;
     }
@@ -72,9 +78,18 @@ const servicesAction: SdkGuardedFunction<ServicesActionArgs> = async ({
     output.printNewLine();
 
     // Calculate totals
-    const totalSpans = services.reduce((sum: number, s: ServiceStats) => sum + s.spanCount, 0);
-    const totalErrors = services.reduce((sum: number, s: ServiceStats) => sum + s.errorCount, 0);
-    const totalTraces = services.reduce((sum: number, s: ServiceStats) => sum + s.traceCount, 0);
+    const totalSpans = services.reduce(
+      (sum: number, s: ServiceStats) => sum + s.spanCount,
+      0,
+    );
+    const totalErrors = services.reduce(
+      (sum: number, s: ServiceStats) => sum + s.errorCount,
+      0,
+    );
+    const totalTraces = services.reduce(
+      (sum: number, s: ServiceStats) => sum + s.traceCount,
+      0,
+    );
 
     output.log('Totals:');
     output.log(`  Services: ${services.length}`);
