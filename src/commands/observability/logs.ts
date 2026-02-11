@@ -31,7 +31,9 @@ const logsAction: SdkGuardedFunction<LogsActionArgs> = async ({
   const projectId = config.projectId.get();
 
   if (!projectId) {
-    output.error('No project selected. Use `af projects switch` to select a project.');
+    output.error(
+      'No project selected. Use `af projects switch` to select a project.',
+    );
     return;
   }
 
@@ -45,7 +47,7 @@ const logsAction: SdkGuardedFunction<LogsActionArgs> = async ({
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const logs = await (sdk as any).observability().queryLogs({
+    const logs = (await (sdk as any).observability().queryLogs({
       projectId,
       startTime,
       endTime,
@@ -53,7 +55,7 @@ const logsAction: SdkGuardedFunction<LogsActionArgs> = async ({
       severityText: args.severity,
       bodyContains: args.search,
       limit,
-    }) as LogEntry[];
+    })) as LogEntry[];
 
     output.stopSpinner();
 
