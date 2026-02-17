@@ -26,7 +26,6 @@ const subscriptionsAction: SdkGuardedFunction = async ({ sdk }) => {
     Status: sub.status,
     Seats: sub.seats,
     'Price/Seat': `$${(sub.basePricePerSeat / 100).toFixed(2)}/mo`,
-    'Usage Markup': `${(sub.usageMarkup * 100).toFixed(0)}%`,
     'Current Period': `${new Date(sub.currentPeriodStart * 1000).toLocaleDateString()} - ${new Date(sub.currentPeriodEnd * 1000).toLocaleDateString()}`,
     'Cancel At': sub.cancelAt
       ? new Date(sub.cancelAt * 1000).toLocaleDateString()
