@@ -37,7 +37,9 @@ const tracesAction: SdkGuardedFunction<TracesActionArgs> = async ({
   const projectId = config.projectId.get();
 
   if (!projectId) {
-    output.error('No project selected. Use `af projects switch` to select a project.');
+    output.error(
+      'No project selected. Use `af projects switch` to select a project.',
+    );
     return;
   }
 
@@ -54,7 +56,7 @@ const tracesAction: SdkGuardedFunction<TracesActionArgs> = async ({
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const traces = await (sdk as any).observability().queryTraces({
+    const traces = (await (sdk as any).observability().queryTraces({
       projectId,
       startTime,
       endTime,
@@ -62,7 +64,7 @@ const tracesAction: SdkGuardedFunction<TracesActionArgs> = async ({
       statusCode: args.status,
       minDurationMs,
       limit,
-    }) as Trace[];
+    })) as Trace[];
 
     output.stopSpinner();
 
@@ -76,7 +78,7 @@ const tracesAction: SdkGuardedFunction<TracesActionArgs> = async ({
     output.printNewLine();
 
     const tableData = traces.map((trace: Trace) => ({
-      'Trace ID': trace.traceId.substring(0, 16) + '...',
+      'Trace ID': `${trace.traceId.substring(0, 16)}...`,
       Service: trace.serviceName,
       Duration: `${trace.durationMs.toFixed(2)}ms`,
       Spans: trace.spanCount,
@@ -105,7 +107,9 @@ const traceAction: SdkGuardedFunction<TraceActionArgs> = async ({
   const projectId = config.projectId.get();
 
   if (!projectId) {
-    output.error('No project selected. Use `af projects switch` to select a project.');
+    output.error(
+      'No project selected. Use `af projects switch` to select a project.',
+    );
     return;
   }
 
@@ -113,7 +117,9 @@ const traceAction: SdkGuardedFunction<TraceActionArgs> = async ({
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const trace = await (sdk as any).observability().getTrace(projectId, args.traceId) as Trace | null;
+    const trace = (await (sdk as any)
+      .observability()
+      .getTrace(projectId, args.traceId)) as Trace | null;
 
     output.stopSpinner();
 

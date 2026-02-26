@@ -41,9 +41,10 @@ const invoicesAction: SdkGuardedFunction<InvoicesOptions> = async ({
     'Paid At': invoice.paidAt
       ? new Date(invoice.paidAt * 1000).toLocaleDateString()
       : 'N/A',
-    Period: invoice.periodStart && invoice.periodEnd
-      ? `${new Date(invoice.periodStart * 1000).toLocaleDateString()} - ${new Date(invoice.periodEnd * 1000).toLocaleDateString()}`
-      : 'N/A',
+    Period:
+      invoice.periodStart && invoice.periodEnd
+        ? `${new Date(invoice.periodStart * 1000).toLocaleDateString()} - ${new Date(invoice.periodEnd * 1000).toLocaleDateString()}`
+        : 'N/A',
     PDF: invoice.pdfUrl || 'N/A',
   }));
 

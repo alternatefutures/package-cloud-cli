@@ -18,7 +18,9 @@ const settingsAction: SdkGuardedFunction = async ({ sdk }) => {
   const projectId = config.projectId.get();
 
   if (!projectId) {
-    output.error('No project selected. Use `af projects switch` to select a project.');
+    output.error(
+      'No project selected. Use `af projects switch` to select a project.',
+    );
     return;
   }
 
@@ -26,7 +28,9 @@ const settingsAction: SdkGuardedFunction = async ({ sdk }) => {
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const settings = await (sdk as any).observability().getSettings(projectId) as ObservabilitySettings | null;
+    const settings = (await (sdk as any)
+      .observability()
+      .getSettings(projectId)) as ObservabilitySettings | null;
 
     output.stopSpinner();
 
@@ -86,7 +90,9 @@ const settingsAction: SdkGuardedFunction = async ({ sdk }) => {
     output.table(tableData);
     output.printNewLine();
 
-    output.log('Use `af observability settings:update` to modify these settings');
+    output.log(
+      'Use `af observability settings:update` to modify these settings',
+    );
     output.printNewLine();
   } catch (error) {
     output.stopSpinner();
@@ -103,79 +109,86 @@ type UpdateSettingsActionArgs = {
   logRetention?: string;
 };
 
-const updateSettingsAction: SdkGuardedFunction<UpdateSettingsActionArgs> =
-  async ({ sdk, args }) => {
-    const projectId = config.projectId.get();
+const updateSettingsAction: SdkGuardedFunction<
+  UpdateSettingsActionArgs
+> = async ({ sdk, args }) => {
+  const projectId = config.projectId.get();
 
-    if (!projectId) {
-      output.error('No project selected. Use `af projects switch` to select a project.');
-      return;
-    }
+  if (!projectId) {
+    output.error(
+      'No project selected. Use `af projects switch` to select a project.',
+    );
+    return;
+  }
 
-    // Parse boolean strings
-    const parseBoolean = (value: string | undefined): boolean | undefined => {
-      if (value === undefined) return undefined;
-      return value.toLowerCase() === 'true';
-    };
-
-    const updates: Record<string, boolean | number | undefined> = {};
-
-    if (args.traces !== undefined) {
-      updates.tracesEnabled = parseBoolean(args.traces);
-    }
-    if (args.metrics !== undefined) {
-      updates.metricsEnabled = parseBoolean(args.metrics);
-    }
-    if (args.logs !== undefined) {
-      updates.logsEnabled = parseBoolean(args.logs);
-    }
-    if (args.sampleRate !== undefined) {
-      const rate = Number.parseFloat(args.sampleRate);
-      if (rate < 0 || rate > 1) {
-        output.error('Sample rate must be between 0.0 and 1.0');
-        return;
-      }
-      updates.sampleRate = rate;
-    }
-    if (args.traceRetention !== undefined) {
-      updates.traceRetention = Number.parseInt(args.traceRetention, 10);
-    }
-    if (args.logRetention !== undefined) {
-      updates.logRetention = Number.parseInt(args.logRetention, 10);
-    }
-
-    if (Object.keys(updates).length === 0) {
-      output.warn('No settings to update. Use --help to see available options.');
-      return;
-    }
-
-    output.spinner('Updating observability settings...');
-
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const settings = await (sdk as any)
-        .observability()
-        .updateSettings(projectId, updates) as ObservabilitySettings;
-
-      output.stopSpinner();
-
-      output.printNewLine();
-      output.success('Observability settings updated successfully!');
-      output.printNewLine();
-
-      output.log('New settings:');
-      output.log(`  Traces Enabled:    ${settings.tracesEnabled ? 'Yes' : 'No'}`);
-      output.log(`  Metrics Enabled:   ${settings.metricsEnabled ? 'Yes' : 'No'}`);
-      output.log(`  Logs Enabled:      ${settings.logsEnabled ? 'Yes' : 'No'}`);
-      output.log(`  Sample Rate:       ${(settings.sampleRate * 100).toFixed(0)}%`);
-      output.log(`  Trace Retention:   ${settings.traceRetention} days`);
-      output.log(`  Log Retention:     ${settings.logRetention} days`);
-      output.printNewLine();
-    } catch (error) {
-      output.stopSpinner();
-      throw error;
-    }
+  // Parse boolean strings
+  const parseBoolean = (value: string | undefined): boolean | undefined => {
+    if (value === undefined) return undefined;
+    return value.toLowerCase() === 'true';
   };
+
+  const updates: Record<string, boolean | number | undefined> = {};
+
+  if (args.traces !== undefined) {
+    updates.tracesEnabled = parseBoolean(args.traces);
+  }
+  if (args.metrics !== undefined) {
+    updates.metricsEnabled = parseBoolean(args.metrics);
+  }
+  if (args.logs !== undefined) {
+    updates.logsEnabled = parseBoolean(args.logs);
+  }
+  if (args.sampleRate !== undefined) {
+    const rate = Number.parseFloat(args.sampleRate);
+    if (rate < 0 || rate > 1) {
+      output.error('Sample rate must be between 0.0 and 1.0');
+      return;
+    }
+    updates.sampleRate = rate;
+  }
+  if (args.traceRetention !== undefined) {
+    updates.traceRetention = Number.parseInt(args.traceRetention, 10);
+  }
+  if (args.logRetention !== undefined) {
+    updates.logRetention = Number.parseInt(args.logRetention, 10);
+  }
+
+  if (Object.keys(updates).length === 0) {
+    output.warn('No settings to update. Use --help to see available options.');
+    return;
+  }
+
+  output.spinner('Updating observability settings...');
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const settings = (await (sdk as any)
+      .observability()
+      .updateSettings(projectId, updates)) as ObservabilitySettings;
+
+    output.stopSpinner();
+
+    output.printNewLine();
+    output.success('Observability settings updated successfully!');
+    output.printNewLine();
+
+    output.log('New settings:');
+    output.log(`  Traces Enabled:    ${settings.tracesEnabled ? 'Yes' : 'No'}`);
+    output.log(
+      `  Metrics Enabled:   ${settings.metricsEnabled ? 'Yes' : 'No'}`,
+    );
+    output.log(`  Logs Enabled:      ${settings.logsEnabled ? 'Yes' : 'No'}`);
+    output.log(
+      `  Sample Rate:       ${(settings.sampleRate * 100).toFixed(0)}%`,
+    );
+    output.log(`  Trace Retention:   ${settings.traceRetention} days`);
+    output.log(`  Log Retention:     ${settings.logRetention} days`);
+    output.printNewLine();
+  } catch (error) {
+    output.stopSpinner();
+    throw error;
+  }
+};
 
 export const settingsActionHandler = withGuards(settingsAction, {
   scopes: {

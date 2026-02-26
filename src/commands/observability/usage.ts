@@ -25,7 +25,9 @@ const usageAction: SdkGuardedFunction<UsageActionArgs> = async ({
   const projectId = config.projectId.get();
 
   if (!projectId) {
-    output.error('No project selected. Use `af projects switch` to select a project.');
+    output.error(
+      'No project selected. Use `af projects switch` to select a project.',
+    );
     return;
   }
 
@@ -38,9 +40,9 @@ const usageAction: SdkGuardedFunction<UsageActionArgs> = async ({
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const usage = await (sdk as any)
+    const usage = (await (sdk as any)
       .observability()
-      .getUsage(projectId, startDate, endDate) as TelemetryUsage;
+      .getUsage(projectId, startDate, endDate)) as TelemetryUsage;
 
     output.stopSpinner();
 
@@ -48,7 +50,9 @@ const usageAction: SdkGuardedFunction<UsageActionArgs> = async ({
     output.log('Telemetry Usage Summary:');
     output.printNewLine();
 
-    output.log(`  Period:         ${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`);
+    output.log(
+      `  Period:         ${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`,
+    );
     output.log(`  Project ID:     ${projectId}`);
     output.printNewLine();
 
@@ -80,7 +84,9 @@ const usageAction: SdkGuardedFunction<UsageActionArgs> = async ({
 
     // Show pricing info
     output.log('Pricing: $0.35 per GB ingested');
-    output.log('View detailed billing at: https://app.alternatefutures.ai/billing');
+    output.log(
+      'View detailed billing at: https://app.alternatefutures.ai/billing',
+    );
     output.printNewLine();
   } catch (error) {
     output.stopSpinner();
