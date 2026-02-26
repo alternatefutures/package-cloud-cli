@@ -4,7 +4,7 @@
 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-blue.svg)](https://conventionalcommits.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![Tests](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/test-runner.yml/badge.svg)
+[![Tests](https://github.com/alternatefutures/cloud-cli/actions/workflows/test.yml/badge.svg)](https://github.com/alternatefutures/cloud-cli/actions/workflows/test.yml)
 ![Security](https://img.shields.io/badge/security-audited-brightgreen.svg)
 [![CodeQL](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/codeql.yml/badge.svg)](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/codeql.yml)
 

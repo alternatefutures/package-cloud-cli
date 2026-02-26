@@ -1,0 +1,18 @@
+name: "\U0001F9EA Tests"
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  test:
+    uses: alternatefutures/.github/.github/workflows/test.yml@main
+    with:
+      node-version: "20"
+      pnpm-version: "9"
+      build-before-test: true
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
