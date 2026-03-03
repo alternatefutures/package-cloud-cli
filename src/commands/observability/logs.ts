@@ -103,7 +103,7 @@ const logsAction: SdkGuardedFunction<LogsActionArgs> = async ({
 export const logsActionHandler = withGuards(logsAction, {
   scopes: {
     authenticated: true,
-    project: false,
+    project: true,
     site: false,
   },
 });

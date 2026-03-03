@@ -6,6 +6,7 @@ export const logoutActionHandler = async () => {
   const secretToken = config.personalAccessToken.get();
 
   if (!secretToken) {
+    output.warn('Not currently logged in.');
     return;
   }
 

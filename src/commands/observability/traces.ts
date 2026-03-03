@@ -157,7 +157,7 @@ const traceAction: SdkGuardedFunction<TraceActionArgs> = async ({
 export const tracesActionHandler = withGuards(tracesAction, {
   scopes: {
     authenticated: true,
-    project: false,
+    project: true,
     site: false,
   },
 });
@@ -165,7 +165,7 @@ export const tracesActionHandler = withGuards(tracesAction, {
 export const traceActionHandler = withGuards(traceAction, {
   scopes: {
     authenticated: true,
-    project: false,
+    project: true,
     site: false,
   },
 });

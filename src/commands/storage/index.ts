@@ -56,8 +56,8 @@ export default (program: Command): Command => {
   deleteStorage.action((options: { cid?: string; name?: string }) => {
     if ((!options.name && !options.cid) || (options.name && options.cid)) {
       if (
-        !getStorage.args.includes('help') &&
-        !getStorage.optsWithGlobals().help
+        !deleteStorage.args.includes('help') &&
+        !deleteStorage.optsWithGlobals().help
       ) {
         output.error(t('storageMissingOptCidOrName'));
       }

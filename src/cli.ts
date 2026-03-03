@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import cmdAkash from './commands/akash/index';
 import cmdApplications from './commands/applications/index';
 import cmdAuth from './commands/auth/index';
 import cmdBilling from './commands/billing/index';
@@ -10,9 +11,12 @@ import cmdIPFS from './commands/ipfs/index';
 import cmdIPNS from './commands/ipns/index';
 import cmdObservability from './commands/observability/index';
 import cmdPAT from './commands/pat/index';
+import cmdPhala from './commands/phala/index';
 import cmdProjects from './commands/projects/index';
+import cmdServices from './commands/services/index';
 import cmdSites from './commands/sites/index';
 import cmdStorage from './commands/storage/index';
+import cmdTemplates from './commands/templates/index';
 
 import { Output } from './output/Output';
 import { t } from './utils/translation';
@@ -66,6 +70,7 @@ export const init = ({ version, parser }: InitArgs) => {
 
   // Initialise commands
   const commands = [
+    cmdAkash,
     cmdAuth,
     cmdApplications,
     cmdBilling,
@@ -76,10 +81,13 @@ export const init = ({ version, parser }: InitArgs) => {
     cmdIPNS,
     cmdObservability,
     cmdPAT,
+    cmdPhala,
     cmdProjects,
+    cmdServices,
     cmdSites,
     cmdStorage,
     cmdFunctions,
+    cmdTemplates,
     cmdVersion,
   ];
 

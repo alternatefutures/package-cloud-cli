@@ -11,7 +11,7 @@ const subscriptionsAction: SdkGuardedFunction = async ({ sdk }) => {
 
   if (!subscriptions || subscriptions.length === 0) {
     output.warn('No subscriptions found');
-    output.log('Create a subscription with: af billing subscribe');
+    output.log('Create a subscription at: https://app.alternatefutures.ai/billing');
     return;
   }
 

@@ -44,7 +44,8 @@ export default (program: Command): Command => {
     .description(t('createDomainForSiteOrGw'))
     .action(
       (options: {
-        privateGatewayName?: string;
+        privateGatewayId?: string;
+        privateGatewaySlug?: string;
         siteId?: string;
         siteSlug?: string;
         hostname?: string;

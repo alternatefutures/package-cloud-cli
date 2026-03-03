@@ -1,5 +1,6 @@
 import type { Command } from 'commander';
 
+import { balanceActionHandler } from './balance';
 import { customerActionHandler } from './customer';
 import { invoicesActionHandler } from './invoices';
 import { paymentMethodsActionHandler } from './paymentMethods';
@@ -37,6 +38,11 @@ export default (program: Command): Command => {
     .command('usage')
     .description('View current usage metrics')
     .action(() => usageActionHandler());
+
+  cmd
+    .command('balance')
+    .description('Show current credit balance')
+    .action(() => balanceActionHandler());
 
   cmd
     .command('payment-methods')

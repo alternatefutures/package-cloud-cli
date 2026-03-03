@@ -180,7 +180,7 @@ const updateSettingsAction: SdkGuardedFunction<UpdateSettingsActionArgs> =
 export const settingsActionHandler = withGuards(settingsAction, {
   scopes: {
     authenticated: true,
-    project: false,
+    project: true,
     site: false,
   },
 });
@@ -188,7 +188,7 @@ export const settingsActionHandler = withGuards(settingsAction, {
 export const updateSettingsActionHandler = withGuards(updateSettingsAction, {
   scopes: {
     authenticated: true,
-    project: false,
+    project: true,
     site: false,
   },
 });

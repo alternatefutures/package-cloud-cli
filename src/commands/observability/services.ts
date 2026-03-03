@@ -96,7 +96,7 @@ const servicesAction: SdkGuardedFunction<ServicesActionArgs> = async ({
 export const servicesActionHandler = withGuards(servicesAction, {
   scopes: {
     authenticated: true,
-    project: false,
+    project: true,
     site: false,
   },
 });

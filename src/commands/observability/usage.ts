@@ -91,7 +91,7 @@ const usageAction: SdkGuardedFunction<UsageActionArgs> = async ({
 export const usageActionHandler = withGuards(usageAction, {
   scopes: {
     authenticated: true,
-    project: false,
+    project: true,
     site: false,
   },
 });
