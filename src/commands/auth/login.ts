@@ -1,10 +1,6 @@
-import { createClient } from '@alternatefutures/sdk/node';
-
 import { output } from '../../cli';
 import { config } from '../../config';
-import { generateVerificationSessionId } from '../../utils/token/generateVerificationSessionId';
 import { showVerificationSessionLink } from '../../utils/token/showVerificationSessionLink';
-import { waitForPersonalAccessTokenFromVerificationSession } from '../../utils/token/waitForPersonalAccessTokenFromVerificationSession';
 import { t } from '../../utils/translation';
 
 type LoginActionHandlerArgs = {
@@ -12,25 +8,49 @@ type LoginActionHandlerArgs = {
   authApiUrl: string;
 };
 
+type StartResponse = {
+  success: boolean;
+  verificationSessionId: string;
+  pollSecret: string;
+  verificationUrl: string;
+  expiresIn: number;
+};
+
+type PollResponse =
+  | { status: 'pending' }
+  | { success: true; token: string }
+  | { error: string };
+
 export const loginActionHandler = async ({
   uiAppUrl,
   authApiUrl,
 }: LoginActionHandlerArgs) => {
-  const verificationSessionId = generateVerificationSessionId();
+  const startRes = await fetch(`${authApiUrl}/auth/cli/start`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: 'CLI Login' }),
+  });
+
+  if (!startRes.ok) {
+    output.error(t('unexpectedError'));
+    output.printNewLine();
+    return;
+  }
+
+  const { verificationSessionId, pollSecret } =
+    (await startRes.json()) as StartResponse;
 
   showVerificationSessionLink({ output, uiAppUrl, verificationSessionId });
 
-  const client = createClient({ url: authApiUrl });
-  const personalAccessToken =
-    await waitForPersonalAccessTokenFromVerificationSession({
-      verificationSessionId,
-      client,
-    });
+  const personalAccessToken = await pollForToken({
+    authApiUrl,
+    verificationSessionId,
+    pollSecret,
+  });
 
   if (!personalAccessToken) {
     output.error(t('timeoutPATfetch'));
     output.printNewLine();
-
     return;
   }
 
@@ -39,3 +59,39 @@ export const loginActionHandler = async ({
   output.success(t('logged', { status: t('loggedInTo') }));
   output.printNewLine();
 };
+
+async function pollForToken({
+  authApiUrl,
+  verificationSessionId,
+  pollSecret,
+  tries = 300,
+  interval = 2_000,
+}: {
+  authApiUrl: string;
+  verificationSessionId: string;
+  pollSecret: string;
+  tries?: number;
+  interval?: number;
+}): Promise<string | null> {
+  for (let i = 0; i < tries; i++) {
+    await new Promise((r) => setTimeout(r, interval));
+
+    try {
+      const res = await fetch(`${authApiUrl}/auth/cli/poll`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ verificationSessionId, pollSecret }),
+      });
+
+      if (res.status === 202) continue; // pending
+
+      const data = (await res.json()) as PollResponse;
+      if ('token' in data && data.token) return data.token;
+      if ('error' in data) return null;
+    } catch {
+      // network error, retry
+    }
+  }
+
+  return null;
+}

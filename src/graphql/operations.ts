@@ -85,9 +85,11 @@ export const LIST_PHALA_DEPLOYMENTS = `
 `;
 
 export const GET_SERVICE_REGISTRY = `
-  query ServiceRegistry($projectId: String!) {
+  query ServiceRegistry($projectId: ID) {
     serviceRegistry(projectId: $projectId) {
       id type name slug templateId dockerImage containerPort
+      activeAkashDeployment { id status }
+      activePhalaDeployment { id status }
       envVars { id key value }
       ports { id containerPort publicPort protocol }
       linksFrom { id targetServiceId }

@@ -8,7 +8,8 @@ import { t } from '../utils/translation';
 
 export const loginGuard = async () => {
   const uiAppUrl = getDefined('UI__APP_URL');
-  const authApiUrl = getDefined('SDK__GRAPHQL_API_URL');
+  const authApiUrl =
+    getDefined('AUTH__API_URL') || getDefined('SDK__AUTH_SERVICE_URL');
 
   if (!uiAppUrl || !authApiUrl) {
     throw new MissingExpectedDataError();

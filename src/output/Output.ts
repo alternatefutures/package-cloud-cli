@@ -4,6 +4,7 @@ import asTable from 'as-table';
 import boxen, { type Options } from 'boxen';
 import type { ForegroundColor } from 'chalk';
 import chalk from 'chalk';
+import Table from 'cli-table3';
 
 import { t } from '../utils/translation';
 import { Waiter } from './utils/wait';
@@ -145,6 +146,34 @@ export class Output {
   ) => {
     this.printNewLine();
     this.print(asTable(data));
+    this.printNewLine(2);
+  };
+
+  public comment = (text: string) => {
+    this.print(`  ${chalk.dim('#')} ${chalk.white(text)}`);
+    this.printNewLine();
+  };
+
+  public styledTable = (
+    head: string[],
+    rows: string[][],
+    options?: { borderColor?: typeof ForegroundColor },
+  ) => {
+    const color = options?.borderColor ?? 'gray';
+    const table = new Table({
+      head: head.map((h) => chalk.cyan(h)),
+      style: {
+        head: [],
+        border: [color],
+        'padding-left': 1,
+        'padding-right': 1,
+      },
+    });
+    for (const row of rows) {
+      table.push(row);
+    }
+    this.printNewLine();
+    this.print(table.toString());
     this.printNewLine(2);
   };
 

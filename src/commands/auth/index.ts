@@ -23,7 +23,10 @@ export default (cmd: Command): Command => {
 
       // Default: browser-based login
       const uiAppUrl = getDefined('UI__APP_URL');
-      const authApiUrl = getDefined('SDK__GRAPHQL_API_URL');
+      const authApiUrl =
+        options.authUrl ||
+        getDefined('AUTH__API_URL') ||
+        getDefined('SDK__AUTH_SERVICE_URL');
 
       if (!uiAppUrl || !authApiUrl) {
         throw new MissingExpectedDataError();

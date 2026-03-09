@@ -1,5 +1,7 @@
 import type { Command } from 'commander';
 
+import chalk from 'chalk';
+
 import { output } from '../../cli';
 import { config } from '../../config';
 import { loginGuard } from '../../guards/loginGuard';
@@ -60,15 +62,24 @@ export default (program: Command): Command => {
           return;
         }
 
-        output.table(
-          services.map((s: ServiceRecord) => ({
-            ID: s.id,
-            Name: s.name,
-            Type: s.type || 'N/A',
-            Image: s.dockerImage || 'N/A',
-            Port: s.containerPort || 'N/A',
-            Slug: s.slug || 'N/A',
-          })),
+        const rows = services.map((s: ServiceRecord) => {
+          const deployment = s.activeAkashDeployment || s.activePhalaDeployment;
+          const statusText = deployment
+            ? chalk.green('● active')
+            : chalk.dim('○ none');
+
+          return [
+            chalk.white(s.name),
+            chalk.gray(s.type || '–'),
+            chalk.gray(s.dockerImage || '–'),
+            s.containerPort ? chalk.cyan(String(s.containerPort)) : chalk.dim('–'),
+            statusText,
+          ];
+        });
+
+        output.styledTable(
+          ['Service Name', 'Type', 'Image', 'Port', 'Deployment'],
+          rows,
         );
       } catch (error) {
         output.error(
