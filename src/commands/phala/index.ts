@@ -72,7 +72,7 @@ export default (program: Command): Command => {
         }
 
         const { data } = await graphqlFetch(STOP_PHALA_DEPLOYMENT, {
-          deploymentId,
+          id: deploymentId,
         });
 
         output.success(
@@ -112,7 +112,7 @@ export default (program: Command): Command => {
         }
 
         const { data } = await graphqlFetch(DELETE_PHALA_DEPLOYMENT, {
-          deploymentId,
+          id: deploymentId,
         });
 
         output.success(

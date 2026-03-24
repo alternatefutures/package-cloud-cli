@@ -4,8 +4,8 @@ export const LIST_TEMPLATES = `
       id name description category tags
       dockerImage serviceType
       resources { cpu memory storage }
-      ports { containerPort protocol }
-      envVars { key defaultValue description required }
+      ports { port as global }
+      envVars { key default description required }
     }
   }
 `;
@@ -16,46 +16,24 @@ export const GET_TEMPLATE = `
       id name description category tags
       dockerImage serviceType
       resources { cpu memory storage gpu { units vendor model } }
-      ports { containerPort protocol }
-      envVars { key defaultValue description required }
+      ports { port as global }
+      envVars { key default description required }
       persistentStorage { name mountPath size }
     }
   }
 `;
 
 export const DEPLOY_FROM_TEMPLATE = `
-  mutation DeployFromTemplate(
-    $templateId: String!
-    $projectId: String!
-    $name: String
-    $envOverrides: [EnvVarInput!]
-    $resourceOverrides: ResourceOverridesInput
-  ) {
-    deployFromTemplate(
-      templateId: $templateId
-      projectId: $projectId
-      name: $name
-      envOverrides: $envOverrides
-      resourceOverrides: $resourceOverrides
-    ) {
+  mutation DeployFromTemplate($input: DeployFromTemplateInput!) {
+    deployFromTemplate(input: $input) {
       id status serviceId
     }
   }
 `;
 
 export const DEPLOY_TO_PHALA = `
-  mutation DeployFromTemplateToPhala(
-    $templateId: String!
-    $projectId: String!
-    $name: String
-    $cvmSize: String
-  ) {
-    deployFromTemplateToPhala(
-      templateId: $templateId
-      projectId: $projectId
-      name: $name
-      cvmSize: $cvmSize
-    ) {
+  mutation DeployFromTemplateToPhala($input: DeployFromTemplateInput!) {
+    deployFromTemplateToPhala(input: $input) {
       id status serviceId
     }
   }
@@ -65,7 +43,7 @@ export const LIST_AKASH_DEPLOYMENTS = `
   query AkashDeployments {
     akashDeployments {
       id status dseq provider errorMessage
-      costPerHour costPerDay costPerMonth retryCount
+      costPerHour costPerDay costPerMonth
       service { id name slug }
       deployedAt closedAt createdAt
     }
@@ -76,7 +54,7 @@ export const LIST_PHALA_DEPLOYMENTS = `
   query PhalaDeployments {
     phalaDeployments {
       id status appId appUrl errorMessage
-      costPerHour costPerDay costPerMonth retryCount
+      costPerHour costPerDay costPerMonth
       cvmSize
       service { id name slug }
       createdAt
@@ -107,31 +85,31 @@ export const GET_SERVICE_LOGS = `
 `;
 
 export const CLOSE_AKASH_DEPLOYMENT = `
-  mutation CloseAkashDeployment($deploymentId: String!) {
-    closeAkashDeployment(deploymentId: $deploymentId) {
+  mutation CloseAkashDeployment($id: ID!) {
+    closeAkashDeployment(id: $id) {
       id status
     }
   }
 `;
 
 export const STOP_PHALA_DEPLOYMENT = `
-  mutation StopPhalaDeployment($deploymentId: String!) {
-    stopPhalaDeployment(deploymentId: $deploymentId) {
+  mutation StopPhalaDeployment($id: ID!) {
+    stopPhalaDeployment(id: $id) {
       id status
     }
   }
 `;
 
 export const DELETE_PHALA_DEPLOYMENT = `
-  mutation DeletePhalaDeployment($deploymentId: String!) {
-    deletePhalaDeployment(deploymentId: $deploymentId) {
+  mutation DeletePhalaDeployment($id: ID!) {
+    deletePhalaDeployment(id: $id) {
       id status
     }
   }
 `;
 
 export const SET_SERVICE_ENV_VAR = `
-  mutation SetServiceEnvVar($serviceId: String!, $key: String!, $value: String!) {
+  mutation SetServiceEnvVar($serviceId: ID!, $key: String!, $value: String!) {
     setServiceEnvVar(serviceId: $serviceId, key: $key, value: $value) {
       id key value
     }
@@ -139,7 +117,7 @@ export const SET_SERVICE_ENV_VAR = `
 `;
 
 export const DELETE_SERVICE_ENV_VAR = `
-  mutation DeleteServiceEnvVar($serviceId: String!, $key: String!) {
+  mutation DeleteServiceEnvVar($serviceId: ID!, $key: String!) {
     deleteServiceEnvVar(serviceId: $serviceId, key: $key)
   }
 `;
@@ -161,7 +139,9 @@ export const UNLINK_SERVICES = `
 export const LIST_PROJECTS = `
   query Projects {
     projects {
-      id name slug framework status
+      data {
+        id name slug
+      }
     }
   }
 `;

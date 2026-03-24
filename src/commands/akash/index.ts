@@ -105,7 +105,7 @@ export default (program: Command): Command => {
         }
 
         const { data } = await graphqlFetch(CLOSE_AKASH_DEPLOYMENT, {
-          deploymentId,
+          id: deploymentId,
         });
 
         output.success(

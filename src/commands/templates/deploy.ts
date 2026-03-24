@@ -40,8 +40,8 @@ type Template = {
     storage: number;
     gpu?: { units: number; vendor: string; model: string };
   };
-  envVars: { key: string; defaultValue: string | null; required: boolean }[];
-  ports: { containerPort: number; protocol: string }[];
+  envVars: { key: string; default: string | null; required: boolean }[];
+  ports: { port: number; as: number; global: boolean }[];
 };
 
 type DeploymentResult = {
@@ -78,16 +78,17 @@ const resolveProjectId = async (
   }
 
   output.spinner('Loading projects...');
-  const { data } = await graphqlFetch<{ projects: Project[] }>(LIST_PROJECTS);
+  const { data } = await graphqlFetch<{ projects: { data: Project[] } }>(LIST_PROJECTS);
 
-  if (!data?.projects?.length) {
+  const projects = data?.projects?.data;
+  if (!projects?.length) {
     output.error('No projects found. Create a project first with `af projects create`.');
     return null;
   }
 
   return selectPrompt<string>({
     message: 'Select a project to deploy into:',
-    choices: data.projects.map((p) => ({
+    choices: projects.map((p) => ({
       title: `${p.name} (${p.id})`,
       value: p.id,
     })),
@@ -152,9 +153,11 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
     const { data } = await graphqlFetch<{
       deployFromTemplateToPhala: DeploymentResult;
     }>(DEPLOY_TO_PHALA, {
-      templateId: args.templateId,
-      projectId,
-      name: serviceName,
+      input: {
+        templateId: args.templateId,
+        projectId,
+        serviceName,
+      },
     });
 
     const result = data?.deployFromTemplateToPhala;
@@ -169,23 +172,23 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
     output.printNewLine();
     output.hint('Monitor with: af phala deployments');
   } else {
-    const variables: Record<string, unknown> = {
+    const input: Record<string, unknown> = {
       templateId: args.templateId,
       projectId,
-      name: serviceName,
+      serviceName,
     };
 
     if (envOverrides.length) {
-      variables.envOverrides = envOverrides;
+      input.envOverrides = envOverrides;
     }
 
     if (args.gpu) {
-      variables.resourceOverrides = { gpu: true };
+      input.resourceOverrides = { gpu: true };
     }
 
     const { data } = await graphqlFetch<{
       deployFromTemplate: DeploymentResult;
-    }>(DEPLOY_FROM_TEMPLATE, variables);
+    }>(DEPLOY_FROM_TEMPLATE, { input });
 
     const result = data?.deployFromTemplate;
     if (!result) {
