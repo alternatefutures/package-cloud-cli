@@ -64,11 +64,11 @@ Open the .env.production file in a text editor and add the following:
 
 ```sh
 IPFS_GATEWAY_HOSTNAME="gateway-ipfs.alternatefutures.ai"
-SDK__AUTH_APPS_URL="https://auth-apps.service.alternatefutures.ai"
-SDK__GRAPHQL_API_URL="https://graphql.service.alternatefutures.ai/graphql"
-SDK__IPFS__STORAGE_API_URL="https://storage-ipfs.service.alternatefutures.ai"
-SDK__UPLOAD_PROXY_API_URL="https://uploads.service.alternatefutures.ai"
-SITE_SLUG_DOMAIN="af-cloud.app"
+SDK__AUTH_APPS_URL="https://auth.alternatefutures.ai"
+SDK__GRAPHQL_API_URL="https://api.alternatefutures.ai/graphql"
+SDK__IPFS__STORAGE_API_URL="https://api.alternatefutures.ai"
+SDK__UPLOAD_PROXY_API_URL="https://api.alternatefutures.ai"
+SITE_SLUG_DOMAIN="alternatefutures.ai"
 UI__APP_URL="https://app.alternatefutures.ai"
 ```
 

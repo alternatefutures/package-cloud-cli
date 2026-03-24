@@ -39,6 +39,14 @@ export const DEPLOY_TO_PHALA = `
   }
 `;
 
+export const DEPLOY_COMPOSITE_TEMPLATE = `
+  mutation DeployCompositeTemplate($input: DeployCompositeTemplateInput!) {
+    deployCompositeTemplate(input: $input) {
+      primaryServiceId
+    }
+  }
+`;
+
 export const LIST_AKASH_DEPLOYMENTS = `
   query AkashDeployments {
     akashDeployments {

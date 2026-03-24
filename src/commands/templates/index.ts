@@ -2,7 +2,7 @@ import type { Command } from 'commander';
 
 import { listTemplatesActionHandler } from './list';
 import { infoTemplateActionHandler } from './info';
-import { deployTemplateActionHandler } from './deploy';
+import { deployTemplateActionHandler, deployCompositeActionHandler } from './deploy';
 
 type ListOptions = {
   category?: string;
@@ -60,6 +60,40 @@ export default (program: Command): Command => {
         env: options.env,
         gpu: options.gpu,
       }),
+    );
+
+  cmd
+    .command('deploy-composite <templateId>')
+    .description('Deploy a composite (multi-service) template')
+    .option('-p, --project <projectId>', 'Project ID to deploy into')
+    .option(
+      '--mode <mode>',
+      'Deployment mode: fullstack (single provider) or custom (per-component)',
+      'fullstack',
+    )
+    .option(
+      '--provider <provider>',
+      'Provider for fullstack mode (akash or phala)',
+      'akash',
+    )
+    .option('-n, --name <name>', 'Service name')
+    .action(
+      (
+        templateId: string,
+        options: {
+          project?: string;
+          mode: string;
+          provider?: string;
+          name?: string;
+        },
+      ) =>
+        deployCompositeActionHandler({
+          templateId,
+          projectId: options.project,
+          mode: options.mode,
+          provider: options.provider,
+          name: options.name,
+        }),
     );
 
   return cmd;

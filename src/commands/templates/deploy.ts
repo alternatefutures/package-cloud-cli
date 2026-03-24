@@ -6,6 +6,7 @@ import {
   GET_TEMPLATE,
   DEPLOY_FROM_TEMPLATE,
   DEPLOY_TO_PHALA,
+  DEPLOY_COMPOSITE_TEMPLATE,
   LIST_PROJECTS,
 } from '../../graphql/operations';
 import { selectPrompt } from '../../prompts/selectPrompt';
@@ -214,6 +215,79 @@ export const deployTemplateActionHandler = async (
       error instanceof Error
         ? error.message
         : 'Failed to deploy from template',
+    );
+  }
+};
+
+// ── Composite deploy ────────────────────────────────────────────────
+
+type DeployCompositeArgs = {
+  templateId: string;
+  projectId?: string;
+  mode: string;
+  provider?: string;
+  name?: string;
+};
+
+const deployCompositeAction = async (args: DeployCompositeArgs) => {
+  const projectId = await resolveProjectId(args.projectId);
+  if (!projectId) return;
+
+  const serviceName =
+    args.name ??
+    (await textPrompt({
+      message: 'Service name:',
+      initial: args.templateId.toLowerCase().replace(/\s+/g, '-'),
+    }));
+
+  const confirmed = await confirmPrompt({
+    message: `Deploy composite template "${args.templateId}" in ${args.mode} mode?`,
+    initial: true,
+  });
+  if (!confirmed) {
+    output.log('Deployment cancelled.');
+    return;
+  }
+
+  output.spinner('Creating composite deployment...');
+
+  const input: Record<string, unknown> = {
+    templateId: args.templateId,
+    projectId,
+    mode: args.mode,
+    serviceName,
+  };
+
+  if (args.provider) {
+    input.provider = args.provider;
+  }
+
+  const { data } = await graphqlFetch<{
+    deployCompositeTemplate: { primaryServiceId: string };
+  }>(DEPLOY_COMPOSITE_TEMPLATE, { input });
+
+  const result = data?.deployCompositeTemplate;
+  if (!result) {
+    output.error('Composite deployment failed — no response from server.');
+    return;
+  }
+
+  output.success('Composite deployment created!');
+  output.log(`Primary Service ID: ${result.primaryServiceId}`);
+  output.printNewLine();
+  output.hint('Monitor with: af services list');
+};
+
+export const deployCompositeActionHandler = async (
+  args: DeployCompositeArgs,
+) => {
+  try {
+    await deployCompositeAction(args);
+  } catch (error) {
+    output.error(
+      error instanceof Error
+        ? error.message
+        : 'Failed to deploy composite template',
     );
   }
 };
