@@ -21,6 +21,11 @@ type DeployTemplateArgs = {
   name?: string;
   env?: string[];
   gpu?: boolean;
+  gpuModels?: string;
+  gpuUnits?: number;
+  maxBudget?: number;
+  maxMonthly?: number;
+  runtime?: string;
 };
 
 type Project = {
@@ -49,6 +54,51 @@ type DeploymentResult = {
   id: string;
   status: string;
   serviceId: string;
+};
+
+/**
+ * Parse a duration string like "4h", "30d", "120m" into minutes.
+ */
+const parseRuntimeToMinutes = (runtime: string): number | null => {
+  const match = runtime.trim().match(/^(\d+(?:\.\d+)?)\s*(h|d|m)$/i);
+  if (!match) return null;
+  const value = Number.parseFloat(match[1]);
+  const unit = match[2].toLowerCase();
+  if (unit === 'h') return Math.round(value * 60);
+  if (unit === 'd') return Math.round(value * 60 * 24);
+  if (unit === 'm') return Math.round(value);
+  return null;
+};
+
+const buildPolicyInput = (args: DeployTemplateArgs): Record<string, unknown> | undefined => {
+  const policy: Record<string, unknown> = {};
+  let hasPolicy = false;
+
+  if (args.gpuModels) {
+    policy.acceptableGpuModels = args.gpuModels.split(',').map(m => m.trim()).filter(Boolean);
+    hasPolicy = true;
+  }
+  if (args.gpuUnits && args.gpuUnits > 1) {
+    policy.gpuUnits = args.gpuUnits;
+    hasPolicy = true;
+  }
+  if (args.maxBudget && args.maxBudget > 0) {
+    policy.maxBudgetUsd = args.maxBudget;
+    hasPolicy = true;
+  }
+  if (args.maxMonthly && args.maxMonthly > 0) {
+    policy.maxMonthlyUsd = args.maxMonthly;
+    hasPolicy = true;
+  }
+  if (args.runtime) {
+    const minutes = parseRuntimeToMinutes(args.runtime);
+    if (minutes && minutes > 0) {
+      policy.runtimeMinutes = minutes;
+      hasPolicy = true;
+    }
+  }
+
+  return hasPolicy ? policy : undefined;
 };
 
 const parseEnvOverrides = (
@@ -147,18 +197,26 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
   }
 
   const envOverrides = parseEnvOverrides(args.env);
+  const policyInput = buildPolicyInput(args);
+
+  if (policyInput) {
+    output.log(chalk.dim(`Policy: ${JSON.stringify(policyInput)}`));
+  }
 
   output.spinner('Creating deployment...');
 
   if (args.provider === 'phala') {
+    const phalaInput: Record<string, unknown> = {
+      templateId: args.templateId,
+      projectId,
+      serviceName,
+    };
+    if (policyInput) phalaInput.policy = policyInput;
+
     const { data } = await graphqlFetch<{
       deployFromTemplateToPhala: DeploymentResult;
     }>(DEPLOY_TO_PHALA, {
-      input: {
-        templateId: args.templateId,
-        projectId,
-        serviceName,
-      },
+      input: phalaInput,
     });
 
     const result = data?.deployFromTemplateToPhala;
@@ -167,7 +225,7 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
       return;
     }
 
-    output.success(`Phala deployment created!`);
+    output.success('Phala deployment created!');
     output.log(`Deployment ID: ${result.id}`);
     output.log(`Status:        ${result.status}`);
     output.printNewLine();
@@ -187,6 +245,10 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
       input.resourceOverrides = { gpu: true };
     }
 
+    if (policyInput) {
+      input.policy = policyInput;
+    }
+
     const { data } = await graphqlFetch<{
       deployFromTemplate: DeploymentResult;
     }>(DEPLOY_FROM_TEMPLATE, { input });
@@ -197,7 +259,7 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
       return;
     }
 
-    output.success(`Akash deployment created!`);
+    output.success('Akash deployment created!');
     output.log(`Deployment ID: ${result.id}`);
     output.log(`Status:        ${result.status}`);
     output.printNewLine();

@@ -14,6 +14,11 @@ type DeployOptions = {
   name?: string;
   env?: string[];
   gpu?: boolean;
+  gpuModels?: string;
+  gpuUnits?: string;
+  maxBudget?: string;
+  maxMonthly?: string;
+  runtime?: string;
 };
 
 export default (program: Command): Command => {
@@ -51,6 +56,11 @@ export default (program: Command): Command => {
     .option('-n, --name <name>', 'Service name')
     .option('-e, --env <KEY=VALUE...>', 'Environment variable overrides')
     .option('--gpu', 'Enable GPU resources')
+    .option('--gpu-models <models>', 'Acceptable GPU models (comma-separated, e.g. h100,a100)')
+    .option('--gpu-units <count>', 'Number of GPU units (1-8)')
+    .option('--max-budget <usd>', 'Total budget cap in USD')
+    .option('--max-monthly <usd>', 'Monthly budget cap in USD')
+    .option('--runtime <duration>', 'Max runtime duration (e.g. 4h, 30d, 120m)')
     .action((templateId: string, options: DeployOptions) =>
       deployTemplateActionHandler({
         templateId,
@@ -59,6 +69,11 @@ export default (program: Command): Command => {
         name: options.name,
         env: options.env,
         gpu: options.gpu,
+        gpuModels: options.gpuModels,
+        gpuUnits: options.gpuUnits ? Number(options.gpuUnits) : undefined,
+        maxBudget: options.maxBudget ? Number(options.maxBudget) : undefined,
+        maxMonthly: options.maxMonthly ? Number(options.maxMonthly) : undefined,
+        runtime: options.runtime,
       }),
     );
 
