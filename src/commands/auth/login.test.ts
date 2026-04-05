@@ -1,17 +1,8 @@
-import { createClient } from '@alternatefutures/sdk/node';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { output } from '../../cli';
 import { config } from '../../config';
-import { getVerificationSessionLink } from '../../utils/token/showVerificationSessionLink';
-import { waitForPersonalAccessTokenFromVerificationSession } from '../../utils/token/waitForPersonalAccessTokenFromVerificationSession';
 import { loginActionHandler } from './login';
-
-vi.mock('crypto', () => ({
-  randomBytes: vi.fn().mockReturnValue({
-    toString: vi.fn().mockReturnValue('mockVerificationSession'),
-  }),
-}));
 
 vi.mock('../../cli', () => {
   const output = {
@@ -19,6 +10,7 @@ vi.mock('../../cli', () => {
     log: vi.fn(),
     link: vi.fn(),
     success: vi.fn(),
+    error: vi.fn(),
     spinner: vi.fn(),
     printNewLine: vi.fn(),
   };
@@ -38,67 +30,88 @@ vi.mock('../../config', () => ({
   },
 }));
 
-// Assumes user goes ahead with the flow and logs in
-vi.mock('@alternatefutures/sdk/node', () => {
-  const MockClient = vi.fn();
-  MockClient.prototype.mutation = vi.fn().mockResolvedValue({
-    createPersonalAccessTokenFromVerificationSession: 'mockPat',
-  });
+const mockFetch = vi.fn();
+vi.stubGlobal('fetch', mockFetch);
 
-  const createClientMock = vi.fn().mockReturnValue(new MockClient());
-
-  return { createClient: createClientMock };
+beforeEach(() => {
+  vi.clearAllMocks();
 });
 
-describe('Login', async () => {
-  it('should request token from verification session', async () => {
-    const mockClient = createClient({ url: '' });
-    const result = await waitForPersonalAccessTokenFromVerificationSession({
-      verificationSessionId: 'mockVerificationSession',
-      client: mockClient,
-    });
+describe('Login', () => {
+  it('should log the messages correctly on successful login', async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          success: true,
+          verificationSessionId: 'mock-session-id',
+          pollSecret: 'mock-poll-secret',
+          verificationUrl: 'https://app.example.com/verify/mock-session-id',
+          expiresIn: 600,
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({ success: true, token: 'mock-pat-token' }),
+      });
 
-    expect(result).toBe('mockPat');
-    expect(mockClient.mutation).toHaveBeenCalledWith({
-      createPersonalAccessTokenFromVerificationSession: {
-        __args: {
-          data: { name: undefined },
-          where: {
-            id: 'mockVerificationSession',
-          },
-        },
-      },
-    });
-  });
-
-  it('should log the messages correctly', async () => {
     await loginActionHandler({
-      uiAppUrl: '',
-      authApiUrl: '',
+      uiAppUrl: 'https://app.example.com',
+      authApiUrl: 'https://auth.example.com',
     });
 
-    expect(output.chore).toHaveBeenCalledWith(
-      'Please follow the link to log in to AlternateFutures Platform.',
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://auth.example.com/auth/cli/start',
+      expect.objectContaining({ method: 'POST' }),
     );
 
-    expect(output.spinner).toHaveBeenCalledWith(
-      getVerificationSessionLink({
-        uiAppUrl: '',
-        verificationSessionId: 'mockVerificationSession',
-      }),
-    );
     expect(output.success).toHaveBeenCalledWith(
-      'You are now logged in to the AlternateFutures Platform.',
+      expect.stringContaining('logged in'),
     );
   });
 
-  it('should update config correctly', async () => {
+  it('should update config correctly on successful login', async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          success: true,
+          verificationSessionId: 'mock-session-id',
+          pollSecret: 'mock-poll-secret',
+          verificationUrl: 'https://app.example.com/verify/mock-session-id',
+          expiresIn: 600,
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({ success: true, token: 'mock-pat-token' }),
+      });
+
     await loginActionHandler({
-      uiAppUrl: '',
-      authApiUrl: '',
+      uiAppUrl: 'https://app.example.com',
+      authApiUrl: 'https://auth.example.com',
     });
 
-    expect(config.personalAccessToken.set).toHaveBeenCalledWith('mockPat');
+    expect(config.personalAccessToken.set).toHaveBeenCalledWith(
+      'mock-pat-token',
+    );
     expect(config.projectId.clear).toHaveBeenCalled();
+  });
+
+  it('should handle start endpoint failure', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+    });
+
+    await loginActionHandler({
+      uiAppUrl: 'https://app.example.com',
+      authApiUrl: 'https://auth.example.com',
+    });
+
+    expect(output.error).toHaveBeenCalled();
+    expect(config.personalAccessToken.set).not.toHaveBeenCalled();
   });
 });
