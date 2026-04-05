@@ -255,7 +255,7 @@ export default (program: Command): Command => {
     .command('shell <serviceId>')
     .description('Open an interactive shell session in a running deployment')
     .option('--service <name>', 'SDL service name (for multi-service deployments)')
-    .option('--command <cmd>', 'Command to execute (default: /bin/sh)')
+    .option('--command <cmd>', 'Command to execute (default: /bin/bash)')
     .action(async (serviceId: string, opts: { service?: string; command?: string }) => {
       try {
         await loginGuard();
@@ -273,7 +273,16 @@ export default (program: Command): Command => {
 
         // Return a promise that keeps the process alive until the session ends
         await new Promise<void>((resolve) => {
-          const ws = new WebSocket(`${wsUrl}/ws/shell?serviceId=${serviceId}`);
+          const params = new URLSearchParams({ serviceId });
+          if (opts.service) params.set('service', opts.service);
+          if (opts.command) params.set('command', opts.command);
+          const ws = new WebSocket(`${wsUrl}/ws/shell?${params.toString()}`);
+
+          const connectTimeout = setTimeout(() => {
+            output.error('Connection timed out after 30 seconds');
+            ws.close();
+            resolve();
+          }, 30_000);
 
           ws.on('open', () => {
             ws.send(JSON.stringify({ type: 'auth', token }));
@@ -286,6 +295,7 @@ export default (program: Command): Command => {
               const msg = JSON.parse(data.toString());
               if (msg.type === 'ready') {
                 ready = true;
+                clearTimeout(connectTimeout);
                 output.log(chalk.green('Connected. Type ') + chalk.bold('exit') + chalk.green(' or press Ctrl+D to disconnect.'));
                 output.log('');
 
@@ -322,6 +332,7 @@ export default (program: Command): Command => {
               }
 
               if (msg.type === 'error') {
+                clearTimeout(connectTimeout);
                 output.error(msg.message || 'Shell connection failed');
                 resolve();
                 process.exit(1);
@@ -333,6 +344,7 @@ export default (program: Command): Command => {
           });
 
           ws.on('close', (_code: number, reason: Buffer) => {
+            clearTimeout(connectTimeout);
             if (process.stdin.isTTY) {
               process.stdin.setRawMode(false);
             }
@@ -347,6 +359,7 @@ export default (program: Command): Command => {
           });
 
           ws.on('error', (err: Error) => {
+            clearTimeout(connectTimeout);
             if (process.stdin.isTTY) {
               process.stdin.setRawMode(false);
             }
