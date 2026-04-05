@@ -93,7 +93,8 @@
     "ts-node": "10.9.1",
     "undici": "^6.21.0",
     "unique-names-generator": "^4.7.1",
-    "update-notifier-cjs": "^5.1.6"
+    "update-notifier-cjs": "^5.1.6",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
     "@alternatefutures/errors": "^0.2.0",
@@ -119,6 +120,7 @@
     "@types/semver": "^7.3.13",
     "@types/tmp": "^0.2.6",
     "@types/update-notifier": "^6.0.8",
+    "@types/ws": "^8.18.0",
     "@vitest/coverage-v8": "1.6.1",
     "concurrently": "^7.6.0",
     "mock-stdin": "^1.0.0",

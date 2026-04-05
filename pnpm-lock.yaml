@@ -111,6 +111,9 @@ importers:
       update-notifier-cjs:
         specifier: ^5.1.6
         version: 5.1.7
+      ws:
+        specifier: '>=8.17.1'
+        version: 8.18.3
     devDependencies:
       '@alternatefutures/errors':
         specifier: ^0.2.0
@@ -181,6 +184,9 @@ importers:
       '@types/update-notifier':
         specifier: ^6.0.8
         version: 6.0.8
+      '@types/ws':
+        specifier: ^8.18.0
+        version: 8.18.1
       '@vitest/coverage-v8':
         specifier: 1.6.1
         version: 1.6.1(vitest@1.6.1(@types/node@24.7.0))

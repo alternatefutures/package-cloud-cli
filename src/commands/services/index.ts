@@ -1,6 +1,7 @@
 import type { Command } from 'commander';
 
 import chalk from 'chalk';
+import WebSocket from 'ws';
 
 import { output } from '../../cli';
 import { config } from '../../config';
@@ -244,6 +245,119 @@ export default (program: Command): Command => {
       } catch (error) {
         output.error(
           error instanceof Error ? error.message : 'Failed to delete env var',
+        );
+        process.exit(1);
+      }
+    });
+
+  // --- shell ---
+  cmd
+    .command('shell <serviceId>')
+    .description('Open an interactive shell session in a running deployment')
+    .option('--service <name>', 'SDL service name (for multi-service deployments)')
+    .option('--command <cmd>', 'Command to execute (default: /bin/sh)')
+    .action(async (serviceId: string, opts: { service?: string; command?: string }) => {
+      try {
+        await loginGuard();
+
+        const token = config.personalAccessToken.get();
+        if (!token) {
+          output.error('Not authenticated. Run `af login` first.');
+          process.exit(1);
+        }
+
+        const apiUrl = process.env.AF_API_URL || process.env.SDK__GRAPHQL_API_URL || 'https://api.alternatefutures.ai';
+        const wsUrl = apiUrl.replace(/^http/, 'ws');
+
+        output.log(chalk.dim('Connecting to shell...'));
+
+        // Return a promise that keeps the process alive until the session ends
+        await new Promise<void>((resolve) => {
+          const ws = new WebSocket(`${wsUrl}/ws/shell?serviceId=${serviceId}`);
+
+          ws.on('open', () => {
+            ws.send(JSON.stringify({ type: 'auth', token }));
+          });
+
+          let ready = false;
+
+          ws.on('message', (data: WebSocket.Data) => {
+            if (!ready) {
+              const msg = JSON.parse(data.toString());
+              if (msg.type === 'ready') {
+                ready = true;
+                output.log(chalk.green('Connected. Type ') + chalk.bold('exit') + chalk.green(' or press Ctrl+D to disconnect.'));
+                output.log('');
+
+                if (process.stdin.isTTY) {
+                  process.stdin.setRawMode(true);
+                }
+                process.stdin.resume();
+
+                process.stdin.on('data', (chunk: Buffer) => {
+                  if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(chunk);
+                  }
+                });
+
+                if (process.stdout.columns && process.stdout.rows) {
+                  ws.send(JSON.stringify({
+                    type: 'resize',
+                    cols: process.stdout.columns,
+                    rows: process.stdout.rows,
+                  }));
+                }
+
+                process.stdout.on('resize', () => {
+                  if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                      type: 'resize',
+                      cols: process.stdout.columns,
+                      rows: process.stdout.rows,
+                    }));
+                  }
+                });
+
+                return;
+              }
+
+              if (msg.type === 'error') {
+                output.error(msg.message || 'Shell connection failed');
+                resolve();
+                process.exit(1);
+              }
+              return;
+            }
+
+            process.stdout.write(data as Buffer);
+          });
+
+          ws.on('close', (_code: number, reason: Buffer) => {
+            if (process.stdin.isTTY) {
+              process.stdin.setRawMode(false);
+            }
+            process.stdin.pause();
+            const reasonStr = reason.toString();
+            if (reasonStr && reasonStr !== 'user_disconnect') {
+              output.log(chalk.dim(`\nSession closed: ${reasonStr}`));
+            } else {
+              output.log(chalk.dim('\nSession closed.'));
+            }
+            resolve();
+          });
+
+          ws.on('error', (err: Error) => {
+            if (process.stdin.isTTY) {
+              process.stdin.setRawMode(false);
+            }
+            output.error(`Connection error: ${err.message}`);
+            resolve();
+            process.exit(1);
+          });
+        });
+      } catch (error) {
+        output.error(
+          error instanceof Error ? error.message : 'Failed to open shell',
         );
         process.exit(1);
       }
