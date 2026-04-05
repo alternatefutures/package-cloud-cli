@@ -10,14 +10,15 @@ type InfoTemplateArgs = {
 
 type EnvVar = {
   key: string;
-  defaultValue: string | null;
+  default: string | null;
   description: string | null;
   required: boolean;
 };
 
 type Port = {
-  containerPort: number;
-  protocol: string;
+  port: number;
+  as: number;
+  global: boolean;
 };
 
 type GpuSpec = {
@@ -28,8 +29,8 @@ type GpuSpec = {
 
 type Resources = {
   cpu: number;
-  memory: number;
-  storage: number;
+  memory: string;
+  storage: string;
   gpu?: GpuSpec;
 };
 
@@ -87,8 +88,8 @@ const infoTemplateAction = async ({ templateId }: InfoTemplateArgs) => {
   output.print(chalk.bold('Resources'));
   output.printNewLine();
   output.log(`  CPU:     ${tmpl.resources.cpu} vCPU`);
-  output.log(`  Memory:  ${tmpl.resources.memory} Mi`);
-  output.log(`  Storage: ${tmpl.resources.storage} Mi`);
+  output.log(`  Memory:  ${tmpl.resources.memory}`);
+  output.log(`  Storage: ${tmpl.resources.storage}`);
   if (tmpl.resources.gpu) {
     output.log(
       `  GPU:     ${tmpl.resources.gpu.units}x ${tmpl.resources.gpu.vendor} ${tmpl.resources.gpu.model}`,
@@ -100,7 +101,7 @@ const infoTemplateAction = async ({ templateId }: InfoTemplateArgs) => {
     output.print(chalk.bold('Ports'));
     output.printNewLine();
     for (const port of tmpl.ports) {
-      output.log(`  ${port.containerPort}/${port.protocol}`);
+      output.log(`  ${port.port} → ${port.as}${port.global ? ' (global)' : ''}`);
     }
   }
 
@@ -111,7 +112,7 @@ const infoTemplateAction = async ({ templateId }: InfoTemplateArgs) => {
     output.table(
       tmpl.envVars.map((env) => ({
         Key: env.key,
-        Default: env.defaultValue ?? '-',
+        Default: env.default ?? '-',
         Required: env.required ? 'yes' : 'no',
         Description: env.description ?? '',
       })),

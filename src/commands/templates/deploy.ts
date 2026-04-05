@@ -42,8 +42,8 @@ type Template = {
   dockerImage: string;
   resources: {
     cpu: number;
-    memory: number;
-    storage: number;
+    memory: string;
+    storage: string;
     gpu?: { units: number; vendor: string; model: string };
   };
   envVars: { key: string; default: string | null; required: boolean }[];
@@ -167,7 +167,7 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
   output.log(`Image:    ${tmpl.dockerImage}`);
   output.log(`Provider: ${args.provider}`);
   output.log(
-    `Resources: ${tmpl.resources.cpu} vCPU, ${tmpl.resources.memory} Mi RAM, ${tmpl.resources.storage} Mi storage`,
+    `Resources: ${tmpl.resources.cpu} vCPU, ${tmpl.resources.memory} RAM, ${tmpl.resources.storage} storage`,
   );
   if (tmpl.resources.gpu) {
     output.log(
@@ -229,7 +229,7 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
     output.log(`Deployment ID: ${result.id}`);
     output.log(`Status:        ${result.status}`);
     output.printNewLine();
-    output.hint('Monitor with: af phala deployments');
+    output.hint('Monitor with: af phala list');
   } else {
     const input: Record<string, unknown> = {
       templateId: args.templateId,
@@ -242,7 +242,7 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
     }
 
     if (args.gpu) {
-      input.resourceOverrides = { gpu: true };
+      input.resourceOverrides = { gpu: { units: 1, vendor: 'nvidia' } };
     }
 
     if (policyInput) {
@@ -263,7 +263,7 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
     output.log(`Deployment ID: ${result.id}`);
     output.log(`Status:        ${result.status}`);
     output.printNewLine();
-    output.hint('Monitor with: af akash deployments');
+    output.hint('Monitor with: af akash list');
   }
 };
 

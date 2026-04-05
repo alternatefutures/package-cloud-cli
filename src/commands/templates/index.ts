@@ -31,10 +31,10 @@ export default (program: Command): Command => {
     .description('List available deployment templates')
     .option(
       '-c, --category <category>',
-      'Filter by category (ai-ml, web-servers, game-servers, databases, devtools)',
+      'Filter by category (AI_ML, WEB_SERVER, GAME_SERVER, DATABASE, DEVTOOLS, CUSTOM)',
     )
     .action((options: ListOptions) =>
-      listTemplatesActionHandler({ category: options.category }),
+      listTemplatesActionHandler({ category: options.category?.toUpperCase() }),
     );
 
   cmd

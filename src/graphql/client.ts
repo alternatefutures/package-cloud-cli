@@ -1,6 +1,6 @@
 import { config } from '../config.js';
 
-const CLOUD_API_URL = process.env.AF_API_URL || 'https://api.alternatefutures.ai';
+const CLOUD_API_URL = process.env.AF_API_URL || process.env.SDK__GRAPHQL_API_URL || 'https://api.alternatefutures.ai';
 
 export interface GraphQLResponse<T = any> {
   data?: T;

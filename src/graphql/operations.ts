@@ -1,5 +1,5 @@
 export const LIST_TEMPLATES = `
-  query ListTemplates($category: String) {
+  query ListTemplates($category: TemplateCategory) {
     templates(category: $category) {
       id name description category tags
       dockerImage serviceType

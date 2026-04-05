@@ -52,27 +52,27 @@ export default (program: Command): Command => {
     });
 
   cmd
-    .command('logs <deploymentId>')
-    .description('Fetch deployment logs')
+    .command('logs <serviceId>')
+    .description('Fetch logs for a service (use the service ID, not the deployment ID)')
     .option('--tail <n>', 'Number of log lines to fetch', '50')
-    .action(async (deploymentId: string, options: { tail?: string }) => {
+    .action(async (serviceId: string, options: { tail?: string }) => {
       try {
         await loginGuard();
 
         const tail = parseInt(options.tail || '50', 10);
         const { data } = await graphqlFetch(GET_SERVICE_LOGS, {
-          serviceId: deploymentId,
+          serviceId,
           tail,
         });
 
         const result = data?.serviceLogs;
         if (!result?.logs) {
-          output.log('No logs available for this deployment.');
+          output.log('No logs available for this service.');
           return;
         }
 
         output.printNewLine();
-        output.log(`Logs for deployment ${deploymentId}:`);
+        output.log(`Logs for service ${serviceId}:`);
         output.printNewLine();
         output.raw(result.logs);
         output.printNewLine();
