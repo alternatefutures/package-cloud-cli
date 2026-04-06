@@ -11,7 +11,7 @@ export const LIST_TEMPLATES = `
 `;
 
 export const GET_TEMPLATE = `
-  query GetTemplate($id: String!) {
+  query GetTemplate($id: ID!) {
     template(id: $id) {
       id name description category tags
       dockerImage serviceType
@@ -31,7 +31,7 @@ export const DEPLOY_FROM_TEMPLATE = `
   }
 `;
 
-export const DEPLOY_TO_PHALA = `
+export const DEPLOY_TO_CONFIDENTIAL = `
   mutation DeployFromTemplateToPhala($input: DeployFromTemplateInput!) {
     deployFromTemplateToPhala(input: $input) {
       id status serviceId
@@ -47,25 +47,14 @@ export const DEPLOY_COMPOSITE_TEMPLATE = `
   }
 `;
 
-export const LIST_AKASH_DEPLOYMENTS = `
-  query AkashDeployments {
-    akashDeployments {
-      id status dseq provider errorMessage
-      costPerHour costPerDay costPerMonth
-      service { id name slug }
-      deployedAt closedAt createdAt
-    }
-  }
-`;
-
-export const LIST_PHALA_DEPLOYMENTS = `
-  query PhalaDeployments {
-    phalaDeployments {
-      id status appId appUrl errorMessage
-      costPerHour costPerDay costPerMonth
-      cvmSize
-      service { id name slug }
-      createdAt
+export const ALL_DEPLOYMENTS = `
+  query AllDeployments($projectId: ID, $limit: Int) {
+    allDeployments(projectId: $projectId, limit: $limit) {
+      id shortId status kind
+      serviceName serviceSlug serviceType
+      projectId projectName
+      source image statusMessage
+      createdAt updatedAt
     }
   }
 `;
@@ -85,7 +74,7 @@ export const GET_SERVICE_REGISTRY = `
 `;
 
 export const GET_SERVICE_LOGS = `
-  query ServiceLogs($serviceId: String!, $tail: Int) {
+  query ServiceLogs($serviceId: ID!, $tail: Int) {
     serviceLogs(serviceId: $serviceId, tail: $tail) {
       logs provider deploymentId
     }
@@ -131,7 +120,7 @@ export const DELETE_SERVICE_ENV_VAR = `
 `;
 
 export const LINK_SERVICES = `
-  mutation LinkServices($sourceServiceId: String!, $targetServiceId: String!) {
+  mutation LinkServices($sourceServiceId: ID!, $targetServiceId: ID!) {
     linkServices(sourceServiceId: $sourceServiceId, targetServiceId: $targetServiceId) {
       id
     }
@@ -139,7 +128,7 @@ export const LINK_SERVICES = `
 `;
 
 export const UNLINK_SERVICES = `
-  mutation UnlinkServices($sourceServiceId: String!, $targetServiceId: String!) {
+  mutation UnlinkServices($sourceServiceId: ID!, $targetServiceId: ID!) {
     unlinkServices(sourceServiceId: $sourceServiceId, targetServiceId: $targetServiceId)
   }
 `;
@@ -150,6 +139,36 @@ export const LIST_PROJECTS = `
       data {
         id name slug
       }
+    }
+  }
+`;
+
+export const CREATE_PROJECT = `
+  mutation CreateProject($data: CreateProjectDataInput!) {
+    createProject(data: $data) {
+      id name slug
+    }
+  }
+`;
+
+export const UPDATE_PROJECT = `
+  mutation UpdateProject($id: ID!, $data: UpdateProjectDataInput!) {
+    updateProject(id: $id, data: $data) {
+      id name slug
+    }
+  }
+`;
+
+export const DELETE_PROJECT = `
+  mutation DeleteProject($id: ID!) {
+    deleteProject(id: $id)
+  }
+`;
+
+export const DELETE_SERVICE = `
+  mutation DeleteService($id: ID!) {
+    deleteService(id: $id) {
+      id name
     }
   }
 `;

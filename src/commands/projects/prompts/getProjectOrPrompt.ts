@@ -1,26 +1,29 @@
-import { ProjectsNotFoundError } from '@alternatefutures/errors';
-import type { AlternateFuturesSdk, Project } from '@alternatefutures/sdk/node';
-
+import { graphqlFetch } from '../../../graphql/client';
+import { LIST_PROJECTS } from '../../../graphql/operations';
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { t } from '../../../utils/translation';
 
+type Project = { id: string; name: string; slug: string };
+
 type GetProjectOrPromptArgs = {
-  sdk: AlternateFuturesSdk;
   id?: string;
 };
 
 export const getProjectOrPrompt = async ({
-  sdk,
   id,
 }: GetProjectOrPromptArgs): Promise<Project | undefined> => {
+  const { data } = await graphqlFetch<{
+    projects: { data: Project[] };
+  }>(LIST_PROJECTS);
+
+  const projects = data?.projects?.data || [];
+
   if (id) {
-    return await sdk.projects().get({ id });
+    return projects.find((p) => p.id === id);
   }
 
-  const projects = await sdk.projects().list();
-
   if (projects.length === 0) {
-    throw new ProjectsNotFoundError();
+    return undefined;
   }
 
   const projectId = await selectPrompt({
@@ -31,9 +34,5 @@ export const getProjectOrPrompt = async ({
     })),
   });
 
-  const matchProject = projects.find((project) => project.id === projectId);
-
-  if (!matchProject) return;
-
-  return matchProject;
+  return projects.find((project) => project.id === projectId);
 };

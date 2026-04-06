@@ -101,35 +101,37 @@ const infoTemplateAction = async ({ templateId }: InfoTemplateArgs) => {
     output.print(chalk.bold('Ports'));
     output.printNewLine();
     for (const port of tmpl.ports) {
-      output.log(`  ${port.port} → ${port.as}${port.global ? ' (global)' : ''}`);
+      output.log(
+        `  ${port.port} → ${port.as}${port.global ? ' (global)' : ''}`,
+      );
     }
   }
 
   if (tmpl.envVars?.length) {
     output.printNewLine();
     output.print(chalk.bold('Environment Variables'));
-    output.printNewLine();
-    output.table(
-      tmpl.envVars.map((env) => ({
-        Key: env.key,
-        Default: env.default ?? '-',
-        Required: env.required ? 'yes' : 'no',
-        Description: env.description ?? '',
-      })),
-    );
+
+    const envRows = tmpl.envVars.map((env) => [
+      chalk.white(env.key),
+      chalk.gray(env.default ?? '-'),
+      env.required ? chalk.green('yes') : chalk.dim('no'),
+      chalk.dim(env.description ?? ''),
+    ]);
+
+    output.styledTable(['Key', 'Default', 'Required', 'Description'], envRows);
   }
 
   if (tmpl.persistentStorage?.length) {
     output.printNewLine();
     output.print(chalk.bold('Persistent Storage'));
-    output.printNewLine();
-    output.table(
-      tmpl.persistentStorage.map((vol) => ({
-        Name: vol.name,
-        'Mount Path': vol.mountPath,
-        Size: vol.size,
-      })),
-    );
+
+    const volRows = tmpl.persistentStorage.map((vol) => [
+      chalk.white(vol.name),
+      chalk.gray(vol.mountPath),
+      chalk.white(vol.size),
+    ]);
+
+    output.styledTable(['Name', 'Mount Path', 'Size'], volRows);
   }
 };
 
@@ -138,9 +140,7 @@ export const infoTemplateActionHandler = async (args: InfoTemplateArgs) => {
     await infoTemplateAction(args);
   } catch (error) {
     output.error(
-      error instanceof Error
-        ? error.message
-        : 'Failed to fetch template info',
+      error instanceof Error ? error.message : 'Failed to fetch template info',
     );
   }
 };

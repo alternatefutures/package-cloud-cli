@@ -1,36 +1,55 @@
+import chalk from 'chalk';
+
 import { output } from '../../cli';
-import type { SdkGuardedFunction } from '../../guards/types';
-import { withGuards } from '../../guards/withGuards';
+import { authFetch } from '../../graphql/authClient';
+import { loginGuard } from '../../guards/loginGuard';
 import { t } from '../../utils/translation';
 
-export const listPersonalAccessTokensAction: SdkGuardedFunction = async ({
-  sdk,
-}) => {
-  const personalAccessTokens = await sdk.user().listPersonalAccessTokens();
-
-  if (personalAccessTokens.length === 0) {
-    output.warn(t('noYYet', { name: t('personalAccessToken') }));
-
-    return;
-  }
-
-  output.table(
-    personalAccessTokens.map(({ id, createdAt, name, maskedToken }) => ({
-      ID: id,
-      'Created At': createdAt,
-      Name: name ?? '',
-      Token: maskedToken,
-    })),
-  );
+type TokenRecord = {
+  id: string;
+  name: string | null;
+  organizationId: string | null;
+  expiresAt: string | null;
+  lastUsedAt: string | null;
+  createdAt: string;
 };
 
-export const listPersonalAccessTokensActionHandler = withGuards(
-  listPersonalAccessTokensAction,
-  {
-    scopes: {
-      authenticated: true,
-      project: false,
-      site: false,
-    },
-  },
-);
+export const listPersonalAccessTokensActionHandler = async () => {
+  try {
+    await loginGuard();
+
+    const res = await authFetch('/tokens');
+
+    if (!res.ok) {
+      throw new Error(`Failed to list tokens: ${res.status} ${res.statusText}`);
+    }
+
+    const data = (await res.json()) as { tokens: TokenRecord[] };
+    const tokens = data.tokens || [];
+
+    if (tokens.length === 0) {
+      output.warn(t('noYYet', { name: t('personalAccessToken') }));
+      return;
+    }
+
+    const rows = tokens.map((tok) => [
+      chalk.white(tok.id),
+      chalk.white(tok.name ?? ''),
+      chalk.gray(
+        tok.createdAt ? new Date(tok.createdAt).toLocaleDateString() : '',
+      ),
+      chalk.gray(
+        tok.lastUsedAt
+          ? new Date(tok.lastUsedAt).toLocaleDateString()
+          : 'Never',
+      ),
+    ]);
+
+    output.styledTable(['ID', 'Name', 'Created', 'Last Used'], rows);
+  } catch (error) {
+    output.error(
+      error instanceof Error ? error.message : 'Failed to list tokens',
+    );
+    process.exit(1);
+  }
+};

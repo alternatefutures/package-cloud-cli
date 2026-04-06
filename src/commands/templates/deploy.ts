@@ -1,23 +1,23 @@
 import chalk from 'chalk';
 
 import { output } from '../../cli';
+import { config } from '../../config';
 import { graphqlFetch } from '../../graphql';
 import {
-  GET_TEMPLATE,
-  DEPLOY_FROM_TEMPLATE,
-  DEPLOY_TO_PHALA,
   DEPLOY_COMPOSITE_TEMPLATE,
+  DEPLOY_FROM_TEMPLATE,
+  DEPLOY_TO_CONFIDENTIAL,
+  GET_TEMPLATE,
   LIST_PROJECTS,
 } from '../../graphql/operations';
-import { selectPrompt } from '../../prompts/selectPrompt';
 import { confirmPrompt } from '../../prompts/confirmPrompt';
+import { selectPrompt } from '../../prompts/selectPrompt';
 import { textPrompt } from '../../prompts/textPrompt';
-import { config } from '../../config';
 
 type DeployTemplateArgs = {
   templateId: string;
   projectId?: string;
-  provider: string;
+  compute: string;
   name?: string;
   env?: string[];
   gpu?: boolean;
@@ -70,12 +70,17 @@ const parseRuntimeToMinutes = (runtime: string): number | null => {
   return null;
 };
 
-const buildPolicyInput = (args: DeployTemplateArgs): Record<string, unknown> | undefined => {
+const buildPolicyInput = (
+  args: DeployTemplateArgs,
+): Record<string, unknown> | undefined => {
   const policy: Record<string, unknown> = {};
   let hasPolicy = false;
 
   if (args.gpuModels) {
-    policy.acceptableGpuModels = args.gpuModels.split(',').map(m => m.trim()).filter(Boolean);
+    policy.acceptableGpuModels = args.gpuModels
+      .split(',')
+      .map((m) => m.trim())
+      .filter(Boolean);
     hasPolicy = true;
   }
   if (args.gpuUnits && args.gpuUnits > 1) {
@@ -129,11 +134,15 @@ const resolveProjectId = async (
   }
 
   output.spinner('Loading projects...');
-  const { data } = await graphqlFetch<{ projects: { data: Project[] } }>(LIST_PROJECTS);
+  const { data } = await graphqlFetch<{ projects: { data: Project[] } }>(
+    LIST_PROJECTS,
+  );
 
   const projects = data?.projects?.data;
   if (!projects?.length) {
-    output.error('No projects found. Create a project first with `af projects create`.');
+    output.error(
+      'No projects found. Create a project first with `af projects create`.',
+    );
     return null;
   }
 
@@ -161,11 +170,14 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
 
   const tmpl = templateData.template;
 
+  const computeLabel =
+    args.compute === 'confidential' ? 'Confidential' : 'Standard';
+
   output.printNewLine();
   output.print(chalk.bold(`Deploying: ${tmpl.name}`));
   output.printNewLine();
   output.log(`Image:    ${tmpl.dockerImage}`);
-  output.log(`Provider: ${args.provider}`);
+  output.log(`Compute:  ${computeLabel}`);
   output.log(
     `Resources: ${tmpl.resources.cpu} vCPU, ${tmpl.resources.memory} RAM, ${tmpl.resources.storage} storage`,
   );
@@ -187,7 +199,7 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
     }));
 
   const confirmed = await confirmPrompt({
-    message: `Deploy "${tmpl.name}" as "${serviceName}" via ${args.provider}?`,
+    message: `Deploy "${tmpl.name}" as "${serviceName}" (${computeLabel.toLowerCase()} compute)?`,
     initial: true,
   });
 
@@ -205,18 +217,18 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
 
   output.spinner('Creating deployment...');
 
-  if (args.provider === 'phala') {
-    const phalaInput: Record<string, unknown> = {
+  if (args.compute === 'confidential') {
+    const confidentialInput: Record<string, unknown> = {
       templateId: args.templateId,
       projectId,
       serviceName,
     };
-    if (policyInput) phalaInput.policy = policyInput;
+    if (policyInput) confidentialInput.policy = policyInput;
 
     const { data } = await graphqlFetch<{
       deployFromTemplateToPhala: DeploymentResult;
-    }>(DEPLOY_TO_PHALA, {
-      input: phalaInput,
+    }>(DEPLOY_TO_CONFIDENTIAL, {
+      input: confidentialInput,
     });
 
     const result = data?.deployFromTemplateToPhala;
@@ -225,11 +237,11 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
       return;
     }
 
-    output.success('Phala deployment created!');
+    output.success('Confidential deployment created!');
     output.log(`Deployment ID: ${result.id}`);
     output.log(`Status:        ${result.status}`);
     output.printNewLine();
-    output.hint('Monitor with: af phala list');
+    output.hint('Monitor with: af deployments list');
   } else {
     const input: Record<string, unknown> = {
       templateId: args.templateId,
@@ -259,24 +271,20 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
       return;
     }
 
-    output.success('Akash deployment created!');
+    output.success('Deployment created!');
     output.log(`Deployment ID: ${result.id}`);
     output.log(`Status:        ${result.status}`);
     output.printNewLine();
-    output.hint('Monitor with: af akash list');
+    output.hint('Monitor with: af deployments list');
   }
 };
 
-export const deployTemplateActionHandler = async (
-  args: DeployTemplateArgs,
-) => {
+export const deployTemplateActionHandler = async (args: DeployTemplateArgs) => {
   try {
     await deployTemplateAction(args);
   } catch (error) {
     output.error(
-      error instanceof Error
-        ? error.message
-        : 'Failed to deploy from template',
+      error instanceof Error ? error.message : 'Failed to deploy from template',
     );
   }
 };
@@ -287,7 +295,7 @@ type DeployCompositeArgs = {
   templateId: string;
   projectId?: string;
   mode: string;
-  provider?: string;
+  compute?: string;
   name?: string;
 };
 
@@ -320,8 +328,8 @@ const deployCompositeAction = async (args: DeployCompositeArgs) => {
     serviceName,
   };
 
-  if (args.provider) {
-    input.provider = args.provider;
+  if (args.compute) {
+    input.provider = args.compute === 'confidential' ? 'phala' : 'akash';
   }
 
   const { data } = await graphqlFetch<{
@@ -337,7 +345,7 @@ const deployCompositeAction = async (args: DeployCompositeArgs) => {
   output.success('Composite deployment created!');
   output.log(`Primary Service ID: ${result.primaryServiceId}`);
   output.printNewLine();
-  output.hint('Monitor with: af services list');
+  output.hint('Monitor with: af deployments list');
 };
 
 export const deployCompositeActionHandler = async (

@@ -1,62 +1,62 @@
+import chalk from 'chalk';
+
 import { output } from '../../cli';
-import { config } from '../../config';
+import { authFetch } from '../../graphql/authClient';
 import { loginGuard } from '../../guards/loginGuard';
 
-const AUTH_API_URL =
-  process.env.AF_AUTH_API_URL || 'https://auth.alternatefutures.ai';
+type OrgRecord = { id: string; name: string; slug: string; role: string };
+
+type BalanceResponse = {
+  orgId: string;
+  orgBillingId: string;
+  balanceCents: number;
+  balanceUsd: string;
+  updatedAt: string;
+};
 
 export const balanceActionHandler = async () => {
   try {
     await loginGuard();
 
-    const token = config.personalAccessToken.get();
-    if (!token) {
-      output.error('Not authenticated. Run `af login` first.');
-      process.exit(1);
-    }
-
-    const res = await fetch(`${AUTH_API_URL}/api/billing/balance`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!res.ok) {
+    const orgsRes = await authFetch('/organizations');
+    if (!orgsRes.ok) {
       throw new Error(
-        `Failed to fetch balance: ${res.status} ${res.statusText}`,
+        `Failed to fetch organizations: ${orgsRes.status} ${orgsRes.statusText}`,
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await res.json();
+    const { organizations } = (await orgsRes.json()) as {
+      organizations: OrgRecord[];
+    };
 
-    output.printNewLine();
-    output.log('Credit Balance:');
-    output.printNewLine();
-
-    const tableData = [
-      {
-        Field: 'Available Credits',
-        Value: `$${((data.balance ?? data.credits ?? 0) / 100).toFixed(2)}`,
-      },
-    ];
-
-    if (data.pendingCharges !== undefined) {
-      tableData.push({
-        Field: 'Pending Charges',
-        Value: `$${(data.pendingCharges / 100).toFixed(2)}`,
-      });
+    if (!organizations?.length) {
+      output.error('No organization found. Create a project first.');
+      process.exit(1);
     }
 
-    if (data.effectiveBalance !== undefined) {
-      tableData.push({
-        Field: 'Effective Balance',
-        Value: `$${(data.effectiveBalance / 100).toFixed(2)}`,
-      });
+    const org = organizations[0];
+
+    const balRes = await authFetch(`/billing/credits/org/${org.id}/balance`);
+    if (!balRes.ok) {
+      throw new Error(
+        `Failed to fetch balance: ${balRes.status} ${balRes.statusText}`,
+      );
     }
 
-    output.table(tableData);
+    const data = (await balRes.json()) as BalanceResponse;
+
+    output.styledTable(
+      ['Organization', 'Available Credits', 'Last Updated'],
+      [
+        [
+          chalk.white(org.name),
+          chalk.green(`$${data.balanceUsd}`),
+          data.updatedAt
+            ? chalk.gray(new Date(data.updatedAt).toLocaleString())
+            : chalk.dim('N/A'),
+        ],
+      ],
+    );
   } catch (error) {
     output.error(
       error instanceof Error ? error.message : 'Failed to fetch balance',
