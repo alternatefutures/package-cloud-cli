@@ -1,8 +1,8 @@
 import { output } from '../../cli';
 import { config } from '../../config';
-import { loginGuard } from '../../guards/loginGuard';
 import { graphqlFetch } from '../../graphql/client';
 import { CREATE_PROJECT } from '../../graphql/operations';
+import { loginGuard } from '../../guards/loginGuard';
 import { t } from '../../utils/translation';
 import { getProjectNameOrPrompt } from './prompts/getProjectNameOrPrompt';
 

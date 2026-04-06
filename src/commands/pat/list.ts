@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 
 import { output } from '../../cli';
-import { loginGuard } from '../../guards/loginGuard';
 import { authFetch } from '../../graphql/authClient';
+import { loginGuard } from '../../guards/loginGuard';
 import { t } from '../../utils/translation';
 
 type TokenRecord = {

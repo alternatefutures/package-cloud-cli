@@ -3,13 +3,13 @@ import chalk from 'chalk';
 import { output } from '../../cli';
 import { graphqlFetch } from '../../graphql';
 import {
-  LIST_TEMPLATES,
-  GET_TEMPLATE,
   DEPLOY_FROM_TEMPLATE,
   DEPLOY_TO_CONFIDENTIAL,
+  GET_TEMPLATE,
+  LIST_TEMPLATES,
 } from '../../graphql/operations';
-import { selectPrompt } from '../../prompts/selectPrompt';
 import { confirmPrompt } from '../../prompts/confirmPrompt';
+import { selectPrompt } from '../../prompts/selectPrompt';
 import { textPrompt } from '../../prompts/textPrompt';
 import { ensureProject } from './helpers/ensureProject';
 
@@ -110,7 +110,8 @@ export const createServiceActionHandler = async (projectFlag?: string) => {
     });
 
     // 5. Confirm
-    const computeLabel = compute === 'confidential' ? 'Confidential' : 'Standard';
+    const computeLabel =
+      compute === 'confidential' ? 'Confidential' : 'Standard';
     const confirmed = await confirmPrompt({
       message: `Deploy "${tmpl.name}" as "${serviceName}" (${computeLabel})?`,
       initial: true,

@@ -10,7 +10,9 @@ export const listServicesActionHandler = async (projectFlag?: string) => {
     const services = await fetchServices(projectId);
 
     if (!services.length) {
-      output.log('No services in this project. Create one with `af services create`.');
+      output.log(
+        'No services in this project. Create one with `af services create`.',
+      );
       return;
     }
 
@@ -19,7 +21,11 @@ export const listServicesActionHandler = async (projectFlag?: string) => {
       const statusText = dep
         ? chalk.green('● running')
         : chalk.dim('○ stopped');
-      const kind = s.activePhalaDeployment ? 'Confidential' : s.activeAkashDeployment ? 'Standard' : chalk.dim('–');
+      const kind = s.activePhalaDeployment
+        ? 'Confidential'
+        : s.activeAkashDeployment
+          ? 'Standard'
+          : chalk.dim('–');
 
       return [
         chalk.white(s.name),
@@ -30,10 +36,7 @@ export const listServicesActionHandler = async (projectFlag?: string) => {
       ];
     });
 
-    output.styledTable(
-      ['Name', 'Type', 'Compute', 'Status', 'ID'],
-      rows,
-    );
+    output.styledTable(['Name', 'Type', 'Compute', 'Status', 'ID'], rows);
   } catch (error) {
     output.error(
       error instanceof Error ? error.message : 'Failed to list services',

@@ -1,8 +1,8 @@
 import { output } from '../../../cli';
 import { config } from '../../../config';
-import { loginGuard } from '../../../guards/loginGuard';
 import { graphqlFetch } from '../../../graphql/client';
 import { LIST_PROJECTS } from '../../../graphql/operations';
+import { loginGuard } from '../../../guards/loginGuard';
 import { selectPrompt } from '../../../prompts/selectPrompt';
 import { createProjectActionHandler } from '../../projects/create';
 
@@ -12,9 +12,7 @@ type Project = { id: string; name: string; slug: string };
  * Resolve which project to operate on.
  * Priority: explicit -p flag > saved project ID > interactive prompt.
  */
-export const ensureProject = async (
-  projectFlag?: string,
-): Promise<string> => {
+export const ensureProject = async (projectFlag?: string): Promise<string> => {
   await loginGuard();
 
   if (projectFlag) {
@@ -23,7 +21,10 @@ export const ensureProject = async (
     }>(LIST_PROJECTS);
     const projects = data?.projects?.data || [];
     const match = projects.find(
-      (p) => p.id === projectFlag || p.name === projectFlag || p.slug === projectFlag,
+      (p) =>
+        p.id === projectFlag ||
+        p.name === projectFlag ||
+        p.slug === projectFlag,
     );
     if (!match) {
       output.error(`Project "${projectFlag}" not found.`);
@@ -41,7 +42,7 @@ export const ensureProject = async (
   const projects = data?.projects?.data || [];
 
   if (projects.length === 0) {
-    output.log('No projects yet. Let\'s create one.');
+    output.log("No projects yet. Let's create one.");
     output.printNewLine();
     await createProjectActionHandler();
     const newId = config.projectId.get();

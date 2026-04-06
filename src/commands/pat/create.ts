@@ -1,8 +1,8 @@
 import { output } from '../../cli';
+import { checkPeriodicallyUntil } from '../../utils/checkPeriodicallyUntil';
 import { getPersonalAccessTokenNameOrPrompt } from '../../utils/prompts/getPersonalAccessTokenNameOrPrompt';
 import { showVerificationSessionLink } from '../../utils/token/showVerificationSessionLink';
 import { t } from '../../utils/translation';
-import { checkPeriodicallyUntil } from '../../utils/checkPeriodicallyUntil';
 
 type CreatePersonalAccessTokenActionHandlerArgs = {
   name?: string;

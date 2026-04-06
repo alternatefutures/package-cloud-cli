@@ -33,7 +33,12 @@ export const infoServiceActionHandler = async (
         [chalk.cyan('Compute'), chalk.white(kind)],
         [chalk.cyan('Status'), statusText],
         [chalk.cyan('Image'), chalk.gray(service.dockerImage || '–')],
-        [chalk.cyan('Port'), service.containerPort ? chalk.white(String(service.containerPort)) : chalk.dim('–')],
+        [
+          chalk.cyan('Port'),
+          service.containerPort
+            ? chalk.white(String(service.containerPort))
+            : chalk.dim('–'),
+        ],
         [chalk.cyan('Template'), chalk.gray(service.templateId || '–')],
       ],
     );

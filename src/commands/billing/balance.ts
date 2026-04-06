@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 
 import { output } from '../../cli';
-import { loginGuard } from '../../guards/loginGuard';
 import { authFetch } from '../../graphql/authClient';
+import { loginGuard } from '../../guards/loginGuard';
 
 type OrgRecord = { id: string; name: string; slug: string; role: string };
 

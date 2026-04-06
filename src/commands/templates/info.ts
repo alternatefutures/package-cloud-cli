@@ -101,7 +101,9 @@ const infoTemplateAction = async ({ templateId }: InfoTemplateArgs) => {
     output.print(chalk.bold('Ports'));
     output.printNewLine();
     for (const port of tmpl.ports) {
-      output.log(`  ${port.port} → ${port.as}${port.global ? ' (global)' : ''}`);
+      output.log(
+        `  ${port.port} → ${port.as}${port.global ? ' (global)' : ''}`,
+      );
     }
   }
 
@@ -138,9 +140,7 @@ export const infoTemplateActionHandler = async (args: InfoTemplateArgs) => {
     await infoTemplateAction(args);
   } catch (error) {
     output.error(
-      error instanceof Error
-        ? error.message
-        : 'Failed to fetch template info',
+      error instanceof Error ? error.message : 'Failed to fetch template info',
     );
   }
 };

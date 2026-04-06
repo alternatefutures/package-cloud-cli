@@ -21,7 +21,9 @@ export default (program: Command): Command => {
     .command('create')
     .description('Create a new project')
     .option('--name <string>', 'Project name')
-    .action((options: { name?: string }) => createProjectActionHandler(options));
+    .action((options: { name?: string }) =>
+      createProjectActionHandler(options),
+    );
 
   cmd
     .command('update [id]')

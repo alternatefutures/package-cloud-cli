@@ -1,18 +1,18 @@
 import chalk from 'chalk';
 
 import { output } from '../../cli';
+import { config } from '../../config';
 import { graphqlFetch } from '../../graphql';
 import {
-  GET_TEMPLATE,
+  DEPLOY_COMPOSITE_TEMPLATE,
   DEPLOY_FROM_TEMPLATE,
   DEPLOY_TO_CONFIDENTIAL,
-  DEPLOY_COMPOSITE_TEMPLATE,
+  GET_TEMPLATE,
   LIST_PROJECTS,
 } from '../../graphql/operations';
-import { selectPrompt } from '../../prompts/selectPrompt';
 import { confirmPrompt } from '../../prompts/confirmPrompt';
+import { selectPrompt } from '../../prompts/selectPrompt';
 import { textPrompt } from '../../prompts/textPrompt';
-import { config } from '../../config';
 
 type DeployTemplateArgs = {
   templateId: string;
@@ -70,12 +70,17 @@ const parseRuntimeToMinutes = (runtime: string): number | null => {
   return null;
 };
 
-const buildPolicyInput = (args: DeployTemplateArgs): Record<string, unknown> | undefined => {
+const buildPolicyInput = (
+  args: DeployTemplateArgs,
+): Record<string, unknown> | undefined => {
   const policy: Record<string, unknown> = {};
   let hasPolicy = false;
 
   if (args.gpuModels) {
-    policy.acceptableGpuModels = args.gpuModels.split(',').map(m => m.trim()).filter(Boolean);
+    policy.acceptableGpuModels = args.gpuModels
+      .split(',')
+      .map((m) => m.trim())
+      .filter(Boolean);
     hasPolicy = true;
   }
   if (args.gpuUnits && args.gpuUnits > 1) {
@@ -129,11 +134,15 @@ const resolveProjectId = async (
   }
 
   output.spinner('Loading projects...');
-  const { data } = await graphqlFetch<{ projects: { data: Project[] } }>(LIST_PROJECTS);
+  const { data } = await graphqlFetch<{ projects: { data: Project[] } }>(
+    LIST_PROJECTS,
+  );
 
   const projects = data?.projects?.data;
   if (!projects?.length) {
-    output.error('No projects found. Create a project first with `af projects create`.');
+    output.error(
+      'No projects found. Create a project first with `af projects create`.',
+    );
     return null;
   }
 
@@ -161,7 +170,8 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
 
   const tmpl = templateData.template;
 
-  const computeLabel = args.compute === 'confidential' ? 'Confidential' : 'Standard';
+  const computeLabel =
+    args.compute === 'confidential' ? 'Confidential' : 'Standard';
 
   output.printNewLine();
   output.print(chalk.bold(`Deploying: ${tmpl.name}`));
@@ -269,16 +279,12 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
   }
 };
 
-export const deployTemplateActionHandler = async (
-  args: DeployTemplateArgs,
-) => {
+export const deployTemplateActionHandler = async (args: DeployTemplateArgs) => {
   try {
     await deployTemplateAction(args);
   } catch (error) {
     output.error(
-      error instanceof Error
-        ? error.message
-        : 'Failed to deploy from template',
+      error instanceof Error ? error.message : 'Failed to deploy from template',
     );
   }
 };

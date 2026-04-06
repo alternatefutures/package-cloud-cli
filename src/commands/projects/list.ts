@@ -2,9 +2,9 @@ import chalk from 'chalk';
 
 import { output } from '../../cli';
 import { config } from '../../config';
-import { loginGuard } from '../../guards/loginGuard';
 import { graphqlFetch } from '../../graphql/client';
 import { GET_SERVICE_REGISTRY, LIST_PROJECTS } from '../../graphql/operations';
+import { loginGuard } from '../../guards/loginGuard';
 import { Icons } from '../../output/Output';
 import { t } from '../../utils/translation';
 
@@ -70,10 +70,7 @@ export const listProjectsActionHandler = async () => {
       ];
     });
 
-    output.styledTable(
-      ['Project Name', 'ID', 'Services', 'Selected'],
-      rows,
-    );
+    output.styledTable(['Project Name', 'ID', 'Services', 'Selected'], rows);
 
     output.hint(`Run ${chalk.cyan('af projects switch')} to select a project`);
   } catch (error) {

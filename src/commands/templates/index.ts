@@ -1,7 +1,7 @@
 import type { Command } from 'commander';
 
-import { listTemplatesActionHandler } from './list';
 import { infoTemplateActionHandler } from './info';
+import { listTemplatesActionHandler } from './list';
 
 type ListOptions = {
   category?: string;
@@ -27,9 +27,7 @@ export default (program: Command): Command => {
   cmd
     .command('info <templateId>')
     .description('Show detailed template information')
-    .action((templateId: string) =>
-      infoTemplateActionHandler({ templateId }),
-    );
+    .action((templateId: string) => infoTemplateActionHandler({ templateId }));
 
   return cmd;
 };

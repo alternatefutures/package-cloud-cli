@@ -3,9 +3,9 @@ import type { Command } from 'commander';
 import chalk from 'chalk';
 
 import { output } from '../../cli';
-import { loginGuard } from '../../guards/loginGuard';
 import { graphqlFetch } from '../../graphql/client';
 import { ALL_DEPLOYMENTS } from '../../graphql/operations';
+import { loginGuard } from '../../guards/loginGuard';
 
 const KIND_LABELS: Record<string, string> = {
   AKASH: 'Standard',
@@ -40,14 +40,18 @@ type ListOptions = {
 };
 
 const ACTIVE_STATUSES = new Set([
-  'ACTIVE', 'DEPLOYING', 'INITIALIZING', 'QUEUED', 'BUILDING',
+  'ACTIVE',
+  'DEPLOYING',
+  'INITIALIZING',
+  'QUEUED',
+  'BUILDING',
 ]);
 
 const listDeploymentsAction = async (options: ListOptions) => {
   try {
     await loginGuard();
 
-    const limit = parseInt(options.limit || '50', 10);
+    const limit = Number.parseInt(options.limit || '50', 10);
     const vars: Record<string, unknown> = { limit };
     if (options.project) vars.projectId = options.project;
 
@@ -62,7 +66,7 @@ const listDeploymentsAction = async (options: ListOptions) => {
       deployments = deployments.filter(
         (d) =>
           d.serviceName.toLowerCase().includes(needle) ||
-          (d.serviceSlug && d.serviceSlug.toLowerCase().includes(needle)),
+          d.serviceSlug?.toLowerCase().includes(needle),
       );
     }
 

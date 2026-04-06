@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 
 import { output } from '../../cli';
-import { loginGuard } from '../../guards/loginGuard';
 import { graphqlFetch } from '../../graphql/client';
 import { UPDATE_PROJECT } from '../../graphql/operations';
+import { loginGuard } from '../../guards/loginGuard';
 import { confirmPrompt } from '../../prompts/confirmPrompt';
 import { textPrompt } from '../../prompts/textPrompt';
 import { getProjectOrPrompt } from './prompts/getProjectOrPrompt';
@@ -19,7 +19,9 @@ export const updateProjectActionHandler = async (id?: string) => {
     const project = await getProjectOrPrompt({ id });
 
     if (!project) {
-      output.error('No projects found. Create one first with `af projects create`.');
+      output.error(
+        'No projects found. Create one first with `af projects create`.',
+      );
       process.exit(1);
     }
 

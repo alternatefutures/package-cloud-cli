@@ -2,9 +2,9 @@ import chalk from 'chalk';
 
 import { output } from '../../cli';
 import { config } from '../../config';
-import { loginGuard } from '../../guards/loginGuard';
 import { graphqlFetch } from '../../graphql/client';
 import { DELETE_PROJECT } from '../../graphql/operations';
+import { loginGuard } from '../../guards/loginGuard';
 import { confirmPrompt } from '../../prompts/confirmPrompt';
 import { getProjectOrPrompt } from './prompts/getProjectOrPrompt';
 

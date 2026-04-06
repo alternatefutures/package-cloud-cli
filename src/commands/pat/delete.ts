@@ -1,6 +1,6 @@
 import { output } from '../../cli';
-import { loginGuard } from '../../guards/loginGuard';
 import { authFetch } from '../../graphql/authClient';
+import { loginGuard } from '../../guards/loginGuard';
 
 type DeletePersonalAccessTokenArgs = {
   personalAccessTokenId: string;

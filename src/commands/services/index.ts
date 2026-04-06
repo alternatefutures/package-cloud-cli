@@ -1,12 +1,12 @@
 import type { Command } from 'commander';
 
-import { listServicesActionHandler } from './list';
-import { infoServiceActionHandler } from './info';
-import { createServiceActionHandler } from './create';
-import { deployServiceActionHandler } from './deploy';
-import { logsServiceActionHandler } from './logs';
 import { closeServiceActionHandler } from './close';
+import { createServiceActionHandler } from './create';
 import { deleteServiceActionHandler } from './delete';
+import { deployServiceActionHandler } from './deploy';
+import { infoServiceActionHandler } from './info';
+import { listServicesActionHandler } from './list';
+import { logsServiceActionHandler } from './logs';
 
 export default (program: Command): Command => {
   const cmd = program
@@ -55,7 +55,7 @@ export default (program: Command): Command => {
     .option('--tail <n>', 'Number of log lines', '50')
     .action((id?: string, options?: { tail?: string }) => {
       const projectFlag = cmd.opts().project;
-      const tail = parseInt(options?.tail || '50', 10);
+      const tail = Number.parseInt(options?.tail || '50', 10);
       return logsServiceActionHandler(id, projectFlag, tail);
     });
 

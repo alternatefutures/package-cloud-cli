@@ -1,5 +1,5 @@
-import { Command, Help } from 'commander';
 import { MissingExpectedDataError } from '@alternatefutures/errors';
+import { Command, Help } from 'commander';
 
 import cmdBilling from './commands/billing/index';
 import cmdDeployments from './commands/deployments/index';
@@ -120,7 +120,9 @@ export const init = ({ version, parser }: InitArgs) => {
     .version(version);
 
   program.addHelpText('beforeAll', logo).showHelpAfterError();
-  program.configureHelp({ formatHelp: (cmd, helper) => new GroupedHelp().formatHelp(cmd, helper) });
+  program.configureHelp({
+    formatHelp: (cmd, helper) => new GroupedHelp().formatHelp(cmd, helper),
+  });
 
   // ── Top-level: login / logout ───────────────────────────────────
   program
@@ -130,7 +132,10 @@ export const init = ({ version, parser }: InitArgs) => {
     .option('--auth-url <url>', 'Override auth service URL')
     .action((options) => {
       if (options.email) {
-        const authApiUrl = options.authUrl || getDefined('AUTH__API_URL') || 'https://auth.alternatefutures.ai';
+        const authApiUrl =
+          options.authUrl ||
+          getDefined('AUTH__API_URL') ||
+          'https://auth.alternatefutures.ai';
         return emailLoginActionHandler({ authApiUrl });
       }
 

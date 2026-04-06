@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 
-import { output } from '../../cli';
 import chalk from 'chalk';
+import { output } from '../../cli';
 import { config } from '../../config';
 import { loginGuard } from '../../guards/loginGuard';
 
