@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 import { output } from '../../cli';
 import { graphqlFetch } from '../../graphql/client';
 import {

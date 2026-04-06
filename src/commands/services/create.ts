@@ -7,7 +7,6 @@ import {
   GET_TEMPLATE,
   DEPLOY_FROM_TEMPLATE,
   DEPLOY_TO_CONFIDENTIAL,
-  DEPLOY_COMPOSITE_TEMPLATE,
 } from '../../graphql/operations';
 import { selectPrompt } from '../../prompts/selectPrompt';
 import { confirmPrompt } from '../../prompts/confirmPrompt';

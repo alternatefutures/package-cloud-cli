@@ -45,7 +45,20 @@ export async function openShell(
 
     ws.on('message', (data: WebSocket.Data) => {
       if (!ready) {
-        const msg = JSON.parse(data.toString());
+        let msg: { type?: unknown; message?: unknown };
+        try {
+          msg = JSON.parse(data.toString());
+        } catch {
+          return;
+        }
+
+        if (
+          typeof msg?.type !== 'string' ||
+          !['ready', 'error'].includes(msg.type)
+        ) {
+          return;
+        }
+
         if (msg.type === 'ready') {
           ready = true;
           clearTimeout(connectTimeout);
@@ -94,7 +107,11 @@ export async function openShell(
 
         if (msg.type === 'error') {
           clearTimeout(connectTimeout);
-          output.error(msg.message || 'Shell connection failed');
+          const errMessage =
+            typeof msg.message === 'string'
+              ? msg.message
+              : 'Shell connection failed';
+          output.error(errMessage);
           resolve();
           process.exit(1);
         }
