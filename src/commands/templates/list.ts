@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 import { output } from '../../cli';
 import { graphqlFetch } from '../../graphql';
 import { LIST_TEMPLATES } from '../../graphql/operations';
@@ -42,17 +44,18 @@ const listTemplatesAction = async ({ category }: ListTemplatesArgs) => {
     return;
   }
 
-  output.table(
-    data.templates.map((tmpl) => ({
-      ID: tmpl.id,
-      Name: tmpl.name,
-      Category: tmpl.category,
-      Description:
-        tmpl.description.length > 50
-          ? `${tmpl.description.slice(0, 47)}...`
-          : tmpl.description,
-    })),
-  );
+  const rows = data.templates.map((tmpl) => [
+    chalk.white(tmpl.id),
+    chalk.white(tmpl.name),
+    chalk.gray(tmpl.category),
+    chalk.dim(
+      tmpl.description.length > 50
+        ? `${tmpl.description.slice(0, 47)}...`
+        : tmpl.description,
+    ),
+  ]);
+
+  output.styledTable(['ID', 'Name', 'Category', 'Description'], rows);
 };
 
 export const listTemplatesActionHandler = async (args: ListTemplatesArgs) => {

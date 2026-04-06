@@ -1,5 +1,7 @@
 import type { Command } from 'commander';
 
+import chalk from 'chalk';
+
 import { output } from '../../cli';
 import { loginGuard } from '../../guards/loginGuard';
 import { graphqlFetch } from '../../graphql/client';
@@ -83,15 +85,24 @@ export default (program: Command): Command => {
             return;
           }
 
-          output.table(
-            deployments.map((d) => ({
-              ID: d.shortId || d.id.slice(0, 8),
-              Type: KIND_LABELS[d.kind] || d.kind,
-              Status: d.status,
-              Service: d.serviceName,
-              Project: d.projectName || 'N/A',
-              Created: new Date(d.createdAt).toLocaleDateString(),
-            })),
+          const statusColor = (s: string) => {
+            if (s === 'ACTIVE') return chalk.green(s);
+            if (s === 'STOPPED' || s === 'REMOVED') return chalk.dim(s);
+            return chalk.yellow(s);
+          };
+
+          const rows = deployments.map((d) => [
+            chalk.white(d.shortId || d.id.slice(0, 8)),
+            chalk.white(KIND_LABELS[d.kind] || d.kind),
+            statusColor(d.status),
+            chalk.white(d.serviceName),
+            chalk.gray(d.projectName || 'N/A'),
+            chalk.gray(new Date(d.createdAt).toLocaleDateString()),
+          ]);
+
+          output.styledTable(
+            ['ID', 'Type', 'Status', 'Service', 'Project', 'Created'],
+            rows,
           );
         } catch (error) {
           output.error(

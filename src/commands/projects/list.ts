@@ -8,20 +8,7 @@ import { GET_SERVICE_REGISTRY, LIST_PROJECTS } from '../../graphql/operations';
 import { Icons } from '../../output/Output';
 import { t } from '../../utils/translation';
 
-const MONTHS = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-];
-
-const formatDate = (dateStr: string | Date) => {
-  const d = new Date(
-    typeof dateStr === 'string' ? dateStr : dateStr.toISOString(),
-  );
-  const day = String(d.getUTCDate()).padStart(2, '0');
-  return `${day} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
-};
-
-type ProjectRecord = { id: string; name: string; slug: string; createdAt?: string };
+type ProjectRecord = { id: string; name: string; slug: string };
 
 type ServiceRecord = {
   id: string;
@@ -79,13 +66,12 @@ export const listProjectsActionHandler = async () => {
         isCurrent ? chalk.bold.white(project.name) : chalk.white(project.name),
         chalk.gray(project.id),
         servicesText,
-        project.createdAt ? chalk.cyan(formatDate(project.createdAt)) : chalk.dim('–'),
         isCurrent ? Icons.Checkmark : '',
       ];
     });
 
     output.styledTable(
-      ['Project Name', 'ID', 'Services', 'Created', 'Selected'],
+      ['Project Name', 'ID', 'Services', 'Selected'],
       rows,
     );
 

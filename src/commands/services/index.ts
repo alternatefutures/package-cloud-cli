@@ -103,45 +103,43 @@ export default (program: Command): Command => {
           process.exit(1);
         }
 
-        output.printNewLine();
-        output.log('Service Detail:');
-        output.table([
-          { Field: 'ID', Value: service.id },
-          { Field: 'Name', Value: service.name },
-          { Field: 'Type', Value: service.type || 'N/A' },
-          { Field: 'Slug', Value: service.slug || 'N/A' },
-          { Field: 'Docker Image', Value: service.dockerImage || 'N/A' },
-          { Field: 'Container Port', Value: service.containerPort || 'N/A' },
-          { Field: 'Template ID', Value: service.templateId || 'N/A' },
-        ]);
+        output.styledTable(
+          ['Field', 'Value'],
+          [
+            [chalk.cyan('ID'), chalk.white(service.id)],
+            [chalk.cyan('Name'), chalk.white(service.name)],
+            [chalk.cyan('Type'), chalk.white(service.type || 'N/A')],
+            [chalk.cyan('Slug'), chalk.gray(service.slug || 'N/A')],
+            [chalk.cyan('Docker Image'), chalk.gray(service.dockerImage || 'N/A')],
+            [chalk.cyan('Container Port'), chalk.white(service.containerPort || 'N/A')],
+            [chalk.cyan('Template ID'), chalk.gray(service.templateId || 'N/A')],
+          ],
+        );
 
         if (service.ports?.length) {
-          output.log('Ports:');
-          output.table(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            service.ports.map((p: any) => ({
-              'Container Port': p.containerPort,
-              'Public Port': p.publicPort || 'N/A',
-              Protocol: p.protocol || 'TCP',
-            })),
-          );
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const portRows = service.ports.map((p: any) => [
+            chalk.white(String(p.containerPort)),
+            chalk.white(p.publicPort ? String(p.publicPort) : 'N/A'),
+            chalk.gray(p.protocol || 'TCP'),
+          ]);
+          output.styledTable(['Container Port', 'Public Port', 'Protocol'], portRows);
         }
 
         if (service.linksFrom?.length || service.linksTo?.length) {
-          output.log('Links:');
-          const links = [
+          const linkRows = [
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ...(service.linksFrom || []).map((l: any) => ({
-              Direction: 'outgoing',
-              'Linked Service': l.targetServiceId,
-            })),
+            ...(service.linksFrom || []).map((l: any) => [
+              chalk.white('outgoing'),
+              chalk.gray(l.targetServiceId),
+            ]),
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ...(service.linksTo || []).map((l: any) => ({
-              Direction: 'incoming',
-              'Linked Service': l.sourceServiceId,
-            })),
+            ...(service.linksTo || []).map((l: any) => [
+              chalk.white('incoming'),
+              chalk.gray(l.sourceServiceId),
+            ]),
           ];
-          output.table(links);
+          output.styledTable(['Direction', 'Linked Service'], linkRows);
         }
       } catch (error) {
         output.error(
@@ -177,13 +175,12 @@ export default (program: Command): Command => {
           return;
         }
 
-        output.table(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          envVars.map((v: any) => ({
-            Key: v.key,
-            Value: v.value,
-          })),
-        );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const envRows = envVars.map((v: any) => [
+          chalk.white(v.key),
+          chalk.gray(v.value),
+        ]);
+        output.styledTable(['Key', 'Value'], envRows);
       } catch (error) {
         output.error(
           error instanceof Error

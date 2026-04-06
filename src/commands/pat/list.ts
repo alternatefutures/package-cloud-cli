@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 import { output } from '../../cli';
 import { loginGuard } from '../../guards/loginGuard';
 import { authFetch } from '../../graphql/authClient';
@@ -30,18 +32,20 @@ export const listPersonalAccessTokensActionHandler = async () => {
       return;
     }
 
-    output.table(
-      tokens.map((tok) => ({
-        ID: tok.id,
-        Name: tok.name ?? '',
-        'Created At': tok.createdAt
-          ? new Date(tok.createdAt).toLocaleDateString()
-          : '',
-        'Last Used': tok.lastUsedAt
+    const rows = tokens.map((tok) => [
+      chalk.white(tok.id),
+      chalk.white(tok.name ?? ''),
+      chalk.gray(
+        tok.createdAt ? new Date(tok.createdAt).toLocaleDateString() : '',
+      ),
+      chalk.gray(
+        tok.lastUsedAt
           ? new Date(tok.lastUsedAt).toLocaleDateString()
           : 'Never',
-      })),
-    );
+      ),
+    ]);
+
+    output.styledTable(['ID', 'Name', 'Created', 'Last Used'], rows);
   } catch (error) {
     output.error(
       error instanceof Error ? error.message : 'Failed to list tokens',

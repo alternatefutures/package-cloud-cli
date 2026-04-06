@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 import { output } from '../../cli';
 import { loginGuard } from '../../guards/loginGuard';
 import { authFetch } from '../../graphql/authClient';
@@ -43,26 +45,18 @@ export const balanceActionHandler = async () => {
 
     const data = (await balRes.json()) as BalanceResponse;
 
-    output.printNewLine();
-    output.log('Credit Balance:');
-    output.printNewLine();
-
-    output.table([
-      {
-        Field: 'Organization',
-        Value: org.name,
-      },
-      {
-        Field: 'Available Credits',
-        Value: `$${data.balanceUsd}`,
-      },
-      {
-        Field: 'Last Updated',
-        Value: data.updatedAt
-          ? new Date(data.updatedAt).toLocaleString()
-          : 'N/A',
-      },
-    ]);
+    output.styledTable(
+      ['Organization', 'Available Credits', 'Last Updated'],
+      [
+        [
+          chalk.white(org.name),
+          chalk.green(`$${data.balanceUsd}`),
+          data.updatedAt
+            ? chalk.gray(new Date(data.updatedAt).toLocaleString())
+            : chalk.dim('N/A'),
+        ],
+      ],
+    );
   } catch (error) {
     output.error(
       error instanceof Error ? error.message : 'Failed to fetch balance',
