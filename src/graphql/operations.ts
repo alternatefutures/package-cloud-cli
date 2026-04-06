@@ -150,3 +150,25 @@ export const CREATE_PROJECT = `
     }
   }
 `;
+
+export const UPDATE_PROJECT = `
+  mutation UpdateProject($id: ID!, $data: UpdateProjectDataInput!) {
+    updateProject(id: $id, data: $data) {
+      id name slug
+    }
+  }
+`;
+
+export const DELETE_PROJECT = `
+  mutation DeleteProject($id: ID!) {
+    deleteProject(id: $id)
+  }
+`;
+
+export const DELETE_SERVICE = `
+  mutation DeleteService($id: ID!) {
+    deleteService(id: $id) {
+      id name
+    }
+  }
+`;

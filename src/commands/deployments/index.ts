@@ -5,14 +5,7 @@ import chalk from 'chalk';
 import { output } from '../../cli';
 import { loginGuard } from '../../guards/loginGuard';
 import { graphqlFetch } from '../../graphql/client';
-import {
-  ALL_DEPLOYMENTS,
-  CLOSE_AKASH_DEPLOYMENT,
-  DELETE_PHALA_DEPLOYMENT,
-  GET_SERVICE_LOGS,
-  STOP_PHALA_DEPLOYMENT,
-} from '../../graphql/operations';
-import { confirmPrompt } from '../../prompts/confirmPrompt';
+import { ALL_DEPLOYMENTS } from '../../graphql/operations';
 
 const KIND_LABELS: Record<string, string> = {
   AKASH: 'Standard',
@@ -38,241 +31,104 @@ type UnifiedDeployment = {
   updatedAt: string | null;
 };
 
-const fetchDeployments = async (
-  projectId?: string,
-  limit?: number,
-): Promise<UnifiedDeployment[]> => {
-  const vars: Record<string, unknown> = {};
-  if (projectId) vars.projectId = projectId;
-  if (limit) vars.limit = limit;
-
-  const { data } = await graphqlFetch<{
-    allDeployments: UnifiedDeployment[];
-  }>(ALL_DEPLOYMENTS, vars);
-
-  return data?.allDeployments ?? [];
+type ListOptions = {
+  project?: string;
+  service?: string;
+  status?: string;
+  all?: boolean;
+  limit?: string;
 };
 
-const findDeploymentByIdOrShortId = (
-  deployments: UnifiedDeployment[],
-  idOrShortId: string,
-): UnifiedDeployment | undefined => {
-  return deployments.find(
-    (d) => d.id === idOrShortId || d.shortId === idOrShortId,
-  );
+const ACTIVE_STATUSES = new Set([
+  'ACTIVE', 'DEPLOYING', 'INITIALIZING', 'QUEUED', 'BUILDING',
+]);
+
+const listDeploymentsAction = async (options: ListOptions) => {
+  try {
+    await loginGuard();
+
+    const limit = parseInt(options.limit || '50', 10);
+    const vars: Record<string, unknown> = { limit };
+    if (options.project) vars.projectId = options.project;
+
+    const { data } = await graphqlFetch<{
+      allDeployments: UnifiedDeployment[];
+    }>(ALL_DEPLOYMENTS, vars);
+
+    let deployments = data?.allDeployments ?? [];
+
+    if (options.service) {
+      const needle = options.service.toLowerCase();
+      deployments = deployments.filter(
+        (d) =>
+          d.serviceName.toLowerCase().includes(needle) ||
+          (d.serviceSlug && d.serviceSlug.toLowerCase().includes(needle)),
+      );
+    }
+
+    if (options.status) {
+      const needle = options.status.toUpperCase();
+      deployments = deployments.filter((d) => d.status === needle);
+    } else if (!options.all) {
+      deployments = deployments.filter((d) => ACTIVE_STATUSES.has(d.status));
+    }
+
+    if (!deployments.length) {
+      output.log('No deployments found.');
+      if (!options.all) {
+        output.hint('Use --all to include closed and old deployments.');
+      }
+      return;
+    }
+
+    const statusColor = (s: string) => {
+      if (s === 'ACTIVE') return chalk.green(s);
+      if (s === 'FAILED') return chalk.red(s);
+      if (s === 'REMOVED' || s === 'STOPPED') return chalk.dim(s);
+      return chalk.yellow(s);
+    };
+
+    const rows = deployments.map((d) => [
+      chalk.white(d.projectName || '–'),
+      chalk.white(d.serviceName),
+      statusColor(d.status),
+      chalk.gray(KIND_LABELS[d.kind] || d.kind),
+      chalk.gray(new Date(d.createdAt).toLocaleDateString()),
+      chalk.gray(d.shortId || d.id.slice(0, 8)),
+    ]);
+
+    output.styledTable(
+      ['Project', 'Service', 'Status', 'Type', 'Started', 'ID'],
+      rows,
+    );
+  } catch (error) {
+    output.error(
+      error instanceof Error ? error.message : 'Failed to list deployments',
+    );
+    process.exit(1);
+  }
 };
 
 export default (program: Command): Command => {
   const cmd = program
     .command('deployments')
-    .description('Manage deployments');
+    .description('List and view deployments (across all projects & services)')
+    .option('--project <name-or-id>', 'Filter by project')
+    .option('--service <name-or-id>', 'Filter by service')
+    .option('--status <status>', 'Filter by status (active, failed, closed)')
+    .option('--all', 'Include closed and old deployments')
+    .option('-l, --limit <n>', 'Max deployments to show', '50')
+    .action((options: ListOptions) => listDeploymentsAction(options));
 
   cmd
     .command('list')
     .description('List all deployments')
-    .option('-p, --project <projectId>', 'Filter by project ID')
-    .option('-l, --limit <n>', 'Max number of deployments to show', '50')
-    .action(
-      async (options: { project?: string; limit?: string }) => {
-        try {
-          await loginGuard();
-
-          const limit = parseInt(options.limit || '50', 10);
-          const deployments = await fetchDeployments(options.project, limit);
-
-          if (!deployments.length) {
-            output.log('No deployments found.');
-            return;
-          }
-
-          const statusColor = (s: string) => {
-            if (s === 'ACTIVE') return chalk.green(s);
-            if (s === 'STOPPED' || s === 'REMOVED') return chalk.dim(s);
-            return chalk.yellow(s);
-          };
-
-          const rows = deployments.map((d) => [
-            chalk.white(d.shortId || d.id.slice(0, 8)),
-            chalk.white(KIND_LABELS[d.kind] || d.kind),
-            statusColor(d.status),
-            chalk.white(d.serviceName),
-            chalk.gray(d.projectName || 'N/A'),
-            chalk.gray(new Date(d.createdAt).toLocaleDateString()),
-          ]);
-
-          output.styledTable(
-            ['ID', 'Type', 'Status', 'Service', 'Project', 'Created'],
-            rows,
-          );
-        } catch (error) {
-          output.error(
-            error instanceof Error
-              ? error.message
-              : 'Failed to list deployments',
-          );
-          process.exit(1);
-        }
-      },
-    );
-
-  cmd
-    .command('logs <serviceId>')
-    .description('Fetch logs for a service')
-    .option('--tail <n>', 'Number of log lines to fetch', '50')
-    .action(async (serviceId: string, options: { tail?: string }) => {
-      try {
-        await loginGuard();
-
-        const tail = parseInt(options.tail || '50', 10);
-        const { data } = await graphqlFetch(GET_SERVICE_LOGS, {
-          serviceId,
-          tail,
-        });
-
-        const result = data?.serviceLogs;
-        if (!result?.logs) {
-          output.log('No logs available for this service.');
-          return;
-        }
-
-        output.printNewLine();
-        output.log(`Logs for service ${serviceId}:`);
-        output.printNewLine();
-        output.raw(result.logs);
-        output.printNewLine();
-      } catch (error) {
-        output.error(
-          error instanceof Error ? error.message : 'Failed to fetch logs',
-        );
-        process.exit(1);
-      }
-    });
-
-  cmd
-    .command('close <deploymentId>')
-    .description('Close/stop a deployment')
-    .option('-y, --yes', 'Skip confirmation prompt')
-    .action(async (deploymentId: string, options: { yes?: boolean }) => {
-      try {
-        await loginGuard();
-
-        const deployments = await fetchDeployments(undefined, 200);
-        const deployment = findDeploymentByIdOrShortId(
-          deployments,
-          deploymentId,
-        );
-
-        if (!deployment) {
-          output.error(
-            `Deployment "${deploymentId}" not found. Run \`af deployments list\` to see available deployments.`,
-          );
-          return;
-        }
-
-        const typeLabel = KIND_LABELS[deployment.kind] || deployment.kind;
-
-        if (!options.yes) {
-          const confirmed = await confirmPrompt({
-            message: `Close ${typeLabel.toLowerCase()} deployment "${deployment.serviceName}" (${deployment.shortId})?`,
-            initial: false,
-          });
-
-          if (!confirmed) {
-            output.log('Cancelled.');
-            return;
-          }
-        }
-
-        if (deployment.kind === 'PHALA') {
-          const { data } = await graphqlFetch(STOP_PHALA_DEPLOYMENT, {
-            id: deployment.id,
-          });
-          output.success(
-            `Deployment closed. Status: ${data?.stopPhalaDeployment?.status}`,
-          );
-        } else if (deployment.kind === 'AKASH') {
-          const { data } = await graphqlFetch(CLOSE_AKASH_DEPLOYMENT, {
-            id: deployment.id,
-          });
-          output.success(
-            `Deployment closed. Status: ${data?.closeAkashDeployment?.status}`,
-          );
-        } else {
-          output.error(
-            `Cannot close a ${typeLabel} deployment via this command.`,
-          );
-        }
-      } catch (error) {
-        output.error(
-          error instanceof Error
-            ? error.message
-            : 'Failed to close deployment',
-        );
-        process.exit(1);
-      }
-    });
-
-  cmd
-    .command('delete <deploymentId>')
-    .description('Permanently delete a confidential deployment')
-    .option('-y, --yes', 'Skip confirmation prompt')
-    .action(async (deploymentId: string, options: { yes?: boolean }) => {
-      try {
-        await loginGuard();
-
-        const deployments = await fetchDeployments(undefined, 200);
-        const deployment = findDeploymentByIdOrShortId(
-          deployments,
-          deploymentId,
-        );
-
-        if (!deployment) {
-          output.error(
-            `Deployment "${deploymentId}" not found. Run \`af deployments list\` to see available deployments.`,
-          );
-          return;
-        }
-
-        if (deployment.kind !== 'PHALA') {
-          output.error(
-            'Delete is only available for confidential deployments. Use `af deployments close` for standard deployments.',
-          );
-          return;
-        }
-
-        if (!options.yes) {
-          output.warn(
-            'This will permanently delete the deployment and all associated data.',
-          );
-          output.printNewLine();
-
-          const confirmed = await confirmPrompt({
-            message: `Permanently delete deployment "${deployment.serviceName}" (${deployment.shortId})?`,
-            initial: false,
-          });
-
-          if (!confirmed) {
-            output.log('Cancelled.');
-            return;
-          }
-        }
-
-        const { data } = await graphqlFetch(DELETE_PHALA_DEPLOYMENT, {
-          id: deployment.id,
-        });
-
-        output.success(
-          `Deployment deleted. Status: ${data?.deletePhalaDeployment?.status}`,
-        );
-      } catch (error) {
-        output.error(
-          error instanceof Error
-            ? error.message
-            : 'Failed to delete deployment',
-        );
-        process.exit(1);
-      }
-    });
+    .option('--project <name-or-id>', 'Filter by project')
+    .option('--service <name-or-id>', 'Filter by service')
+    .option('--status <status>', 'Filter by status')
+    .option('--all', 'Include closed and old deployments')
+    .option('-l, --limit <n>', 'Max deployments to show', '50')
+    .action((options: ListOptions) => listDeploymentsAction(options));
 
   return cmd;
 };

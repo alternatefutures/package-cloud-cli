@@ -1,12 +1,18 @@
-import { Command } from 'commander';
-import cmdAuth from './commands/auth/index';
+import { Command, Help } from 'commander';
+import { MissingExpectedDataError } from '@alternatefutures/errors';
+
 import cmdBilling from './commands/billing/index';
 import cmdDeployments from './commands/deployments/index';
 import cmdPAT from './commands/pat/index';
 import cmdProjects from './commands/projects/index';
 import cmdServices from './commands/services/index';
+import cmdSSH from './commands/ssh/index';
 import cmdTemplates from './commands/templates/index';
 
+import { loginActionHandler } from './commands/auth/login';
+import { emailLoginActionHandler } from './commands/auth/loginEmail';
+import { logoutActionHandler } from './commands/auth/logout';
+import { getDefined } from './defined';
 import { Output } from './output/Output';
 import { t } from './utils/translation';
 
@@ -24,18 +30,87 @@ type InitArgs = {
 };
 
 const logo = `
-
-     $$$$$$\  $$$$$$$$\
-    $$  __$$\ $$  _____|
-    $$ /  $$ |$$ |
-    $$$$$$$$ |$$$$$\
-    $$  __$$ |$$  __|
-    $$ |  $$ |$$ |
-    $$ |  $$ |$$ |
-    \__|  \__|\__|
-
-    ${t('aboutAlternateFutures')}
+    ___    ____                        __       
+   /   |  / / /____  _________  ____ _/ /____   
+  / /| | / / __/ _ \\/ ___/ __ \\/ __ \`/ __/ _ \\  
+ / ___ |/ / /_/  __/ /  / / / / /_/ / /_/  __/  
+/_/  |_/_/\\__/\\___/_/  /_/ /_/\\__,_/\\__/\\___/   
+    / ____/  __/ /___  __________  _____         
+   / /_  / / / / __/ / / / ___/ _ \\/ ___/        
+  / __/ / /_/ / /_/ /_/ / /  /  __(__  )         
+ /_/    \\__,_/\\__/\\__,_/_/   \\___/____/          
 `;
+
+// ── Grouped help formatter ────────────────────────────────────────
+// Produces the clean grouped layout with blank-line separators
+// between logical command categories.
+const COMMAND_GROUPS: string[][] = [
+  ['login', 'logout'],
+  ['projects', 'services', 'deployments', 'ssh'],
+  ['billing'],
+];
+
+class GroupedHelp extends Help {
+  formatHelp(cmd: Command, helper: Help): string {
+    const indent = '  ';
+
+    // Usage line
+    let out = `Usage: ${cmd.name()} [options] [command]\n`;
+
+    // Options
+    const opts = helper.visibleOptions(cmd);
+    if (opts.length) {
+      out += '\nOptions:\n';
+      const termWidth = helper.padWidth(cmd, helper);
+      const colWidth = Math.max(termWidth, 27) + 2;
+      for (const opt of opts) {
+        const term = helper.optionTerm(opt);
+        const desc = helper.optionDescription(opt);
+        out += `${indent}${term.padEnd(colWidth)}${desc}\n`;
+      }
+    }
+
+    // Commands — grouped with separators
+    const allCmds = helper.visibleCommands(cmd);
+    if (allCmds.length) {
+      out += '\nCommands:\n';
+
+      const termWidth = helper.padWidth(cmd, helper);
+      const colWidth = Math.max(termWidth, 27) + 2;
+      const nameSet = new Set(allCmds.map((c) => c.name()));
+      const rendered = new Set<string>();
+
+      for (const group of COMMAND_GROUPS) {
+        const groupCmds = group
+          .filter((name) => nameSet.has(name))
+          .map((name) => allCmds.find((c) => c.name() === name)!)
+          .filter(Boolean);
+
+        for (const c of groupCmds) {
+          const term = helper.subcommandTerm(c);
+          const desc = helper.subcommandDescription(c);
+          out += `${indent}${term.padEnd(colWidth)}${desc}\n`;
+          rendered.add(c.name());
+        }
+
+        if (groupCmds.length) out += '\n';
+      }
+
+      // Anything not in a group (fallback)
+      for (const c of allCmds) {
+        if (rendered.has(c.name())) continue;
+        const term = helper.subcommandTerm(c);
+        const desc = helper.subcommandDescription(c);
+        out += `${indent}${term.padEnd(colWidth)}${desc}\n`;
+      }
+
+      // Always show help at the bottom
+      out += `${indent}${'help [command]'.padEnd(colWidth)}display help for command\n`;
+    }
+
+    return out;
+  }
+}
 
 export const init = ({ version, parser }: InitArgs) => {
   const program: Command = new Command()
@@ -44,45 +119,71 @@ export const init = ({ version, parser }: InitArgs) => {
     .action(() => program.outputHelp())
     .version(version);
 
-  // TODO: The ascii logo should only be displayed
-  // on default command, or general help
-  // a minimal version can be used instead
   program.addHelpText('beforeAll', logo).showHelpAfterError();
+  program.configureHelp({ formatHelp: (cmd, helper) => new GroupedHelp().formatHelp(cmd, helper) });
 
-  type CmdVersionArgs = typeof program;
+  // ── Top-level: login / logout ───────────────────────────────────
+  program
+    .command('login')
+    .description('Log in to AlternateFutures (opens browser to web UI)')
+    .option('-e, --email', 'Login via email verification (no browser required)')
+    .option('--auth-url <url>', 'Override auth service URL')
+    .action((options) => {
+      if (options.email) {
+        const authApiUrl = options.authUrl || getDefined('AUTH__API_URL') || 'https://auth.alternatefutures.ai';
+        return emailLoginActionHandler({ authApiUrl });
+      }
 
-  const cmdVersion = (program: CmdVersionArgs) =>
-    program.command('version').action(() => {
-      output.raw(version);
-      output.printNewLine();
+      const uiAppUrl = getDefined('UI__APP_URL');
+      const authApiUrl =
+        options.authUrl ||
+        getDefined('AUTH__API_URL') ||
+        getDefined('SDK__AUTH_SERVICE_URL');
+
+      if (!uiAppUrl || !authApiUrl) {
+        throw new MissingExpectedDataError();
+      }
+
+      return loginActionHandler({ uiAppUrl, authApiUrl });
     });
 
-  // Initialise commands
-  const commands = [
-    cmdAuth,
-    cmdBilling,
-    cmdDeployments,
-    cmdPAT,
-    cmdProjects,
-    cmdServices,
-    cmdTemplates,
-    cmdVersion,
-  ];
+  program
+    .command('logout')
+    .description('Log out of the CLI')
+    .action(logoutActionHandler);
 
-  for (const cmd of commands) {
-    const subCmd = cmd(program);
+  // ── Register command groups (order matters for help) ────────────
+  // Group 2: resource management
+  cmdProjects(program);
+  cmdServices(program);
+  cmdDeployments(program);
 
-    // Attach common subcommands
-    if (subCmd) {
-      // TODO: Identify common subcommands
-      // refactor to handle them here
-      for (const opt of subCmd.commands) {
+  // Group 3: utilities
+  cmdBilling(program);
+  cmdSSH(program);
+
+  // ── Hidden commands (functional but not in top-level help) ──────
+  const templatesCmd = cmdTemplates(program);
+  if (templatesCmd) (templatesCmd as any)._hidden = true;
+
+  const patCmd = cmdPAT(program);
+  if (patCmd) (patCmd as any)._hidden = true;
+
+  const versionCmd = program.command('version').action(() => {
+    output.raw(version);
+    output.printNewLine();
+  });
+  (versionCmd as any)._hidden = true;
+
+  // Add help subcommand to all visible nested commands
+  for (const sub of program.commands) {
+    if (!(sub as any)._hidden) {
+      for (const opt of sub.commands) {
         opt.addHelpCommand();
       }
     }
   }
 
-  // Init parser (unawaited)
   parser(program);
 
   return program;
