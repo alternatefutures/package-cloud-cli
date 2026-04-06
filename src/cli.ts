@@ -83,8 +83,8 @@ class GroupedHelp extends Help {
       for (const group of COMMAND_GROUPS) {
         const groupCmds = group
           .filter((name) => nameSet.has(name))
-          .map((name) => allCmds.find((c) => c.name() === name)!)
-          .filter(Boolean);
+          .map((name) => allCmds.find((c) => c.name() === name))
+          .filter((c): c is NonNullable<typeof c> => c != null);
 
         for (const c of groupCmds) {
           const term = helper.subcommandTerm(c);
