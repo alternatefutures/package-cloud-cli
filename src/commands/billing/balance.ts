@@ -1,62 +1,68 @@
 import { output } from '../../cli';
-import { config } from '../../config';
 import { loginGuard } from '../../guards/loginGuard';
+import { authFetch } from '../../graphql/authClient';
 
-const AUTH_API_URL =
-  process.env.AF_AUTH_API_URL || 'https://auth.alternatefutures.ai';
+type OrgRecord = { id: string; name: string; slug: string; role: string };
+
+type BalanceResponse = {
+  orgId: string;
+  orgBillingId: string;
+  balanceCents: number;
+  balanceUsd: string;
+  updatedAt: string;
+};
 
 export const balanceActionHandler = async () => {
   try {
     await loginGuard();
 
-    const token = config.personalAccessToken.get();
-    if (!token) {
-      output.error('Not authenticated. Run `af login` first.');
-      process.exit(1);
-    }
-
-    const res = await fetch(`${AUTH_API_URL}/api/billing/balance`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!res.ok) {
+    const orgsRes = await authFetch('/organizations');
+    if (!orgsRes.ok) {
       throw new Error(
-        `Failed to fetch balance: ${res.status} ${res.statusText}`,
+        `Failed to fetch organizations: ${orgsRes.status} ${orgsRes.statusText}`,
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await res.json();
+    const { organizations } = (await orgsRes.json()) as {
+      organizations: OrgRecord[];
+    };
+
+    if (!organizations?.length) {
+      output.error('No organization found. Create a project first.');
+      process.exit(1);
+    }
+
+    const org = organizations[0];
+
+    const balRes = await authFetch(`/billing/credits/org/${org.id}/balance`);
+    if (!balRes.ok) {
+      throw new Error(
+        `Failed to fetch balance: ${balRes.status} ${balRes.statusText}`,
+      );
+    }
+
+    const data = (await balRes.json()) as BalanceResponse;
 
     output.printNewLine();
     output.log('Credit Balance:');
     output.printNewLine();
 
-    const tableData = [
+    output.table([
+      {
+        Field: 'Organization',
+        Value: org.name,
+      },
       {
         Field: 'Available Credits',
-        Value: `$${((data.balance ?? data.credits ?? 0) / 100).toFixed(2)}`,
+        Value: `$${data.balanceUsd}`,
       },
-    ];
-
-    if (data.pendingCharges !== undefined) {
-      tableData.push({
-        Field: 'Pending Charges',
-        Value: `$${(data.pendingCharges / 100).toFixed(2)}`,
-      });
-    }
-
-    if (data.effectiveBalance !== undefined) {
-      tableData.push({
-        Field: 'Effective Balance',
-        Value: `$${(data.effectiveBalance / 100).toFixed(2)}`,
-      });
-    }
-
-    output.table(tableData);
+      {
+        Field: 'Last Updated',
+        Value: data.updatedAt
+          ? new Date(data.updatedAt).toLocaleString()
+          : 'N/A',
+      },
+    ]);
   } catch (error) {
     output.error(
       error instanceof Error ? error.message : 'Failed to fetch balance',

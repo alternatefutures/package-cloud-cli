@@ -1,21 +1,10 @@
 import { Command } from 'commander';
-import cmdAkash from './commands/akash/index';
-import cmdApplications from './commands/applications/index';
 import cmdAuth from './commands/auth/index';
 import cmdBilling from './commands/billing/index';
-import cmdDomains from './commands/domains/index';
-import cmdEns from './commands/ens/index';
-import cmdFunctions from './commands/functions/index';
-import cmdGateways from './commands/gateways/index';
-import cmdIPFS from './commands/ipfs/index';
-import cmdIPNS from './commands/ipns/index';
-import cmdObservability from './commands/observability/index';
+import cmdDeployments from './commands/deployments/index';
 import cmdPAT from './commands/pat/index';
-import cmdPhala from './commands/phala/index';
 import cmdProjects from './commands/projects/index';
 import cmdServices from './commands/services/index';
-import cmdSites from './commands/sites/index';
-import cmdStorage from './commands/storage/index';
 import cmdTemplates from './commands/templates/index';
 
 import { Output } from './output/Output';
@@ -70,23 +59,12 @@ export const init = ({ version, parser }: InitArgs) => {
 
   // Initialise commands
   const commands = [
-    cmdAkash,
     cmdAuth,
-    cmdApplications,
     cmdBilling,
-    cmdDomains,
-    cmdEns,
-    cmdGateways,
-    cmdIPFS,
-    cmdIPNS,
-    cmdObservability,
+    cmdDeployments,
     cmdPAT,
-    cmdPhala,
     cmdProjects,
     cmdServices,
-    cmdSites,
-    cmdStorage,
-    cmdFunctions,
     cmdTemplates,
     cmdVersion,
   ];

@@ -2,9 +2,9 @@ import chalk from 'chalk';
 
 import { output } from '../../cli';
 import { config } from '../../config';
+import { loginGuard } from '../../guards/loginGuard';
 import { graphqlFetch } from '../../graphql/client';
-import { sdkGuard } from '../../guards/sdkGuard';
-import type { SdkGuardedFunction } from '../../guards/types';
+import { GET_SERVICE_REGISTRY, LIST_PROJECTS } from '../../graphql/operations';
 import { Icons } from '../../output/Output';
 import { t } from '../../utils/translation';
 
@@ -21,15 +21,7 @@ const formatDate = (dateStr: string | Date) => {
   return `${day} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
 };
 
-const SERVICE_COUNT_QUERY = `
-  query ServiceRegistry($projectId: ID) {
-    serviceRegistry(projectId: $projectId) {
-      id
-      activeAkashDeployment { id }
-      activePhalaDeployment { id }
-    }
-  }
-`;
+type ProjectRecord = { id: string; name: string; slug: string; createdAt?: string };
 
 type ServiceRecord = {
   id: string;
@@ -43,7 +35,7 @@ const fetchServiceCounts = async (
   try {
     const { data } = await graphqlFetch<{
       serviceRegistry: ServiceRecord[];
-    }>(SERVICE_COUNT_QUERY, { projectId });
+    }>(GET_SERVICE_REGISTRY, { projectId });
     const services = data?.serviceRegistry || [];
     const active = services.filter(
       (s) => s.activeAkashDeployment || s.activePhalaDeployment,
@@ -54,46 +46,54 @@ const fetchServiceCounts = async (
   }
 };
 
-export const listProjectsAction: SdkGuardedFunction<
-  Record<string, never>
-> = async ({ sdk }) => {
-  const projects = await sdk.projects().list();
+export const listProjectsActionHandler = async () => {
+  try {
+    await loginGuard();
 
-  if (projects.length === 0) {
-    output.log(t('noYYet', { name: t('projects') }));
+    const { data } = await graphqlFetch<{
+      projects: { data: ProjectRecord[] };
+    }>(LIST_PROJECTS);
 
-    return;
+    const projects = data?.projects?.data || [];
+
+    if (projects.length === 0) {
+      output.log(t('noYYet', { name: t('projects') }));
+      return;
+    }
+
+    const currentProjectId = config.projectId.get();
+
+    const serviceCounts = await Promise.all(
+      projects.map((p) => fetchServiceCounts(p.id)),
+    );
+
+    const rows = projects.map((project, i) => {
+      const isCurrent = currentProjectId === project.id;
+      const { total, active } = serviceCounts[i];
+      const servicesText =
+        total === 0
+          ? chalk.dim('–')
+          : `${chalk.white(String(total))} total, ${chalk.green(String(active))} active`;
+
+      return [
+        isCurrent ? chalk.bold.white(project.name) : chalk.white(project.name),
+        chalk.gray(project.id),
+        servicesText,
+        project.createdAt ? chalk.cyan(formatDate(project.createdAt)) : chalk.dim('–'),
+        isCurrent ? Icons.Checkmark : '',
+      ];
+    });
+
+    output.styledTable(
+      ['Project Name', 'ID', 'Services', 'Created', 'Selected'],
+      rows,
+    );
+
+    output.hint(`Run ${chalk.cyan('af projects switch')} to select a project`);
+  } catch (error) {
+    output.error(
+      error instanceof Error ? error.message : 'Failed to list projects',
+    );
+    process.exit(1);
   }
-
-  const currentProjectId = config.projectId.get();
-
-  const serviceCounts = await Promise.all(
-    projects.map((p) => fetchServiceCounts(p.id)),
-  );
-
-  const rows = projects.map(({ id, name, createdAt }, i) => {
-    const isCurrent = currentProjectId === id;
-    const { total, active } = serviceCounts[i];
-    const servicesText =
-      total === 0
-        ? chalk.dim('–')
-        : `${chalk.white(String(total))} total, ${chalk.green(String(active))} active`;
-
-    return [
-      isCurrent ? chalk.bold.white(name) : chalk.white(name),
-      chalk.gray(id),
-      servicesText,
-      chalk.cyan(formatDate(createdAt)),
-      isCurrent ? Icons.Checkmark : '',
-    ];
-  });
-
-  output.styledTable(
-    ['Project Name', 'ID', 'Services', 'Created', 'Selected'],
-    rows,
-  );
-
-  output.hint(`Run ${chalk.cyan('af projects switch')} to select a project`);
 };
-
-export const listProjectsActionHandler = sdkGuard(listProjectsAction);

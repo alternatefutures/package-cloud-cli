@@ -10,7 +10,7 @@ type ListOptions = {
 
 type DeployOptions = {
   project?: string;
-  provider: string;
+  compute: string;
   name?: string;
   env?: string[];
   gpu?: boolean;
@@ -49,9 +49,9 @@ export default (program: Command): Command => {
     .description('Deploy a service from a template')
     .option('-p, --project <projectId>', 'Project ID to deploy into')
     .option(
-      '--provider <provider>',
-      'Deployment provider (akash or phala)',
-      'akash',
+      '--compute <mode>',
+      'Compute environment (standard or confidential)',
+      'standard',
     )
     .option('-n, --name <name>', 'Service name')
     .option('-e, --env <KEY=VALUE...>', 'Environment variable overrides')
@@ -65,7 +65,7 @@ export default (program: Command): Command => {
       deployTemplateActionHandler({
         templateId,
         projectId: options.project,
-        provider: options.provider,
+        compute: options.compute,
         name: options.name,
         env: options.env,
         gpu: options.gpu,
@@ -83,13 +83,13 @@ export default (program: Command): Command => {
     .option('-p, --project <projectId>', 'Project ID to deploy into')
     .option(
       '--mode <mode>',
-      'Deployment mode: fullstack (single provider) or custom (per-component)',
+      'Deployment mode: fullstack (single compute) or custom (per-component)',
       'fullstack',
     )
     .option(
-      '--provider <provider>',
-      'Provider for fullstack mode (akash or phala)',
-      'akash',
+      '--compute <mode>',
+      'Compute environment for fullstack mode (standard or confidential)',
+      'standard',
     )
     .option('-n, --name <name>', 'Service name')
     .action(
@@ -98,7 +98,7 @@ export default (program: Command): Command => {
         options: {
           project?: string;
           mode: string;
-          provider?: string;
+          compute?: string;
           name?: string;
         },
       ) =>
@@ -106,7 +106,7 @@ export default (program: Command): Command => {
           templateId,
           projectId: options.project,
           mode: options.mode,
-          provider: options.provider,
+          compute: options.compute,
           name: options.name,
         }),
     );

@@ -5,7 +5,7 @@ import { graphqlFetch } from '../../graphql';
 import {
   GET_TEMPLATE,
   DEPLOY_FROM_TEMPLATE,
-  DEPLOY_TO_PHALA,
+  DEPLOY_TO_CONFIDENTIAL,
   DEPLOY_COMPOSITE_TEMPLATE,
   LIST_PROJECTS,
 } from '../../graphql/operations';
@@ -17,7 +17,7 @@ import { config } from '../../config';
 type DeployTemplateArgs = {
   templateId: string;
   projectId?: string;
-  provider: string;
+  compute: string;
   name?: string;
   env?: string[];
   gpu?: boolean;
@@ -161,11 +161,13 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
 
   const tmpl = templateData.template;
 
+  const computeLabel = args.compute === 'confidential' ? 'Confidential' : 'Standard';
+
   output.printNewLine();
   output.print(chalk.bold(`Deploying: ${tmpl.name}`));
   output.printNewLine();
   output.log(`Image:    ${tmpl.dockerImage}`);
-  output.log(`Provider: ${args.provider}`);
+  output.log(`Compute:  ${computeLabel}`);
   output.log(
     `Resources: ${tmpl.resources.cpu} vCPU, ${tmpl.resources.memory} RAM, ${tmpl.resources.storage} storage`,
   );
@@ -187,7 +189,7 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
     }));
 
   const confirmed = await confirmPrompt({
-    message: `Deploy "${tmpl.name}" as "${serviceName}" via ${args.provider}?`,
+    message: `Deploy "${tmpl.name}" as "${serviceName}" (${computeLabel.toLowerCase()} compute)?`,
     initial: true,
   });
 
@@ -205,18 +207,18 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
 
   output.spinner('Creating deployment...');
 
-  if (args.provider === 'phala') {
-    const phalaInput: Record<string, unknown> = {
+  if (args.compute === 'confidential') {
+    const confidentialInput: Record<string, unknown> = {
       templateId: args.templateId,
       projectId,
       serviceName,
     };
-    if (policyInput) phalaInput.policy = policyInput;
+    if (policyInput) confidentialInput.policy = policyInput;
 
     const { data } = await graphqlFetch<{
       deployFromTemplateToPhala: DeploymentResult;
-    }>(DEPLOY_TO_PHALA, {
-      input: phalaInput,
+    }>(DEPLOY_TO_CONFIDENTIAL, {
+      input: confidentialInput,
     });
 
     const result = data?.deployFromTemplateToPhala;
@@ -225,11 +227,11 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
       return;
     }
 
-    output.success('Phala deployment created!');
+    output.success('Confidential deployment created!');
     output.log(`Deployment ID: ${result.id}`);
     output.log(`Status:        ${result.status}`);
     output.printNewLine();
-    output.hint('Monitor with: af phala list');
+    output.hint('Monitor with: af deployments list');
   } else {
     const input: Record<string, unknown> = {
       templateId: args.templateId,
@@ -259,11 +261,11 @@ const deployTemplateAction = async (args: DeployTemplateArgs) => {
       return;
     }
 
-    output.success('Akash deployment created!');
+    output.success('Deployment created!');
     output.log(`Deployment ID: ${result.id}`);
     output.log(`Status:        ${result.status}`);
     output.printNewLine();
-    output.hint('Monitor with: af akash list');
+    output.hint('Monitor with: af deployments list');
   }
 };
 
@@ -287,7 +289,7 @@ type DeployCompositeArgs = {
   templateId: string;
   projectId?: string;
   mode: string;
-  provider?: string;
+  compute?: string;
   name?: string;
 };
 
@@ -320,8 +322,8 @@ const deployCompositeAction = async (args: DeployCompositeArgs) => {
     serviceName,
   };
 
-  if (args.provider) {
-    input.provider = args.provider;
+  if (args.compute) {
+    input.provider = args.compute === 'confidential' ? 'phala' : 'akash';
   }
 
   const { data } = await graphqlFetch<{
@@ -337,7 +339,7 @@ const deployCompositeAction = async (args: DeployCompositeArgs) => {
   output.success('Composite deployment created!');
   output.log(`Primary Service ID: ${result.primaryServiceId}`);
   output.printNewLine();
-  output.hint('Monitor with: af services list');
+  output.hint('Monitor with: af deployments list');
 };
 
 export const deployCompositeActionHandler = async (
