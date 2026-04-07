@@ -149,6 +149,22 @@ export const emailLoginActionHandler = async ({
     config.personalAccessToken.set(personalAccessToken);
     config.projectId.clear();
 
+    // Fetch user's org so all subsequent requests include X-Organization-Id
+    try {
+      const meRes = await fetch(`${authApiUrl}/auth/me`, {
+        headers: { Authorization: `Bearer ${personalAccessToken}` },
+      });
+      if (meRes.ok) {
+        const me = (await meRes.json()) as { organizations?: { id: string }[] };
+        const orgId = me.organizations?.[0]?.id;
+        if (orgId) {
+          config.organizationId.set(orgId);
+        }
+      }
+    } catch {
+      // Non-fatal — org will still be resolved from PAT on the server
+    }
+
     output.success('Login successful!');
     output.log('');
     output.log(`✅ Logged in as: ${email}`);
