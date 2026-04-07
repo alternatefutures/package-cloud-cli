@@ -20,12 +20,24 @@ export async function graphqlFetch<T = any>(
     throw new Error('Not authenticated. Run `af login` first.');
   }
 
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+
+  const orgId = config.organizationId.get();
+  if (orgId) {
+    headers['X-Organization-Id'] = orgId;
+  }
+
+  const projectId = config.projectId.get();
+  if (projectId) {
+    headers['X-Project-Id'] = projectId;
+  }
+
   const res = await fetch(`${CLOUD_API_URL}/graphql`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+    headers,
     body: JSON.stringify({ query, variables }),
   });
 
