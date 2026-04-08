@@ -81,6 +81,14 @@ export const GET_SERVICE_LOGS = `
   }
 `;
 
+export const DEPLOY_TO_AKASH = `
+  mutation DeployToAkash($input: DeployToAkashInput!) {
+    deployToAkash(input: $input) {
+      id status dseq owner serviceId
+    }
+  }
+`;
+
 export const CLOSE_AKASH_DEPLOYMENT = `
   mutation CloseAkashDeployment($id: ID!) {
     closeAkashDeployment(id: $id) {
