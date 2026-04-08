@@ -63,7 +63,7 @@ export const loginActionHandler = async ({
       headers: { Authorization: `Bearer ${personalAccessToken}` },
     });
     if (meRes.ok) {
-      const me = await meRes.json() as { organizations?: { id: string }[] };
+      const me = (await meRes.json()) as { organizations?: { id: string }[] };
       const orgId = me.organizations?.[0]?.id;
       if (orgId) {
         config.organizationId.set(orgId);
