@@ -3,6 +3,7 @@ import { graphqlFetch } from '../../graphql/client';
 import {
   CLOSE_AKASH_DEPLOYMENT,
   DEPLOY_FROM_TEMPLATE,
+  DEPLOY_TO_AKASH,
   STOP_PHALA_DEPLOYMENT,
 } from '../../graphql/operations';
 import { confirmPrompt } from '../../prompts/confirmPrompt';
@@ -58,26 +59,15 @@ export const deployServiceActionHandler = async (
       output.printNewLine();
     }
 
-    if (!service.templateId) {
-      output.error(
-        `Service "${service.name}" has no template. Use \`af services create\` to deploy a new service from a template.`,
-      );
-      return;
-    }
-
     output.spinner('Creating new deployment...');
 
     const { data } = await graphqlFetch<{
-      deployFromTemplate: DeploymentResult;
-    }>(DEPLOY_FROM_TEMPLATE, {
-      input: {
-        templateId: service.templateId,
-        projectId,
-        serviceName: service.name,
-      },
+      deployToAkash: DeploymentResult;
+    }>(DEPLOY_TO_AKASH, {
+      input: { serviceId: service.id },
     });
 
-    const result = data?.deployFromTemplate;
+    const result = data?.deployToAkash;
     if (!result) {
       output.error('Deployment failed — no response from server.');
       return;
