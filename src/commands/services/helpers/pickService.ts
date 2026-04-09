@@ -32,7 +32,11 @@ export const pickService = async (
 
   if (serviceId) {
     const match = services.find(
-      (s) => s.id === serviceId || s.name === serviceId || s.slug === serviceId,
+      (s) =>
+        s.id === serviceId ||
+        s.id.startsWith(serviceId) ||
+        s.name === serviceId ||
+        s.slug === serviceId,
     );
     if (!match) {
       output.error(`Service "${serviceId}" not found.`);

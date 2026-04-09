@@ -92,7 +92,7 @@ export const DEPLOY_TO_AKASH = `
 export const GET_AKASH_DEPLOYMENT = `
   query GetAkashDeployment($id: ID!) {
     akashDeployment(id: $id) {
-      id status dseq provider serviceUrls errorMessage retryCount
+      id status dseq provider serviceId serviceUrls errorMessage retryCount
     }
   }
 `;

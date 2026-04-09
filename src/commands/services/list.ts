@@ -32,7 +32,7 @@ export const listServicesActionHandler = async (projectFlag?: string) => {
         chalk.gray(s.type || '–'),
         kind,
         statusText,
-        chalk.gray(s.id.slice(0, 8)),
+        chalk.gray(s.id),
       ];
     });
 
