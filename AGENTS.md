@@ -1,8 +1,8 @@
-# AGENTS.md - AlternateFutures CLI
+# AGENTS.md - Alternate Clouds CLI
 
 ## Project Context
 
-The **AlternateFutures CLI** (`@alternatefutures/cli`) is a command-line interface tool for interacting with the AlternateFutures Cloud platform. It enables developers to deploy static sites, manage serverless functions, handle storage (IPFS), configure domains, and manage AI agents - all from the terminal.
+The **Alternate Clouds CLI** (`@alternatefutures/cli`) is a command-line interface tool for interacting with the Alternate Clouds platform. It enables developers to deploy static sites, manage serverless functions, handle storage (IPFS), configure domains, and manage AI agents - all from the terminal.
 
 **Key Features:**
 - 🌐 Static site deployment (SSG, SSR frameworks)
@@ -260,7 +260,7 @@ Stored in OS-specific config directory via `conf` package:
 
 ## Function Routing Feature
 
-AlternateFutures Functions support native routing/proxying to enable gateway patterns and microservice routing. This allows a single function to act as a reverse proxy, routing requests to different backend services based on path patterns.
+Alternate Clouds Functions support native routing/proxying to enable gateway patterns and microservice routing. This allows a single function to act as a reverse proxy, routing requests to different backend services based on path patterns.
 
 ### Overview
 
@@ -486,7 +486,7 @@ af whoami
 - **`cloud-sdk`** - TypeScript SDK (GraphQL client)
 - **`cloud-dashboard`** - Web dashboard UI
 - **`*-cloud-template`** - Framework templates (Next.js, Astro, Hugo, etc.)
-- **`next-on-af-cloud`** - Next.js adapter for AlternateFutures
+- **`next-on-af-cloud`** - Next.js adapter for Alternate Clouds
 
 ## Recent Changes (v0.2.0)
 

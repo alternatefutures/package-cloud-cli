@@ -1,7 +1,7 @@
 import type { AlternateFuturesFunctionConfig } from '@alternatefutures/cli';
 
 /**
- * Example Alternate Futures Function Configuration with Routing
+ * Example Alternate Clouds Function Configuration with Routing
  */
 const config: AlternateFuturesFunctionConfig = {
   name: 'my-gateway',

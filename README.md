@@ -1,9 +1,9 @@
-# AlternateFutures CLI
+# Alternate Clouds CLI
 
 [![npm version](https://img.shields.io/npm/v/@alternatefutures/cli.svg)](https://www.npmjs.com/package/@alternatefutures/cli)
 [![Tests](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/test-runner.yml/badge.svg)](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/test-runner.yml)
 
-Simple command-line access to AlternateFutures Cloud.
+Simple command-line access to Alternate Clouds.
 
 Authenticate, create projects, deploy services, inspect workloads, open shells, and check billing from one CLI.
 

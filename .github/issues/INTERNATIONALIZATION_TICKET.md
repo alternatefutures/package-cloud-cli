@@ -5,7 +5,7 @@
 **Title:** Implement Internationalization (i18n) Support for Global Accessibility
 
 **Team:** Engineering
-**Project:** Alternate Futures CLI
+**Project:** Alternate Clouds CLI
 **Priority:** High
 **Labels:** `enhancement`, `i18n`, `accessibility`, `user-experience`
 **Estimate:** 3 weeks (15 working days)
@@ -14,7 +14,7 @@
 
 ## Summary
 
-Implement comprehensive internationalization (i18n) support to make the AlternateFutures CLI accessible to non-English speaking users worldwide. This aligns with our mission as a censorship-resistant, privacy-focused platform serving a global audience.
+Implement comprehensive internationalization (i18n) support to make the Alternate Clouds CLI accessible to non-English speaking users worldwide. This aligns with our mission as a censorship-resistant, privacy-focused platform serving a global audience.
 
 **Current State:** English-only CLI (365 strings in `/locales/en.json`)
 **Desired State:** Multi-language support with auto-detection, starting with Spanish

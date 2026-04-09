@@ -48,7 +48,7 @@ export const signupActionHandler = async ({
 
   try {
     output.log('');
-    output.log('🚀 AlternateFutures CLI Account Setup');
+    output.log('🚀 Alternate Clouds CLI Account Setup');
     output.log('──────────────────────────────────────');
     output.log('');
 
@@ -152,7 +152,7 @@ export const signupActionHandler = async ({
     output.log(`✅ Logged in as: ${email}`);
     output.log('');
     output.log(
-      'You can now use the AlternateFutures CLI to deploy your projects.',
+      'You can now use the Alternate Clouds CLI to deploy your projects.',
     );
     output.printNewLine();
 

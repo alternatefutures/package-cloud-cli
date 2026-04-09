@@ -11,7 +11,7 @@
 
 ## 🚀 What's New
 
-This release represents a complete overhaul of the AlternateFutures CLI with enterprise-grade security, comprehensive testing, and extensive documentation. All 245 commits from the development history have been squashed into a single, clean production release.
+This release represents a complete overhaul of the Alternate Clouds CLI with enterprise-grade security, comprehensive testing, and extensive documentation. All 245 commits from the development history have been squashed into a single, clean production release.
 
 ---
 
@@ -338,7 +338,7 @@ pnpm build
 
 ## 👥 Contributors
 
-- Development: AlternateFutures Team
+- Development: Alternate Clouds Team
 - Security Audit: Automated + Manual Review
 - Documentation: Comprehensive community effort
 - AI Assistance: Claude Code by Anthropic
@@ -399,6 +399,6 @@ GNU General Public License v3.0 or later - See LICENSE file for details
 
 ---
 
-**Released with ❤️ by the AlternateFutures Team**
+**Released with ❤️ by the Alternate Clouds Team**
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)

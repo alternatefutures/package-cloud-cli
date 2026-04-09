@@ -2,7 +2,7 @@
 
 ## Our Commitment
 
-At Alternate Futures, we take security seriously. As an open source, privacy-focused, and censorship-resistant platform, we are committed to protecting our users and their data.
+At Alternate Clouds, we take security seriously. As an open source, privacy-focused, and censorship-resistant platform, we are committed to protecting our users and their data.
 
 ## Supported Versions
 
@@ -49,7 +49,7 @@ We appreciate the security community's efforts to responsibly disclose vulnerabi
 
 ## Security Best Practices
 
-When using the Alternate Futures CLI:
+When using the Alternate Clouds CLI:
 
 ### For End Users
 
@@ -76,7 +76,7 @@ When using the Alternate Futures CLI:
 ### Built-in Protections
 
 - Secure credential storage using system keychain
-- Encrypted communication with AlternateFutures Cloud
+- Encrypted communication with Alternate Clouds
 - Input validation and sanitization
 - Protection against common vulnerabilities (XSS, injection attacks)
 
@@ -117,7 +117,7 @@ We thank the following security researchers for responsibly disclosing vulnerabi
 
 <!-- List will be updated as researchers contribute -->
 
-*Be the first to help secure Alternate Futures!*
+*Be the first to help secure Alternate Clouds!*
 
 ## Additional Resources
 

@@ -48,7 +48,7 @@ export const emailLoginActionHandler = async ({
 
   try {
     output.log('');
-    output.log('🔐 AlternateFutures CLI Login (Email)');
+    output.log('🔐 Alternate Clouds CLI Login (Email)');
     output.log('─────────────────────────────────────');
     output.log('');
     output.log('Login via email verification - no browser required.');
@@ -170,7 +170,7 @@ export const emailLoginActionHandler = async ({
     output.log(`✅ Logged in as: ${email}`);
     output.log('');
     output.log(
-      'You can now use the AlternateFutures CLI to deploy your projects.',
+      'You can now use the Alternate Clouds CLI to deploy your projects.',
     );
     output.printNewLine();
 

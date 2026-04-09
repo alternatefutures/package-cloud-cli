@@ -127,7 +127,7 @@ export const init = ({ version, parser }: InitArgs) => {
   // ── Top-level: login / logout ───────────────────────────────────
   program
     .command('login')
-    .description('Log in to AlternateFutures (opens browser to web UI)')
+    .description('Log in to Alternate Clouds (opens browser to web UI)')
     .option('-e, --email', 'Login via email verification (no browser required)')
     .option('--auth-url <url>', 'Override auth service URL')
     .action((options) => {
