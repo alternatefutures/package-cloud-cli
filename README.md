@@ -1,11 +1,15 @@
-# Alternate Clouds CLI
+<div align="center">
 
-[![npm version](https://img.shields.io/npm/v/@alternatefutures/cli.svg)](https://www.npmjs.com/package/@alternatefutures/cli)
+# ☁️ Alternate Clouds CLI
+
+**Deploy and manage services from your terminal.**
+
+[![npm](https://img.shields.io/npm/v/@alternatefutures/cli?style=for-the-badge)](https://www.npmjs.com/package/@alternatefutures/cli)
 [![Tests](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/test-runner.yml/badge.svg)](https://github.com/alternatefutures/package-cloud-cli/actions/workflows/test-runner.yml)
 
-Simple command-line access to Alternate Clouds.
+---
 
-Authenticate, create projects, deploy services, inspect workloads, open shells, and check billing from one CLI.
+</div>
 
 ## Install
 
@@ -13,9 +17,11 @@ Authenticate, create projects, deploy services, inspect workloads, open shells, 
 npm install -g @alternatefutures/cli
 ```
 
-Requires Node.js `>=18.18.2`.
+Requires Node.js >= 18.
 
-## Start Here
+---
+
+## Quick Start
 
 ```bash
 af login
@@ -25,17 +31,11 @@ af services deploy
 af services logs
 ```
 
-## Core Commands
+---
 
-```bash
-af projects
-af services
-af deployments
-af ssh <serviceId>
-af billing balance
-```
+## Commands
 
-## Projects
+### Projects
 
 ```bash
 af projects list
@@ -45,7 +45,7 @@ af projects update [id]
 af projects delete [id]
 ```
 
-## Services
+### Services
 
 ```bash
 af services list
@@ -55,15 +55,10 @@ af services deploy [id]
 af services logs [id] --tail 100
 af services close [id]
 af services delete [id]
-```
-
-Use a specific project when needed:
-
-```bash
 af services --project <id-or-name> list
 ```
 
-## Deployments
+### Deployments
 
 ```bash
 af deployments
@@ -72,16 +67,14 @@ af deployments --project <id-or-name> --status ACTIVE
 af deployments list --service api --limit 20
 ```
 
-## Shell Access
+### Shell Access
 
 ```bash
 af ssh <serviceId>
-af ssh <serviceId> --service web --command /bin/sh
+af ssh <serviceId> --command /bin/sh
 ```
 
-## Authentication
-
-Interactive:
+### Auth
 
 ```bash
 af login
@@ -89,35 +82,20 @@ af login --email
 af logout
 ```
 
-Automation:
+For CI/CD, use environment variables:
 
 ```bash
 export AF_TOKEN="your_personal_access_token"
 export AF_PROJECT_ID="your_project_id"
 ```
 
-Create personal access tokens in the dashboard: [app.alternatefutures.ai](https://app.alternatefutures.ai)
-
-## Advanced Commands
-
-Available, but hidden from top-level help:
+### Billing
 
 ```bash
-af templates list
-af templates info <templateId>
-
-af pat list
-af pat create --name "CI token"
-af pat delete <personalAccessTokenId>
+af billing balance
 ```
 
-## Help
-
-```bash
-af help
-af services help
-af services deploy --help
-```
+---
 
 ## Development
 
@@ -128,15 +106,15 @@ pnpm test
 npm link
 ```
 
-```bash
-pnpm tsc
-pnpm format
-pnpm lint
-```
+---
 
-## Links
+## Related
 
-- npm: [@alternatefutures/cli](https://www.npmjs.com/package/@alternatefutures/cli)
-- Docs: [alternatefutures.ai/docs](https://alternatefutures.ai/docs)
-- Changelog: [`CHANGELOG.md`](./CHANGELOG.md)
-- Security: [`SECURITY.md`](./SECURITY.md)
+- [service-auth](https://github.com/alternatefutures/service-auth) — Auth + billing + AI proxy
+- [service-cloud-api](https://github.com/alternatefutures/service-cloud-api) — GraphQL API
+- [web-app](https://github.com/alternatefutures/web-app.alternatefutures.ai) — Dashboard
+- [npm](https://www.npmjs.com/package/@alternatefutures/cli) · [Changelog](./CHANGELOG.md) · [Security](./SECURITY.md)
+
+---
+
+MIT License
