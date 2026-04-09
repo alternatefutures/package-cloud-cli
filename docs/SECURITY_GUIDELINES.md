@@ -1,6 +1,6 @@
 # Security Guidelines for Developers
 
-This document provides security best practices and guidelines for developers contributing to the Alternate Futures CLI project.
+This document provides security best practices and guidelines for developers contributing to the Alternate Clouds CLI project.
 
 ## Table of Contents
 

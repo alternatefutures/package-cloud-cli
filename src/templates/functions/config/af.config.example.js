@@ -1,5 +1,5 @@
 /**
- * Example Alternate Futures Function Configuration with Routing
+ * Example Alternate Clouds Function Configuration with Routing
  * @type {import('@alternatefutures/cli').AlternateFuturesFunctionConfig}
  */
 module.exports = {

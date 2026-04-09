@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Alternate Futures CLI is built with **censorship resistance** and **decentralization** as core principles. This document outlines the decentralized features, architectures, and best practices for building unstoppable applications.
+The Alternate Clouds CLI is built with **censorship resistance** and **decentralization** as core principles. This document outlines the decentralized features, architectures, and best practices for building unstoppable applications.
 
 ---
 
@@ -314,7 +314,7 @@ export IPFS_GATEWAYS="https://my-gateway.alternatefutures.ai,https://ipfs.io,htt
 Ensure content availability by pinning to multiple services:
 
 ```bash
-# Pin to Alternate Futures
+# Pin to Alternate Clouds
 af ipfs add --pin ./critical-content
 
 # Also pin to external pinning service (Pinata, Web3.Storage, etc.)
@@ -546,7 +546,7 @@ fi
 ### Community
 - [IPFS Forums](https://discuss.ipfs.io/)
 - [ENS Discord](https://chat.ens.domains/)
-- [Alternate Futures Discord](https://discord.gg/alternatefutures)
+- [Alternate Clouds Discord](https://discord.gg/alternatefutures)
 
 ---
 
@@ -575,7 +575,7 @@ IPFS content is permanent **as long as it's pinned**. For guaranteed permanence,
 ### Q: How much does it cost?
 
 - **IPFS**: Free (you pay for pinning services if needed)
-- **IPNS**: Free (included with Alternate Futures)
+- **IPNS**: Free (included with Alternate Clouds)
 - **ENS**: ~$5-10/year + gas fees
 - **Arweave**: One-time fee (~$0.01-0.10 per MB)
 

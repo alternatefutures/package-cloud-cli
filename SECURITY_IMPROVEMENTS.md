@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the comprehensive security improvements implemented for the Alternate Futures CLI project. These enhancements align with our commitment to being an open-source, privacy-focused, and censorship-resistant platform.
+This document outlines the comprehensive security improvements implemented for the Alternate Clouds CLI project. These enhancements align with our commitment to being an open-source, privacy-focused, and censorship-resistant platform.
 
 **Date**: 2025-11-12
 **Status**: ✅ All Critical and High Vulnerabilities Resolved
@@ -313,7 +313,7 @@ To contribute to security:
 
 ## Summary
 
-This security overhaul represents a comprehensive approach to securing the Alternate Futures CLI:
+This security overhaul represents a comprehensive approach to securing the Alternate Clouds CLI:
 
 - ✅ **4 critical vulnerabilities** fixed immediately
 - ✅ **5 automated security workflows** implemented
