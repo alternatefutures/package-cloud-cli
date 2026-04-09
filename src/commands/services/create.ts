@@ -52,7 +52,13 @@ const CATEGORY_LABELS: Record<string, string> = {
   WEB_SERVER: '🌐 Web Servers',
 };
 
-const CATEGORY_ORDER = ['AI_ML', 'WEB_SERVER', 'GAME_SERVER', 'DATABASE', 'DEVTOOLS'];
+const CATEGORY_ORDER = [
+  'AI_ML',
+  'WEB_SERVER',
+  'GAME_SERVER',
+  'DATABASE',
+  'DEVTOOLS',
+];
 
 function formatTemplateChoices(templates: TemplateListItem[]) {
   const grouped: Record<string, TemplateListItem[]> = {};
@@ -111,10 +117,22 @@ export const createServiceActionHandler = async (projectFlag?: string) => {
     const serviceKind = await selectPrompt<string>({
       message: 'What would you like to create?',
       choices: [
-        { title: `📦 Template         ${chalk.dim('Deploy from a pre-built template')}`, value: 'template' },
-        { title: `🐳 Docker Image     ${chalk.dim('Deploy any container image')}`, value: 'docker' },
-        { title: `⚡ Function         ${chalk.dim('Serverless function (Bun + Hono)')}`, value: 'function' },
-        { title: `🖥️  Server           ${chalk.dim('Full root access server')}`, value: 'server' },
+        {
+          title: `📦 Template         ${chalk.dim('Deploy from a pre-built template')}`,
+          value: 'template',
+        },
+        {
+          title: `🐳 Docker Image     ${chalk.dim('Deploy any container image')}`,
+          value: 'docker',
+        },
+        {
+          title: `⚡ Function         ${chalk.dim('Serverless function (Bun + Hono)')}`,
+          value: 'function',
+        },
+        {
+          title: `🖥️  Server           ${chalk.dim('Full root access server')}`,
+          value: 'server',
+        },
       ],
     });
 
@@ -123,7 +141,9 @@ export const createServiceActionHandler = async (projectFlag?: string) => {
       output.log(
         `${chalk.yellow('Coming soon!')} ${serviceKind} services are not yet available via CLI.`,
       );
-      output.hint('Use the dashboard at https://alternatefutures.ai to create this service type.');
+      output.hint(
+        'Use the dashboard at https://alternatefutures.ai to create this service type.',
+      );
       output.printNewLine();
       return;
     }
@@ -183,8 +203,14 @@ export const createServiceActionHandler = async (projectFlag?: string) => {
     const compute = await selectPrompt<string>({
       message: 'Compute type:',
       choices: [
-        { title: `Standard            ${chalk.dim('Akash Network')}`, value: 'standard' },
-        { title: `Confidential (TEE)  ${chalk.dim('Phala Network')}`, value: 'confidential' },
+        {
+          title: `Standard            ${chalk.dim('Akash Network')}`,
+          value: 'standard',
+        },
+        {
+          title: `Confidential (TEE)  ${chalk.dim('Phala Network')}`,
+          value: 'confidential',
+        },
       ],
     });
 

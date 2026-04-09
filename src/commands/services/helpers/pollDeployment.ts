@@ -110,7 +110,7 @@ export async function pollDeploymentStatus(
         const lineCount = lastRendered.split('\n').length;
         process.stdout.write(`\x1b[${lineCount}A\x1b[0J`);
       }
-      process.stdout.write(rendered + '\n');
+      process.stdout.write(`${rendered}\n`);
       lastRendered = rendered;
     }
 
@@ -157,7 +157,9 @@ export async function pollDeploymentStatus(
       if (dep.status === 'ACTIVE' && dep.serviceId) {
         output.printNewLine();
         output.hint(`Connect via SSH:       af ssh ${dep.serviceId}`);
-        output.hint(`Close deployment:      af services close ${dep.serviceId}`);
+        output.hint(
+          `Close deployment:      af services close ${dep.serviceId}`,
+        );
       }
       return;
     }
