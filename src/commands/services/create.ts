@@ -12,6 +12,7 @@ import { confirmPrompt } from '../../prompts/confirmPrompt';
 import { selectPrompt } from '../../prompts/selectPrompt';
 import { textPrompt } from '../../prompts/textPrompt';
 import { ensureProject } from './helpers/ensureProject';
+import { pollDeploymentStatus } from './helpers/pollDeployment';
 
 type Template = {
   id: string;
@@ -142,6 +143,8 @@ export const createServiceActionHandler = async (projectFlag?: string) => {
       output.log(`Service ID:    ${result.serviceId}`);
       output.log(`Deployment ID: ${result.id}`);
       output.log(`Status:        ${result.status}`);
+      output.printNewLine();
+      output.hint('Monitor with: af services list');
     } else {
       const { data } = await graphqlFetch<{
         deployFromTemplate: DeploymentResult;
@@ -155,14 +158,14 @@ export const createServiceActionHandler = async (projectFlag?: string) => {
         return;
       }
 
-      output.success('Service created! Deploying...');
-      output.log(`Service ID:    ${result.serviceId}`);
-      output.log(`Deployment ID: ${result.id}`);
-      output.log(`Status:        ${result.status}`);
-    }
+      output.printNewLine();
+      output.log(
+        `Deploying ${chalk.bold(serviceName)} ${chalk.dim(`(${result.id})`)}`,
+      );
+      output.printNewLine();
 
-    output.printNewLine();
-    output.hint('Monitor with: af services list');
+      await pollDeploymentStatus(result.id);
+    }
   } catch (error) {
     output.error(
       error instanceof Error ? error.message : 'Failed to create service',

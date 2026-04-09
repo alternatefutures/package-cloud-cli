@@ -1,14 +1,16 @@
+import chalk from 'chalk';
+
 import { output } from '../../cli';
 import { graphqlFetch } from '../../graphql/client';
 import {
   CLOSE_AKASH_DEPLOYMENT,
-  DEPLOY_FROM_TEMPLATE,
   DEPLOY_TO_AKASH,
   STOP_PHALA_DEPLOYMENT,
 } from '../../graphql/operations';
 import { confirmPrompt } from '../../prompts/confirmPrompt';
 import { ensureProject } from './helpers/ensureProject';
 import { pickService } from './helpers/pickService';
+import { pollDeploymentStatus } from './helpers/pollDeployment';
 
 type DeploymentResult = {
   id: string;
@@ -74,11 +76,12 @@ export const deployServiceActionHandler = async (
     }
 
     output.printNewLine();
-    output.success(`"${service.name}" is deploying!`);
-    output.log(`Deployment ID: ${result.id}`);
-    output.log(`Status:        ${result.status}`);
+    output.log(
+      `Deploying ${chalk.bold(service.name)} ${chalk.dim(`(${result.id})`)}`,
+    );
     output.printNewLine();
-    output.hint('Monitor with: af services list');
+
+    await pollDeploymentStatus(result.id);
   } catch (error) {
     output.error(
       error instanceof Error ? error.message : 'Failed to deploy service',
