@@ -9,6 +9,7 @@ type AkashDeploymentPoll = {
   status: string;
   dseq: string;
   provider: string | null;
+  serviceId: string;
   serviceUrls: Record<string, unknown> | null;
   errorMessage: string | null;
   retryCount: number;
@@ -151,6 +152,12 @@ export async function pollDeploymentStatus(
       output.log(`Deployment ID: ${dep.id}`);
       if (dep.dseq && dep.dseq !== '0') {
         output.log(`DSEQ:          ${dep.dseq}`);
+      }
+
+      if (dep.status === 'ACTIVE' && dep.serviceId) {
+        output.printNewLine();
+        output.hint(`Connect via SSH:       af ssh ${dep.serviceId}`);
+        output.hint(`Close deployment:      af services close ${dep.serviceId}`);
       }
       return;
     }

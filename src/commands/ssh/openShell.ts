@@ -23,7 +23,8 @@ export async function openShell(
     'https://api.alternatefutures.ai';
   const wsUrl = apiUrl.replace(/^http/, 'ws');
 
-  output.log(chalk.dim('Connecting to shell...'));
+  output.printNewLine();
+  output.spinner('Connecting to shell...');
 
   await new Promise<void>((resolve) => {
     const params = new URLSearchParams({ serviceId });
@@ -32,7 +33,7 @@ export async function openShell(
     const ws = new WebSocket(`${wsUrl}/ws/shell?${params.toString()}`);
 
     const connectTimeout = setTimeout(() => {
-      output.error('Connection timed out after 30 seconds');
+      output.error('Connection timed out after 30 seconds.');
       ws.close();
       resolve();
     }, 30_000);
@@ -62,12 +63,15 @@ export async function openShell(
         if (msg.type === 'ready') {
           ready = true;
           clearTimeout(connectTimeout);
-          output.log(
-            chalk.green('Connected. Type ') +
-              chalk.bold('exit') +
-              chalk.green(' or press Ctrl+D to disconnect.'),
+
+          // Clear spinner and show clean connected banner
+          output.stopSpinner();
+          process.stdout.write('\x1b[2J\x1b[H');
+          process.stdout.write(
+            chalk.green.bold(' ● Connected') +
+              chalk.dim(` — ${serviceId}\n`) +
+              chalk.dim('   Type exit or press Ctrl+D to disconnect.\n\n'),
           );
-          output.log('');
 
           if (process.stdin.isTTY) {
             process.stdin.setRawMode(true);
@@ -121,18 +125,16 @@ export async function openShell(
       process.stdout.write(data as Buffer);
     });
 
-    ws.on('close', (_code: number, reason: Buffer) => {
+    ws.on('close', () => {
       clearTimeout(connectTimeout);
       if (process.stdin.isTTY) {
         process.stdin.setRawMode(false);
       }
       process.stdin.pause();
-      const reasonStr = reason.toString();
-      if (reasonStr && reasonStr !== 'user_disconnect') {
-        output.log(chalk.dim(`\nSession closed: ${reasonStr}`));
-      } else {
-        output.log(chalk.dim('\nSession closed.'));
-      }
+      process.stdout.write('\n');
+      output.printNewLine();
+      output.log(chalk.dim('Session closed.'));
+      output.printNewLine();
       resolve();
     });
 
