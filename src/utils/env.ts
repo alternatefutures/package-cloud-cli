@@ -20,13 +20,19 @@ export const parseEnvVarsAsKeyVal = <T extends Record<string, string>>({
 
   return keys.reduce(
     (define, envName) => {
-      if (!defined[envName as keyof T]) {
+      const value = defined[envName as keyof T];
+
+      if (!value) {
         throw new EnvNotSetError(envName);
       }
 
-      define[`${keyPrefix}${envName}`] = JSON.stringify(
-        defined[envName as keyof T],
-      );
+      if (/localhost|127\.0\.0\.1/.test(value)) {
+        console.error(`🚨 Refusing to bake localhost URL into bundle: ${envName}=${value}`);
+        console.error(`   This would publish a broken CLI. Fix your env vars and retry.`);
+        process.exit(1);
+      }
+
+      define[`${keyPrefix}${envName}`] = JSON.stringify(value);
 
       return define;
     },
