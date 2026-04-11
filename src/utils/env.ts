@@ -27,8 +27,12 @@ export const parseEnvVarsAsKeyVal = <T extends Record<string, string>>({
       }
 
       if (/localhost|127\.0\.0\.1/.test(value)) {
-        console.error(`🚨 Refusing to bake localhost URL into bundle: ${envName}=${value}`);
-        console.error(`   This would publish a broken CLI. Fix your env vars and retry.`);
+        console.error(
+          `🚨 Refusing to bake localhost URL into bundle: ${envName}=${value}`,
+        );
+        console.error(
+          '   This would publish a broken CLI. Fix your env vars and retry.',
+        );
         process.exit(1);
       }
 
