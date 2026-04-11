@@ -14,6 +14,12 @@ function replaceKeys({ filePath, envVars }) {
       return;
     }
 
+    if (/localhost|127\.0\.0\.1/.test(process.env[key])) {
+      console.error(`🚨 Refusing to bake localhost URL into bundle: ${key}=${process.env[key]}`);
+      console.error(`   This would publish a broken CLI. Fix your env vars and retry.`);
+      process.exit(1);
+    }
+
     content = content.replace(`process.env.${key}`, `"${process.env[key]}"`);
   }
 
