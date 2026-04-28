@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.7
+
+### Patch Changes
+
+- 12fc13c: Add `.claude/skills/af-cli/SKILL.md` so AI assistants (Claude Code, Cursor, etc.) load an accurate, hand-maintained reference for every `af` command, flag, and workflow when working in repos that depend on the CLI. No code changes.
+
 ## 0.2.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@alternatefutures/cli",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Unified command line interface to Alternate Clouds - decentralized cloud infrastructure with censorship resistance",
   "license": "AGPL-3.0-only",
   "author": "Alternate Futures",
