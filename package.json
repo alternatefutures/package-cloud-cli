@@ -74,7 +74,7 @@
     "cli-table3": "^0.6.5",
     "commander": "^9.4.1",
     "conf": "^10.2.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.4.1",
     "eciesjs": "0.4.7",
     "esbuild": "^0.27.0",
     "files-from-path": "1.0.0",
