@@ -21,7 +21,10 @@ export async function openShell(
     process.env.AF_API_URL ||
     process.env.SDK__GRAPHQL_API_URL ||
     'https://api.alternatefutures.ai';
-  const wsUrl = apiUrl.replace(/^http/, 'ws');
+  const wsUrl = apiUrl
+    .replace(/\/graphql\/?$/, '')
+    .replace(/\/+$/, '')
+    .replace(/^http/, 'ws');
 
   output.printNewLine();
   output.spinner('Connecting to shell...');
