@@ -27,13 +27,25 @@ export const parseEnvVarsAsKeyVal = <T extends Record<string, string>>({
       }
 
       if (/localhost|127\.0\.0\.1/.test(value)) {
-        console.error(
-          `🚨 Refusing to bake localhost URL into bundle: ${envName}=${value}`,
-        );
-        console.error(
-          '   This would publish a broken CLI. Fix your env vars and retry.',
-        );
-        process.exit(1);
+        // Mirror of the guard in .scripts/replaceKeys.js. Block by default,
+        // allow opt-in for local-stack testing builds. NEVER publish a
+        // bundle produced with AF_ALLOW_LOCALHOST_BUILD=1.
+        if (process.env.AF_ALLOW_LOCALHOST_BUILD === '1') {
+          console.warn(
+            `⚠️  Baking localhost URL (AF_ALLOW_LOCALHOST_BUILD=1): ${envName}=${value}`,
+          );
+        } else {
+          console.error(
+            `🚨 Refusing to bake localhost URL into bundle: ${envName}=${value}`,
+          );
+          console.error(
+            '   This would publish a broken CLI. Fix your env vars and retry.',
+          );
+          console.error(
+            '   For local testing only: set AF_ALLOW_LOCALHOST_BUILD=1',
+          );
+          process.exit(1);
+        }
       }
 
       define[`${keyPrefix}${envName}`] = JSON.stringify(value);

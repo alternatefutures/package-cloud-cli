@@ -15,9 +15,18 @@ function replaceKeys({ filePath, envVars }) {
     }
 
     if (/localhost|127\.0\.0\.1/.test(process.env[key])) {
-      console.error(`🚨 Refusing to bake localhost URL into bundle: ${key}=${process.env[key]}`);
-      console.error(`   This would publish a broken CLI. Fix your env vars and retry.`);
-      process.exit(1);
+      // Localhost URLs in a published bundle would be a broken-CLI bug for
+      // every user. Block by default. Opt in explicitly when building a CLI
+      // you intend to use against your own local stack — never publish such
+      // a build to npm.
+      if (process.env.AF_ALLOW_LOCALHOST_BUILD === '1') {
+        console.warn(`⚠️  Baking localhost URL (AF_ALLOW_LOCALHOST_BUILD=1): ${key}=${process.env[key]}`);
+      } else {
+        console.error(`🚨 Refusing to bake localhost URL into bundle: ${key}=${process.env[key]}`);
+        console.error(`   This would publish a broken CLI. Fix your env vars and retry.`);
+        console.error(`   For local testing only: set AF_ALLOW_LOCALHOST_BUILD=1`);
+        process.exit(1);
+      }
     }
 
     content = content.replace(`process.env.${key}`, `"${process.env[key]}"`);
