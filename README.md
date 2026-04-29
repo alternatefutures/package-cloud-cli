@@ -52,11 +52,27 @@ af services list
 af services info [id]
 af services create
 af services deploy [id]
+af services deploy [id] --region us-east     # Phase 46: pin to a curated region
 af services logs [id] --tail 100
 af services close [id]
 af services delete [id]
 af services --project <id-or-name> list
 ```
+
+### Regions (Phase 46)
+
+```bash
+af regions                                    # list us-east, us-west, eu, asia with live availability
+af regions --provider akash
+af regions --provider phala                   # → "Phala Cloud is currently single-region"
+af regions --gpu h100                         # surface median price for a specific GPU model
+```
+
+`af services deploy --region <region>` constrains your deploy to one of the
+four curated buckets (`us-east`, `us-west`, `eu`, `asia`). Omit the flag for
+"Any (cheapest globally)" — today's default behavior. If no provider in the
+chosen region responds, the CLI prints alternatives + the exact retry
+commands.
 
 ### Deployments
 
