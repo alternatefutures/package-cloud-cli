@@ -40,6 +40,57 @@ export async function openShell(
       perMessageDeflate: false,
     });
 
+    const localEchoEnabled = process.env.AF_SSH_LOCAL_ECHO !== '0';
+    let pendingLocalEcho = '';
+
+    const stripLocalEcho = (data: WebSocket.Data): Buffer => {
+      if (!pendingLocalEcho) return Buffer.from(data as Buffer);
+
+      let text = data.toString();
+      while (pendingLocalEcho && text) {
+        if (text.startsWith(pendingLocalEcho)) {
+          text = text.slice(pendingLocalEcho.length);
+          pendingLocalEcho = '';
+          break;
+        }
+
+        if (pendingLocalEcho.startsWith(text)) {
+          pendingLocalEcho = pendingLocalEcho.slice(text.length);
+          return Buffer.alloc(0);
+        }
+
+        // The remote shell emitted something other than the expected echo.
+        pendingLocalEcho = '';
+        break;
+      }
+
+      return Buffer.from(text);
+    };
+
+    const echoInputLocally = (chunk: Buffer): void => {
+      if (!localEchoEnabled || !process.stdout.isTTY) return;
+
+      for (const byte of chunk) {
+        if (byte === 0x09 || (byte >= 0x20 && byte <= 0x7e)) {
+          const char = String.fromCharCode(byte);
+          process.stdout.write(char);
+          pendingLocalEcho += char;
+          continue;
+        }
+
+        if (byte === 0x0d || byte === 0x0a) {
+          process.stdout.write('\r\n');
+          pendingLocalEcho += '\r\n';
+          continue;
+        }
+
+        if (byte === 0x7f || byte === 0x08) {
+          process.stdout.write('\b \b');
+          pendingLocalEcho += '\b \b';
+        }
+      }
+    };
+
     const connectTimeout = setTimeout(() => {
       output.error('Connection timed out after 30 seconds.');
       ws.close();
@@ -92,6 +143,7 @@ export async function openShell(
           // locally would either double-print or, worse, mismatch and
           // produce the "delay then random characters" jank we used to ship.
           process.stdin.on('data', (chunk: Buffer) => {
+            echoInputLocally(chunk);
             if (ws.readyState === WebSocket.OPEN) {
               ws.send(chunk);
             }
@@ -135,7 +187,7 @@ export async function openShell(
         return;
       }
 
-      process.stdout.write(data as Buffer);
+      process.stdout.write(stripLocalEcho(data));
     });
 
     ws.on('close', () => {
