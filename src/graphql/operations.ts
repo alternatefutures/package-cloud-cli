@@ -84,7 +84,33 @@ export const GET_SERVICE_LOGS = `
 export const DEPLOY_TO_AKASH = `
   mutation DeployToAkash($input: DeployToAkashInput!) {
     deployToAkash(input: $input) {
-      id status dseq owner serviceId
+      id status dseq owner serviceId region resolvedRegion
+    }
+  }
+`;
+
+// Phase 46 — region picker query, used by `af regions` and consumed
+// (advisory) by `af services deploy --region` to validate availability
+// before submitting. PHALA returns a single sentinel row — the
+// command layer detects `id === 'phala-single-region'` and prints the
+// explicit single-region message instead of a table.
+export const REGIONS_QUERY = `
+  query Regions($provider: ComputeProviderType, $gpuModelHint: String) {
+    regions(provider: $provider, gpuModelHint: $gpuModelHint) {
+      id
+      label
+      available
+      verifiedCount
+      onlineCount
+      recentBidCount
+      confidence
+      medianPrices {
+        cpu1Core
+        h100
+        h200
+        rtx4090
+        a100
+      }
     }
   }
 `;

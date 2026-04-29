@@ -88,6 +88,7 @@ af services list -p my-project         # list services in a specific project (by
 af services info [id]                  # show details (image, env, ports, status); prompts for id if omitted
 af services create                     # interactive: pick template kind, fill env vars, deploy
 af services deploy [id]                # deploy/redeploy an existing service
+af services deploy [id] --region us-east   # Phase 46: pin deploy to a curated region (us-east|us-west|eu|asia)
 af services logs [id]                  # tail recent logs
 af services logs [id] --tail 200       # last 200 lines (default 50)
 af services close [id]                 # close the active deployment (service kept; can be redeployed later)
@@ -95,6 +96,15 @@ af services delete [id]                # close + delete the service entirely
 ```
 
 The `-p / --project` flag works on every `services` subcommand to override the selected project.
+**Region selection (Phase 46).** `af services deploy --region <region>` constrains
+the deploy to one of four curated buckets: `us-east`, `us-west`, `eu`, `asia`.
+Omit the flag for "Any (cheapest globally)" — today's default behavior. If no
+provider in the chosen region responds with a bid in the polling window, the
+CLI prints alternatives + the exact retry commands and exits with code `2` so
+scripts can detect the soft-fail state. The deployment row goes to
+`AWAITING_REGION_RESPONSE` server-side and auto-cancels after ~5 min.
+
+Run `af regions` first to see what's available right now.
 
 **`af services create` flow today:**
 - ✅ **📦 Template** — pre-built templates (Next.js, Postgres, Ollama, Hyperscape, Minecraft, etc.)
@@ -117,6 +127,26 @@ af deployments -l 100                     # max rows (default 50)
 ```
 
 Deployments are read-only here — close/redeploy go through `af services`.
+
+### `af regions` — curated deployment regions (Phase 46)
+
+```bash
+af regions                             # list curated buckets with verified/online + median prices
+af regions --provider akash            # explicit (default)
+af regions --provider phala            # → "Phala Cloud is currently single-region — region selection isn't available."
+af regions --gpu h100                  # surface median price for a specific GPU model
+```
+
+Output: a table of `us-east`, `us-west`, `eu`, `asia` with status dots
+(● green ≥3 verified+bids · ◐ yellow capacity · ⊘ no capacity), verified
+provider count, online count, bids in last 24h, and median USD/hr.
+
+Use this to scope a `--region` flag for `af services deploy`. The list refreshes
+every 5 minutes upstream; CLI fetches live each call.
+
+A region with `Status = ⊘ no capacity` is *not* a permanent absence — it
+means no provider in that region has bid in the last 24h. Try again later or
+deploy without `--region` to fall back to "Any".
 
 ### `af templates` — pre-built deployable templates
 

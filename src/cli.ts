@@ -5,6 +5,7 @@ import cmdBilling from './commands/billing/index';
 import cmdDeployments from './commands/deployments/index';
 import cmdPAT from './commands/pat/index';
 import cmdProjects from './commands/projects/index';
+import cmdRegions from './commands/regions/index';
 import cmdServices from './commands/services/index';
 import cmdSSH from './commands/ssh/index';
 import cmdTemplates from './commands/templates/index';
@@ -46,7 +47,7 @@ const logo = `
 // between logical command categories.
 const COMMAND_GROUPS: string[][] = [
   ['login', 'logout'],
-  ['projects', 'services', 'deployments', 'ssh'],
+  ['projects', 'services', 'deployments', 'regions', 'ssh'],
   ['billing'],
 ];
 
@@ -162,6 +163,7 @@ export const init = ({ version, parser }: InitArgs) => {
   cmdProjects(program);
   cmdServices(program);
   cmdDeployments(program);
+  cmdRegions(program);
 
   // Group 3: utilities
   cmdBilling(program);

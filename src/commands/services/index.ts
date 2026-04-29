@@ -44,9 +44,15 @@ export default (program: Command): Command => {
   cmd
     .command('deploy [id]')
     .description('Deploy (or redeploy) a service')
-    .action((id?: string) => {
+    .option(
+      '--region <region>',
+      'Curated region: us-east | us-west | eu | asia. Omit for "Any (cheapest globally)".',
+    )
+    .action((id?: string, options?: { region?: string }) => {
       const projectFlag = cmd.opts().project;
-      return deployServiceActionHandler(id, projectFlag);
+      return deployServiceActionHandler(id, projectFlag, {
+        region: options?.region,
+      });
     });
 
   cmd

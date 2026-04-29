@@ -41,6 +41,11 @@ const TERMINAL_STATUSES = new Set([
   'PERMANENTLY_FAILED',
   'CLOSED',
   'SUSPENDED',
+  // Phase 46 — soft-fail state when strict region selection got no bids.
+  // Treated as terminal here so the poll loop exits; the calling deploy
+  // command (`services/deploy.ts`) inspects the returned status and
+  // surfaces alternative regions + retry hints.
+  'AWAITING_REGION_RESPONSE',
 ]);
 
 const POLL_INTERVAL_MS = 3000;
@@ -88,7 +93,7 @@ function renderProgress(currentStatus: string, errorMessage?: string | null) {
 
 export async function pollDeploymentStatus(
   deploymentId: string,
-): Promise<void> {
+): Promise<string | null> {
   const start = Date.now();
   let lastRendered = '';
 
@@ -100,7 +105,7 @@ export async function pollDeploymentStatus(
     const dep = data?.akashDeployment;
     if (!dep) {
       output.error('Deployment not found during status check.');
-      return;
+      return null;
     }
 
     const rendered = renderProgress(dep.status, dep.errorMessage);
@@ -144,6 +149,11 @@ export async function pollDeploymentStatus(
         if (dep.retryCount > 0) {
           output.log(`Retried ${dep.retryCount} time(s) before failing.`);
         }
+      } else if (dep.status === 'AWAITING_REGION_RESPONSE') {
+        // Phase 46 — soft-fail. The deploy command will print the
+        // alternatives + retry hints; we just record the state here so
+        // the renderer doesn't print a generic "ended with status: ..."
+        // line under it.
       } else {
         output.log(`Deployment ended with status: ${dep.status}`);
       }
@@ -161,7 +171,7 @@ export async function pollDeploymentStatus(
           `Close deployment:      af services close ${dep.serviceId}`,
         );
       }
-      return;
+      return dep.status;
     }
 
     await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
@@ -172,4 +182,5 @@ export async function pollDeploymentStatus(
     'Timed out waiting for deployment to complete. It may still be in progress.',
   );
   output.hint('Check status with: af services list');
+  return null;
 }
