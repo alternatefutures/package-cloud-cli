@@ -30,7 +30,12 @@ export async function openShell(
     const params = new URLSearchParams({ serviceId });
     if (opts.service) params.set('service', opts.service);
     if (opts.command) params.set('command', opts.command);
-    const ws = new WebSocket(`${wsUrl}/ws/shell?${params.toString()}`);
+    // perMessageDeflate batches single-keystroke frames waiting for compression
+    // payoff that never comes for terminal traffic. Explicitly off — same on
+    // the server side in service-cloud-api/src/services/shell/shellEndpoint.ts.
+    const ws = new WebSocket(`${wsUrl}/ws/shell?${params.toString()}`, {
+      perMessageDeflate: false,
+    });
 
     const connectTimeout = setTimeout(() => {
       output.error('Connection timed out after 30 seconds.');
@@ -78,6 +83,11 @@ export async function openShell(
           }
           process.stdin.resume();
 
+          // Raw stdin → WebSocket. No local echo, no prediction — the remote
+          // PTY owns echoing (and turns it off when the foreground program
+          // wants raw mode, e.g. vim, htop, passwd). Anything we render
+          // locally would either double-print or, worse, mismatch and
+          // produce the "delay then random characters" jank we used to ship.
           process.stdin.on('data', (chunk: Buffer) => {
             if (ws.readyState === WebSocket.OPEN) {
               ws.send(chunk);
