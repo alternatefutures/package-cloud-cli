@@ -140,8 +140,7 @@ export const deployServiceActionHandler = async (
 
     output.printNewLine();
     output.log(
-      `Deploying ${chalk.bold(service.name)} ${chalk.dim(`(${result.id})`)}` +
-        (region ? chalk.dim(` in ${region}`) : ''),
+      `Deploying ${chalk.bold(service.name)} ${chalk.dim(`(${result.id})`)}${region ? chalk.dim(` in ${region}`) : ''}`,
     );
     output.printNewLine();
 
@@ -181,7 +180,9 @@ export const deployServiceActionHandler = async (
       }
 
       output.log(
-        chalk.dim('Or skip the region constraint entirely (cheapest globally):'),
+        chalk.dim(
+          'Or skip the region constraint entirely (cheapest globally):',
+        ),
       );
       output.log(chalk.dim(`      af services deploy ${service.id}`));
       output.printNewLine();
