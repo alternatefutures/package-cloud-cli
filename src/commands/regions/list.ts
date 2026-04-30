@@ -65,7 +65,7 @@ function formatPrice(usdPerHour: number | null): string {
 
 function pickPriceForDisplay(
   prices: RegionMedianPrices,
-  gpuFlag?: string
+  gpuFlag?: string,
 ): { label: string; value: number | null } {
   if (gpuFlag) {
     const lower = gpuFlag.toLowerCase();
@@ -82,7 +82,9 @@ function pickPriceForDisplay(
     ['RTX4090', prices.rtx4090],
     ['CPU/core', prices.cpu1Core],
   ];
-  const firstWithValue = candidates.find(([, v]) => v !== null && v !== undefined);
+  const firstWithValue = candidates.find(
+    ([, v]) => v !== null && v !== undefined,
+  );
   return firstWithValue
     ? { label: firstWithValue[0], value: firstWithValue[1] }
     : { label: 'CPU/core', value: null };
@@ -125,14 +127,13 @@ export const regionsListActionHandler = async (opts: {
   }
 
   // Phala sentinel — single row, swap to explicit message.
-  if (
-    regions.length === 1 &&
-    regions[0].id === 'phala-single-region'
-  ) {
+  if (regions.length === 1 && regions[0].id === 'phala-single-region') {
     output.printNewLine();
     output.log(
       chalk.bold('Phala Cloud') +
-        chalk.dim(' — currently single-region. Region selection isn\'t available.'),
+        chalk.dim(
+          " — currently single-region. Region selection isn't available.",
+        ),
     );
     output.printNewLine();
     return;
