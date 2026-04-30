@@ -69,7 +69,8 @@ function pickPriceForDisplay(
 ): { label: string; value: number | null } {
   if (gpuFlag) {
     const lower = gpuFlag.toLowerCase();
-    const value = (prices as Record<string, number | null>)[lower] ?? null;
+    const value =
+      (prices as unknown as Record<string, number | null>)[lower] ?? null;
     return { label: lower.toUpperCase(), value };
   }
   // No GPU hint — show the cheapest available premium GPU price as the
